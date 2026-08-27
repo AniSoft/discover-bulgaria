@@ -72,10 +72,15 @@ export function CinematicVideo() {
             onCanPlay={(e) => {
               const v = e.currentTarget;
               v.muted = true;
-              void v.play().catch(() => undefined);
-              setReady(true);
+              void v.play().then(
+                () => setReady(true),
+                (err: unknown) => {
+                  if (import.meta.env.DEV) console.warn("[CinematicVideo] play() rejected", err);
+                },
+              );
             }}
             onError={() => {
+              if (import.meta.env.DEV) console.warn("[CinematicVideo] source failed to load");
               setFailed(true);
               setReady(false);
             }}
@@ -84,8 +89,8 @@ export function CinematicVideo() {
             }`}
             style={{ pointerEvents: "none" }}
           >
-            <source src={journeyVideoWebm.url} type="video/webm" />
-            <source src={journeyVideo.url} type="video/mp4" />
+            <source src={VIDEO_WEBM} type="video/webm" />
+            <source src={VIDEO_MP4} type="video/mp4" />
           </video>
         ) : null}
 
