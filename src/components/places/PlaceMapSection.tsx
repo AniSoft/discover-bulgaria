@@ -13,6 +13,11 @@ import {
 } from "@/lib/place-coordinates";
 import { cn } from "@/lib/utils";
 
+function openExternal(url: string) {
+  const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+  if (newWindow) newWindow.opener = null;
+}
+
 /** Decorative contour motif — never interactive. */
 function TopoMotif({ className }: { className?: string }) {
   return (
@@ -252,24 +257,22 @@ export function PlaceMapSection({
                 {t("map.labelRoute")}
               </dt>
               <dd className="mt-3 flex flex-wrap items-center gap-3">
-                <a
-                  href={directionsUrl(coords, query)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => openExternal(directionsUrl(coords, query))}
                   className={buttonClasses("primary", "md", "rounded-[8px]")}
                 >
                   <Navigation className="size-4" aria-hidden="true" />
                   {t("map.directions")}
-                </a>
-                <a
-                  href={googleMapsUrl(coords, query)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openExternal(googleMapsUrl(coords, query))}
                   className={buttonClasses("outline", "md", "rounded-[8px]")}
                 >
                   <ExternalLink className="size-4" aria-hidden="true" />
                   {t("map.openGoogle")}
-                </a>
+                </button>
                 {coords ? (
                   <button
                     type="button"
