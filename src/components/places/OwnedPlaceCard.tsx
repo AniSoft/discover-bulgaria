@@ -11,16 +11,16 @@ export const STATUS_META: Record<
 > = {
   for_review: {
     label: "FOR REVIEW",
-    badge: "border-amber-500/35 bg-amber-500/12 text-amber-700",
+    badge: "border-warning/40 bg-warning/12 text-warning",
     note: "Waiting for administrator review.",
   },
   published: {
     label: "PUBLISHED",
-    badge: "border-primary/30 bg-primary/10 text-primary",
+    badge: "border-success/30 bg-success/10 text-success",
   },
   rejected: {
     label: "REJECTED",
-    badge: "border-red-500/30 bg-red-500/10 text-red-700",
+    badge: "border-destructive/30 bg-destructive/10 text-destructive",
   },
 };
 
@@ -98,7 +98,7 @@ export function OwnedPlaceCard({
         Added {formatDate(place.created_at)}
       </p>
 
-      {meta?.note ? <p className="mt-2 text-xs text-amber-700">{meta.note}</p> : null}
+      {meta?.note ? <p className="mt-2 text-xs text-warning">{meta.note}</p> : null}
 
       <div className="mt-6 flex flex-wrap gap-2 border-t border-border pt-5">
         <Link
@@ -118,9 +118,8 @@ export function OwnedPlaceCard({
           Edit
         </Link>
         <Button
-          variant="ghost"
+          variant="destructive-ghost"
           size="sm"
-          className="text-red-700 hover:bg-red-500/10"
           onClick={() => onDelete(place)}
         >
           <Trash2 className="size-4" aria-hidden="true" />

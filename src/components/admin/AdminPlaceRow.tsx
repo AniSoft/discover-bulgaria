@@ -86,9 +86,8 @@ export function AdminPlaceRow({
           </Button>
         ) : null}
         <Button
-          variant="ghost"
+          variant="destructive-ghost"
           size="sm"
-          className="text-red-700 hover:bg-red-50"
           onClick={() => onDelete(place)}
         >
           <Trash2 className="size-4" aria-hidden="true" />

@@ -103,7 +103,7 @@ export function PhotoPicker({
                   aria-label={`Remove ${photo.file.name}`}
                   disabled={disabled}
                   onClick={() => remove(photo.id)}
-                  className="grid size-8 shrink-0 place-items-center rounded-full text-red-700 transition-colors duration-250 hover:bg-red-500/10 disabled:opacity-35"
+                  className="grid size-8 shrink-0 place-items-center rounded-full text-destructive transition-colors duration-250 hover:bg-destructive/10 disabled:opacity-35"
                 >
                   <Trash2 className="size-4" aria-hidden="true" />
                 </button>
