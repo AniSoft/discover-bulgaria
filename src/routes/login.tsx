@@ -7,7 +7,7 @@ import { safeRedirect } from "@/lib/safe-redirect";
 import { InitialAdminSetup } from "@/components/auth/InitialAdminSetup";
 import { useT } from "@/lib/i18n";
 
-const title = "Sign In — Discover Bulgaria";
+const title = "Sign In | Discover Bulgaria";
 const description = "Sign in to save favorite places and submit your own discoveries in Bulgaria.";
 
 export const Route = createFileRoute("/login")({

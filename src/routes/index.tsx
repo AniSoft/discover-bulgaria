@@ -7,7 +7,7 @@ import { ExplorePlaces } from "@/components/home/ExplorePlaces";
 import { LocalSecrets } from "@/components/home/LocalSecrets";
 import { CommunityCta } from "@/components/home/CommunityCta";
 
-const title = "Discover Bulgaria — Hidden places and local stories";
+const title = "Discover Bulgaria: Hidden places and local stories";
 const description =
   "Discover beautiful, lesser-known places across Bulgaria: hidden gems, mountains, coastline, culture and local secrets worth the detour.";
 

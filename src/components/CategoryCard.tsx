@@ -39,7 +39,7 @@ export function CategoryCard({ category, count }: Props) {
         <div className="min-w-0">
           <p className="eyebrow text-primary-foreground/60">
             {count === undefined
-              ? "—"
+              ? "–"
               : t(count === 1 ? "categoryCard.placeCount" : "categoryCard.placesCount", { count })}
           </p>
           <h3 className="mt-1.5 truncate text-2xl leading-tight text-primary-foreground">{name}</h3>

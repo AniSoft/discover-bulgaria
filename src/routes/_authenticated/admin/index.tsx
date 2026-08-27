@@ -12,7 +12,7 @@ import {
 import { placeLocation } from "@/lib/place-display";
 import { useT } from "@/lib/i18n";
 
-const title = "Admin Dashboard — Discover Bulgaria";
+const title = "Admin Dashboard | Discover Bulgaria";
 const description = "Manage community content and platform activity on Discover Bulgaria.";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
@@ -73,7 +73,7 @@ function AdminDashboardPage() {
             {stats.isPending ? (
               <div className="mt-4 h-8 w-16 animate-pulse rounded-full bg-secondary" />
             ) : stats.isError ? (
-              <p className="mt-3 font-display text-4xl text-muted-foreground">—</p>
+              <p className="mt-3 font-display text-4xl text-muted-foreground">–</p>
             ) : (
               <p className="mt-3 font-display text-4xl text-foreground">{s.value ?? 0}</p>
             )}

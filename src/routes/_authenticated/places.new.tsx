@@ -16,7 +16,7 @@ import { placeSubmissionSchema } from "@/lib/place-submit.shared";
 import { useT } from "@/lib/i18n";
 import { useMessageTranslator } from "@/lib/i18n/validation";
 
-const title = "Add a Place — Discover Bulgaria";
+const title = "Add a Place | Discover Bulgaria";
 const description =
   "Share a place worth discovering in Bulgaria and help other travellers experience it too.";
 
