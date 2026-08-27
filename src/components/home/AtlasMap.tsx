@@ -130,10 +130,10 @@ export function AtlasMap() {
         <Ridge x={258} y={262} s={0.9} o={0.65} />
         <Ridge x={352} y={236} s={1} />
         {/* forests */}
-        {[
+        {([
           [124, 210], [136, 222], [150, 214], [326, 208], [338, 218], [350, 206],
           [402, 240], [414, 250], [268, 232], [280, 224],
-        ].map(([x, y], i) => (
+        ] as ReadonlyArray<readonly [number, number]>).map(([x, y], i) => (
           <Tree key={i} x={x} y={y} s={i % 3 === 0 ? 1.15 : 0.95} />
         ))}
       </g>
