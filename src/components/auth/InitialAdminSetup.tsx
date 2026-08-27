@@ -1,21 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/AppButton";
 import { Field, FormAlert, inputClasses } from "@/components/auth/AuthCard";
-import { createInitialAdmin, getAdminSetupStatus } from "@/lib/admin.functions";
+
+const SETUP_ENDPOINT = "/api/public/initial-admin-setup";
 
 /**
- * One-time bootstrap panel. Only rendered while no admin exists; the server
- * function itself re-checks and refuses once the first admin is created.
+ * One-time bootstrap panel. Only rendered while no admin exists; the privileged
+ * setup endpoint itself re-checks and refuses once the first admin is created.
  */
 export function InitialAdminSetup() {
-  const checkStatus = useServerFn(getAdminSetupStatus);
-  const createAdmin = useServerFn(createInitialAdmin);
   const status = useQuery({
     queryKey: ["admin-setup-status"],
-    queryFn: () => checkStatus(),
+    queryFn: async (): Promise<{ adminExists: boolean }> => {
+      const res = await fetch(SETUP_ENDPOINT);
+      if (!res.ok) throw new Error("Could not check admin status.");
+      return res.json();
+    },
     staleTime: 60_000,
   });
 
@@ -33,7 +35,13 @@ export function InitialAdminSetup() {
     setError(null);
     setSubmitting(true);
     try {
-      await createAdmin({ data: { email: email.trim(), password } });
+      const res = await fetch(SETUP_ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), password }),
+      });
+      const payload = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(payload.error ?? "Could not create the initial admin.");
       setDone(true);
       toast.success("Initial admin created. You can sign in with that account now.");
     } catch (err) {
@@ -43,6 +51,7 @@ export function InitialAdminSetup() {
       setSubmitting(false);
     }
   }
+
 
   return (
     <div className="mt-8 rounded-[var(--radius-button)] border border-dashed border-border bg-secondary/40 p-5">
