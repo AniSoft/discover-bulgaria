@@ -155,7 +155,7 @@ export function Header() {
                     to="/profile"
                     className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
                   >
-                    Profile
+                    {t("nav.profile")}
                   </Link>
                 </li>
                 {isAdmin ? (
@@ -164,7 +164,7 @@ export function Header() {
                       to="/admin"
                       className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
                     >
-                      Admin Dashboard
+                      {t("nav.adminDashboard")}
                     </Link>
                   </li>
                 ) : null}
@@ -173,7 +173,7 @@ export function Header() {
                     to="/my-places"
                     className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
                   >
-                    My Places
+                    {t("nav.myPlaces")}
                   </Link>
                 </li>
                 <li>
@@ -182,7 +182,7 @@ export function Header() {
                     onClick={handleSignOut}
                     className="block w-full py-4 text-left text-base font-medium text-accent"
                   >
-                    Sign Out
+                    {t("nav.signOut")}
                   </button>
                 </li>
               </>
@@ -193,7 +193,7 @@ export function Header() {
                   search={{}}
                   className="block py-4 text-base font-medium text-foreground"
                 >
-                  Sign In
+                  {t("nav.signIn")}
                 </Link>
               </li>
             )}
