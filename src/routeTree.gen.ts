@@ -23,6 +23,7 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminPlacesRouteImport } from './routes/_authenticated/admin/places'
 import { Route as AuthenticatedPlacesNewRouteImport } from './routes/_authenticated/places.new'
 import { Route as ApiPublicInitialAdminSetupRouteImport } from './routes/api/public/initial-admin-setup'
+import { Route as AuthenticatedPlacesIdEditRouteImport } from './routes/_authenticated/places.$id.edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -95,6 +96,12 @@ const ApiPublicInitialAdminSetupRoute =
     path: '/api/public/initial-admin-setup',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedPlacesIdEditRoute =
+  AuthenticatedPlacesIdEditRouteImport.update({
+    id: '/places/$id/edit',
+    path: '/places/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/places/new': typeof AuthenticatedPlacesNewRoute
   '/api/public/initial-admin-setup': typeof ApiPublicInitialAdminSetupRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/places/$id/edit': typeof AuthenticatedPlacesIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -124,6 +132,7 @@ export interface FileRoutesByTo {
   '/places/new': typeof AuthenticatedPlacesNewRoute
   '/api/public/initial-admin-setup': typeof ApiPublicInitialAdminSetupRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/places/$id/edit': typeof AuthenticatedPlacesIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -141,6 +150,7 @@ export interface FileRoutesById {
   '/_authenticated/places/new': typeof AuthenticatedPlacesNewRoute
   '/api/public/initial-admin-setup': typeof ApiPublicInitialAdminSetupRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/places/$id/edit': typeof AuthenticatedPlacesIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/places/new'
     | '/api/public/initial-admin-setup'
     | '/admin/'
+    | '/places/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/places/new'
     | '/api/public/initial-admin-setup'
     | '/admin'
+    | '/places/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -188,6 +200,7 @@ export interface FileRouteTypes {
     | '/_authenticated/places/new'
     | '/api/public/initial-admin-setup'
     | '/_authenticated/admin/'
+    | '/_authenticated/places/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -300,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicInitialAdminSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/places/$id/edit': {
+      id: '/_authenticated/places/$id/edit'
+      path: '/places/$id/edit'
+      fullPath: '/places/$id/edit'
+      preLoaderRoute: typeof AuthenticatedPlacesIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -325,6 +345,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyPlacesRoute: typeof AuthenticatedMyPlacesRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedPlacesNewRoute: typeof AuthenticatedPlacesNewRoute
+  AuthenticatedPlacesIdEditRoute: typeof AuthenticatedPlacesIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -333,6 +354,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyPlacesRoute: AuthenticatedMyPlacesRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedPlacesNewRoute: AuthenticatedPlacesNewRoute,
+  AuthenticatedPlacesIdEditRoute: AuthenticatedPlacesIdEditRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
