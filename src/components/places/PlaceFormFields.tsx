@@ -56,13 +56,15 @@ export function Field({
   error?: string | undefined;
   children: React.ReactNode;
 }) {
+  const t = useT();
+  const reqLabel = t("form.required");
   return (
     <div>
       <label htmlFor={htmlFor} className="block text-sm font-medium text-foreground">
         {label}
         {required ? (
           <span className="ml-1 text-accent" title={reqLabel}>
-            *<span className="sr-only">(required)</span>
+            *<span className="sr-only">({reqLabel})</span>
           </span>
         ) : null}
       </label>
