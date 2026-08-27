@@ -50,14 +50,27 @@ export const Route = createFileRoute("/places/$slug")({
 
 function PlaceDetailsPage() {
   const { slug } = Route.useParams();
+  const { user } = useAuth();
   const { data, isPending, isError, refetch } = useQuery(placeDetailQueryOptions(slug));
+
+  // Owners may preview their own not-yet-published places (RLS scopes the row).
+  const ownerFallback = useQuery(
+    ownedPlaceBySlugQueryOptions(slug, Boolean(user) && !isPending && !isError && !data),
+  );
 
   if (isPending) return <DetailSkeleton />;
   if (isError) return <ErrorState onRetry={() => void refetch()} />;
-  if (!data) return <NotFoundState />;
+  if (!data) {
+    if (user && (ownerFallback.isPending || ownerFallback.isFetching)) return <DetailSkeleton />;
+    if (ownerFallback.data) {
+      return <PlaceDetail place={ownerFallback.data} ownerStatus={ownerFallback.data.status} />;
+    }
+    return <NotFoundState />;
+  }
 
   return <PlaceDetail place={data} />;
 }
+
 
 function Practical({ place }: { place: PublicPlaceDetail }) {
   const items = [
