@@ -9,6 +9,7 @@ import {
   adminStatsQueryOptions,
 } from "@/lib/admin-places.queries";
 import { placeLocation } from "@/lib/place-display";
+import { useT } from "@/lib/i18n";
 
 const title = "Admin Dashboard — Discover Bulgaria";
 const description = "Manage community content and platform activity on Discover Bulgaria.";
@@ -27,33 +28,36 @@ export const Route = createFileRoute("/_authenticated/admin/")({
 });
 
 function AdminDashboardPage() {
+  const t = useT();
   const stats = useQuery(adminStatsQueryOptions());
   const recent = useQuery(adminRecentSubmissionsQueryOptions());
 
   const cards = [
-    { label: "Waiting for Review", value: stats.data?.for_review },
-    { label: "Published", value: stats.data?.published },
-    { label: "Rejected", value: stats.data?.rejected },
-    { label: "Total Places", value: stats.data?.total },
+    { label: t("admin.waitingForReview"), value: stats.data?.for_review },
+    { label: t("admin.published"), value: stats.data?.published },
+    { label: t("admin.rejected"), value: stats.data?.rejected },
+    { label: t("admin.totalPlaces"), value: stats.data?.total },
   ];
 
   return (
     <div className="container-page pt-34 pb-16">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">Admin</p>
+          <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">
+            {t("admin.badge")}
+          </p>
           <h1 className="mt-2 font-display text-4xl leading-tight text-foreground sm:text-5xl">
-            Discover Bulgaria Admin
+            {t("admin.dashboardTitle")}
           </h1>
           <p className="mt-3 text-base text-muted-foreground">
-            Manage community content and platform activity.
+            {t("admin.dashboardDescription")}
           </p>
         </div>
         <Link
           to="/admin/places"
           className="rounded-[var(--radius-button)] bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
-          Manage Places
+          {t("admin.managePlaces")}
         </Link>
       </div>
 
@@ -77,18 +81,20 @@ function AdminDashboardPage() {
 
       {stats.isError ? (
         <div className="mt-6 flex flex-wrap items-center gap-4 rounded-[var(--radius-card)] border border-border bg-card p-5">
-          <p className="text-sm text-foreground">We couldn&apos;t load places right now.</p>
+          <p className="text-sm text-foreground">{t("admin.loadError")}</p>
           <Button size="sm" onClick={() => void stats.refetch()}>
-            Try Again
+            {t("admin.tryAgain")}
           </Button>
         </div>
       ) : null}
 
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-2xl text-foreground">Recent Submissions</h2>
+          <h2 className="font-display text-2xl text-foreground">
+            {t("admin.recentSubmissions")}
+          </h2>
           <Link to="/admin/places" className={buttonClasses("outline", "sm")}>
-            Manage all
+            {t("admin.manageAll")}
           </Link>
         </div>
 
@@ -102,16 +108,14 @@ function AdminDashboardPage() {
             ))
           ) : recent.isError ? (
             <div className="rounded-[var(--radius-card)] border border-border bg-card p-10 text-center shadow-card">
-              <p className="text-base text-foreground">
-                We couldn&apos;t load places right now.
-              </p>
+              <p className="text-base text-foreground">{t("admin.loadError")}</p>
               <div className="mt-5">
-                <Button onClick={() => void recent.refetch()}>Try Again</Button>
+                <Button onClick={() => void recent.refetch()}>{t("admin.tryAgain")}</Button>
               </div>
             </div>
           ) : (recent.data?.length ?? 0) === 0 ? (
             <div className="rounded-[var(--radius-card)] border border-dashed border-border bg-card p-12 text-center">
-              <p className="text-sm text-muted-foreground">No places are waiting for review.</p>
+              <p className="text-sm text-muted-foreground">{t("admin.noRecentSubmissions")}</p>
             </div>
           ) : (
             recent.data?.map((place) => (
@@ -131,7 +135,9 @@ function AdminDashboardPage() {
                       <CalendarDays className="size-3.5" aria-hidden="true" />
                       {formatDate(place.created_at)}
                     </span>
-                    <span>By {authorLabel(place)}</span>
+                    <span>
+                      {t("admin.by", { name: authorLabel(place, t("admin.communityMember")) })}
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -142,7 +148,7 @@ function AdminDashboardPage() {
                     className={buttonClasses("outline", "sm")}
                   >
                     <Eye className="size-4" aria-hidden="true" />
-                    View
+                    {t("admin.view")}
                   </Link>
                 </div>
               </article>

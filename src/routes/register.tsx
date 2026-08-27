@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import { AuthCard, Field, FormAlert, inputClasses } from "@/components/auth/AuthCard";
 import { Button } from "@/components/AppButton";
 import { supabase } from "@/integrations/supabase/client";
+import { useT } from "@/lib/i18n";
 
 const title = "Create Account — Discover Bulgaria";
 const description =
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/register")({
 });
 
 function RegisterPage() {
+  const t = useT();
   const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -38,15 +40,15 @@ function RegisterPage() {
     setFormError(null);
 
     const next: Errors = {};
-    if (!fullName.trim()) next.fullName = "Full name is required.";
-    else if (fullName.trim().length > 80) next.fullName = "Full name must be under 80 characters.";
-    if (!email.trim()) next.email = "Email is required.";
+    if (!fullName.trim()) next.fullName = t("auth.nameRequired");
+    else if (fullName.trim().length > 80) next.fullName = t("auth.nameTooLong");
+    if (!email.trim()) next.email = t("auth.emailRequired");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
-      next.email = "Enter a valid email address.";
-    if (!password) next.password = "Password is required.";
-    else if (password.length < 6) next.password = "Use at least 6 characters.";
-    if (!confirmPassword) next.confirmPassword = "Please confirm your password.";
-    else if (confirmPassword !== password) next.confirmPassword = "Passwords do not match.";
+      next.email = t("auth.emailInvalid");
+    if (!password) next.password = t("auth.passwordRequired");
+    else if (password.length < 6) next.password = t("auth.passwordShort");
+    if (!confirmPassword) next.confirmPassword = t("auth.confirmPasswordRequired");
+    else if (confirmPassword !== password) next.confirmPassword = t("auth.passwordsDoNotMatch");
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
@@ -77,32 +79,30 @@ function RegisterPage() {
   if (checkEmail) {
     return (
       <AuthCard
-        eyebrow="Almost there"
-        title="Confirm your email"
-        description={`We sent a confirmation link to ${email.trim()}. Open it to activate your account, then sign in.`}
+        eyebrow={t("auth.almostThere")}
+        title={t("auth.confirmEmailTitle")}
+        description={t("auth.confirmEmailDescription", { email: email.trim() })}
         footer={
           <Link to="/login" className="font-medium text-primary underline-offset-4 hover:underline">
-            Go to sign in
+            {t("auth.goToSignIn")}
           </Link>
         }
       >
-        <FormAlert tone="success">
-          Your account has been created. The confirmation email may take a minute to arrive.
-        </FormAlert>
+        <FormAlert tone="success">{t("auth.accountCreatedSuccess")}</FormAlert>
       </AuthCard>
     );
   }
 
   return (
     <AuthCard
-      eyebrow="Join the community"
-      title="Create your account"
-      description="Save the places you love and share the ones only locals know."
+      eyebrow={t("auth.joinCommunity")}
+      title={t("auth.createYourAccount")}
+      description={t("auth.createAccountDescription")}
       footer={
         <>
-          Already have an account?{" "}
+          {t("auth.haveAccount")}{" "}
           <Link to="/login" className="font-medium text-primary underline-offset-4 hover:underline">
-            Sign in
+            {t("auth.signIn")}
           </Link>
         </>
       }
@@ -110,7 +110,7 @@ function RegisterPage() {
       <form onSubmit={onSubmit} noValidate className="space-y-5">
         {formError ? <FormAlert>{formError}</FormAlert> : null}
 
-        <Field id="fullName" label="Full name" error={errors.fullName}>
+        <Field id="fullName" label={t("auth.fullName")} error={errors.fullName}>
           <input
             id="fullName"
             name="fullName"
@@ -118,13 +118,13 @@ function RegisterPage() {
             autoComplete="name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            placeholder="Anita Nikolova"
+            placeholder={t("auth.fullNamePlaceholder")}
             aria-invalid={Boolean(errors.fullName)}
             className={inputClasses(Boolean(errors.fullName))}
           />
         </Field>
 
-        <Field id="email" label="Email" error={errors.email}>
+        <Field id="email" label={t("auth.email")} error={errors.email}>
           <input
             id="email"
             name="email"
@@ -132,13 +132,13 @@ function RegisterPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder={t("auth.emailPlaceholder")}
             aria-invalid={Boolean(errors.email)}
             className={inputClasses(Boolean(errors.email))}
           />
         </Field>
 
-        <Field id="password" label="Password" error={errors.password}>
+        <Field id="password" label={t("auth.password")} error={errors.password}>
           <input
             id="password"
             name="password"
@@ -146,13 +146,13 @@ function RegisterPage() {
             autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="At least 6 characters"
+            placeholder={t("auth.passwordMinPlaceholder")}
             aria-invalid={Boolean(errors.password)}
             className={inputClasses(Boolean(errors.password))}
           />
         </Field>
 
-        <Field id="confirmPassword" label="Confirm password" error={errors.confirmPassword}>
+        <Field id="confirmPassword" label={t("auth.confirmPassword")} error={errors.confirmPassword}>
           <input
             id="confirmPassword"
             name="confirmPassword"
@@ -160,14 +160,14 @@ function RegisterPage() {
             autoComplete="new-password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Repeat your password"
+            placeholder={t("auth.confirmPasswordPlaceholder")}
             aria-invalid={Boolean(errors.confirmPassword)}
             className={inputClasses(Boolean(errors.confirmPassword))}
           />
         </Field>
 
         <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-          {submitting ? "Creating account…" : "Create Account"}
+          {submitting ? t("auth.creatingAccount") : t("auth.createAccount")}
         </Button>
       </form>
     </AuthCard>

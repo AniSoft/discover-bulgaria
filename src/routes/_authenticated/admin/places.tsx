@@ -18,6 +18,7 @@ import {
 } from "@/lib/admin-places.queries";
 import { myPlacesKey } from "@/lib/my-places.queries";
 import { cn } from "@/lib/utils";
+import { useStatusLabel, useT, type MessageKey } from "@/lib/i18n";
 
 const title = "Manage Places — Discover Bulgaria";
 const description = "Review, publish and organise places submitted by the community.";
@@ -37,18 +38,13 @@ export const Route = createFileRoute("/_authenticated/admin/places")({
 
 type Tab = "for_review" | "published" | "rejected" | "all";
 
-const TABS: { value: Tab; label: string }[] = [
-  { value: "for_review", label: "For Review" },
-  { value: "published", label: "Published" },
-  { value: "rejected", label: "Rejected" },
-  { value: "all", label: "All" },
-];
+const TAB_VALUES: Tab[] = ["for_review", "published", "rejected", "all"];
 
-const EMPTY: Record<Tab, string> = {
-  for_review: "No places are waiting for review.",
-  published: "No published places yet.",
-  rejected: "No rejected places.",
-  all: "No places yet.",
+const EMPTY_KEY: Record<Tab, MessageKey> = {
+  for_review: "admin.emptyForReview",
+  published: "admin.emptyPublished",
+  rejected: "admin.emptyRejected",
+  all: "admin.emptyAll",
 };
 
 type Pending =
@@ -56,6 +52,8 @@ type Pending =
   | null;
 
 function ManagePlacesPage() {
+  const t = useT();
+  const statusLabel = useStatusLabel();
   const [tab, setTab] = useState<Tab>("for_review");
   const [pending, setPending] = useState<Pending>(null);
   const queryClient = useQueryClient();
@@ -77,9 +75,9 @@ function ManagePlacesPage() {
       );
       refreshCounts();
       setPending(null);
-      toast.success(result.status === "published" ? "Place published." : "Place rejected.");
+      toast.success(result.status === "published" ? t("admin.approved") : t("admin.rejectedToast"));
     },
-    onError: () => toast.error("We couldn't update this place. Please try again."),
+    onError: () => toast.error(t("admin.actionError")),
   });
 
   const remove = useMutation({
@@ -90,9 +88,9 @@ function ManagePlacesPage() {
       );
       refreshCounts();
       setPending(null);
-      toast.success("Place deleted.");
+      toast.success(t("admin.deleted"));
     },
-    onError: () => toast.error("We couldn't delete this place. Please try again."),
+    onError: () => toast.error(t("admin.deleteError")),
   });
 
   const counts = useMemo(() => {
@@ -116,44 +114,46 @@ function ManagePlacesPage() {
     <div className="container-page pt-34 pb-16">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">Admin</p>
+          <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">
+            {t("admin.badge")}
+          </p>
           <h1 className="mt-2 font-display text-4xl leading-tight text-foreground sm:text-5xl">
-            Manage Places
+            {t("admin.managePlaces")}
           </h1>
           <p className="mt-3 text-base text-muted-foreground">
-            Review submissions and keep the collection curated.
+            {t("admin.managePlacesDescription")}
           </p>
         </div>
         <Link
           to="/admin"
           className="rounded-[var(--radius-button)] border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
         >
-          Back to Dashboard
+          {t("admin.backToDashboard")}
         </Link>
       </div>
 
       <div
         role="tablist"
-        aria-label="Place status"
+        aria-label={t("myPlaces.filterLabel")}
         className="mt-10 flex flex-wrap gap-2 border-b border-border pb-3"
       >
-        {TABS.map((t) => (
+        {TAB_VALUES.map((value) => (
           <button
-            key={t.value}
+            key={value}
             type="button"
             role="tab"
-            aria-selected={tab === t.value}
-            onClick={() => setTab(t.value)}
+            aria-selected={tab === value}
+            onClick={() => setTab(value)}
             className={cn(
               "rounded-[var(--radius-button)] px-4 py-2 text-sm font-medium transition-colors",
-              tab === t.value
+              tab === value
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-secondary hover:text-foreground",
             )}
           >
-            {t.label}
+            {statusLabel(value, true)}
             {!isPending && !isError ? (
-              <span className="ml-2 opacity-70">{counts[t.value]}</span>
+              <span className="ml-2 opacity-70">{counts[value]}</span>
             ) : null}
           </button>
         ))}
@@ -164,14 +164,14 @@ function ManagePlacesPage() {
           [0, 1, 2].map((i) => <AdminRowSkeleton key={i} />)
         ) : isError ? (
           <div className="rounded-[var(--radius-card)] border border-border bg-card p-12 text-center shadow-card">
-            <p className="text-base text-foreground">We couldn&apos;t load places right now.</p>
+            <p className="text-base text-foreground">{t("admin.loadError")}</p>
             <div className="mt-6">
-              <Button onClick={() => void refetch()}>Try Again</Button>
+              <Button onClick={() => void refetch()}>{t("admin.tryAgain")}</Button>
             </div>
           </div>
         ) : visible.length === 0 ? (
           <div className="rounded-[var(--radius-card)] border border-dashed border-border bg-card p-12 text-center">
-            <p className="text-sm text-muted-foreground">{EMPTY[tab]}</p>
+            <p className="text-sm text-muted-foreground">{t(EMPTY_KEY[tab])}</p>
           </div>
         ) : (
           visible.map((place) => (
@@ -188,11 +188,11 @@ function ManagePlacesPage() {
 
       <ConfirmDialog
         open={pending?.kind === "approve"}
-        title="Publish this place?"
-        body="This place will become visible to everyone."
+        title={t("admin.publishTitle")}
+        body={t("admin.publishBody")}
         detail={pending?.place.title}
-        confirmLabel="Publish Place"
-        pendingLabel="Publishing…"
+        confirmLabel={t("admin.publishConfirm")}
+        pendingLabel={t("admin.publishing")}
         pending={busy}
         onCancel={() => setPending(null)}
         onConfirm={() =>
@@ -202,11 +202,11 @@ function ManagePlacesPage() {
 
       <ConfirmDialog
         open={pending?.kind === "reject"}
-        title="Reject this place?"
-        body="The contributor will be able to edit and submit it for review again."
+        title={t("admin.rejectTitle")}
+        body={t("admin.rejectBody")}
         detail={pending?.place.title}
-        confirmLabel="Reject Place"
-        pendingLabel="Rejecting…"
+        confirmLabel={t("admin.rejectConfirm")}
+        pendingLabel={t("admin.rejecting")}
         pending={busy}
         onCancel={() => setPending(null)}
         onConfirm={() => pending && status.mutate({ id: pending.place.id, status: "rejected" })}
@@ -214,11 +214,11 @@ function ManagePlacesPage() {
 
       <ConfirmDialog
         open={pending?.kind === "delete"}
-        title="Delete this place?"
-        body="This action cannot be undone."
+        title={t("admin.deleteTitle")}
+        body={t("admin.deleteBody")}
         detail={pending?.place.title}
-        confirmLabel="Delete Place"
-        pendingLabel="Deleting…"
+        confirmLabel={t("admin.deleteConfirm")}
+        pendingLabel={t("admin.deleting")}
         destructive
         pending={busy}
         onCancel={() => setPending(null)}

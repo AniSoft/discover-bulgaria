@@ -1,0 +1,43 @@
+/**
+ * Display-only labels. Stored database values stay in English and are used for
+ * all filtering and persistence.
+ */
+export const en = {
+  "category.Hidden Gems": "Hidden Gems",
+  "category.Nature": "Nature",
+  "category.Mountains": "Mountains",
+  "category.Sea": "Sea",
+  "category.History & Culture": "History & Culture",
+  "category.Best Views": "Best Views",
+  "category.Photo Spots": "Photo Spots",
+  "category.Food & Wine": "Food & Wine",
+  "suitable.Couples": "Couples",
+  "suitable.Families": "Families",
+  "suitable.Photography": "Photography",
+  "suitable.Solo Travelers": "Solo Travelers",
+  "suitable.Adventure": "Adventure",
+  "suitable.Relax": "Relax",
+  "difficulty.Easy": "Easy",
+  "difficulty.Moderate": "Moderate",
+  "difficulty.Hard": "Hard",
+} as const;
+
+export const bg: Record<keyof typeof en, string> = {
+  "category.Hidden Gems": "Скрити съкровища",
+  "category.Nature": "Природа",
+  "category.Mountains": "Планини",
+  "category.Sea": "Море",
+  "category.History & Culture": "История и култура",
+  "category.Best Views": "Най-добри гледки",
+  "category.Photo Spots": "Места за снимки",
+  "category.Food & Wine": "Храна и вино",
+  "suitable.Couples": "Двойки",
+  "suitable.Families": "Семейства",
+  "suitable.Photography": "Фотография",
+  "suitable.Solo Travelers": "Самостоятелни пътешественици",
+  "suitable.Adventure": "Приключения",
+  "suitable.Relax": "Почивка",
+  "difficulty.Easy": "Лесно",
+  "difficulty.Moderate": "Средно",
+  "difficulty.Hard": "Трудно",
+};

@@ -19,6 +19,7 @@ import { useAuth } from "@/lib/auth";
 import { ownedPlaceBySlugQueryOptions } from "@/lib/my-places.queries";
 import { StatusBadge } from "@/components/places/OwnedPlaceCard";
 import type { PublicPlaceDetail } from "@/lib/places.functions";
+import { useT, useCategoryLabel, useSuitableLabel, useDifficultyLabel } from "@/lib/i18n";
 
 export const Route = createFileRoute("/places/$slug")({
   loader: async ({ params, context }) => {
@@ -83,10 +84,11 @@ function PlaceDetailsPage() {
 
 
 function Practical({ place }: { place: PublicPlaceDetail }) {
+  const difficultyLabel = useDifficultyLabel();
   const items = [
     { icon: Clock, value: place.duration },
     { icon: Wallet, value: place.approximate_cost },
-    { icon: Mountain, value: place.difficulty },
+    { icon: Mountain, value: place.difficulty ? difficultyLabel(place.difficulty) : undefined },
     { icon: Calendar, value: place.best_time },
   ].filter((i) => Boolean(i.value));
 
@@ -120,21 +122,22 @@ function PlaceDetail({
   place: PublicPlaceDetail;
   ownerStatus?: string;
 }) {
+  const t = useT();
+  const categoryLabel = useCategoryLabel();
+  const suitableLabel = useSuitableLabel();
   return (
     <article className="pb-20">
       <div className="container-page pt-30">
         {ownerStatus ? (
           <div className="mb-6 flex flex-wrap items-center gap-3 rounded-[var(--radius-card)] border border-border bg-secondary px-5 py-3">
             <StatusBadge status={ownerStatus} />
-            <p className="text-sm text-muted-foreground">
-              Private preview — this place is not public until it is published.
-            </p>
+            <p className="text-sm text-muted-foreground">{t("place.privatePreview")}</p>
           </div>
         ) : null}
 
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+        <nav aria-label={t("place.breadcrumbAria")} className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
           <Link to="/" className="transition-colors duration-250 hover:text-accent">
-            Explore
+            {t("place.breadcrumbExplore")}
           </Link>
           <ChevronRight className="size-3.5" aria-hidden="true" />
           <Link
@@ -143,7 +146,7 @@ function PlaceDetail({
             hash="places"
             className="transition-colors duration-250 hover:text-accent"
           >
-            {place.category}
+            {categoryLabel(place.category)}
           </Link>
           <ChevronRight className="size-3.5" aria-hidden="true" />
           <span className="text-foreground">{place.title}</span>
@@ -159,7 +162,7 @@ function PlaceDetail({
 
         <header className="mt-8 max-w-3xl">
           <span className="inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary">
-            {place.category}
+            {categoryLabel(place.category)}
           </span>
           <h1 className="mt-4 text-4xl leading-tight text-foreground sm:text-5xl xl:text-6xl">
             {place.title}
@@ -181,25 +184,25 @@ function PlaceDetail({
         </div>
 
         <div className="max-w-3xl">
-          <Section title="About">
+          <Section title={t("place.about")}>
             <p className="whitespace-pre-line">{place.description}</p>
           </Section>
 
           {place.why_visit ? (
-            <Section title="Why visit?">
+            <Section title={t("place.whyVisit")}>
               <p className="whitespace-pre-line">{place.why_visit}</p>
             </Section>
           ) : null}
 
           {place.suitable_for?.length ? (
-            <Section title="Suitable for">
+            <Section title={t("place.suitableFor")}>
               <ul className="flex flex-wrap gap-2">
                 {place.suitable_for.map((tag) => (
                   <li
                     key={tag}
                     className="rounded-full border border-border bg-secondary px-3.5 py-1.5 text-sm text-foreground"
                   >
-                    {tag}
+                    {suitableLabel(tag)}
                   </li>
                 ))}
               </ul>
@@ -207,12 +210,12 @@ function PlaceDetail({
           ) : null}
 
           {place.best_time ? (
-            <Section title="Best time to visit">
+            <Section title={t("place.bestTime")}>
               <p>{place.best_time}</p>
             </Section>
           ) : null}
 
-          <Section title="Location">
+          <Section title={t("place.location")}>
             <p className="text-foreground">{placeLocation(place)}</p>
             {place.location_text ? <p className="mt-2">{place.location_text}</p> : null}
           </Section>
@@ -221,7 +224,7 @@ function PlaceDetail({
             <section className="mt-14 rounded-[var(--radius-card)] border border-accent/25 bg-secondary p-8">
               <div className="flex items-center gap-2 text-accent">
                 <Sparkles className="size-5" aria-hidden="true" />
-                <h2 className="text-xs font-semibold uppercase tracking-[0.18em]">Local secret</h2>
+                <h2 className="text-xs font-semibold uppercase tracking-[0.18em]">{t("place.localSecret")}</h2>
               </div>
               <p className="mt-4 text-xl leading-relaxed text-foreground">{place.local_secret}</p>
             </section>
@@ -273,27 +276,29 @@ function StateShell({
 }
 
 function NotFoundState() {
+  const t = useT();
   return (
     <StateShell
-      heading="Place not found"
-      body="This place may not exist or may not be published yet."
+      heading={t("place.notFoundTitleFull")}
+      body={t("place.notFoundBodyFull")}
     >
       <ButtonLink to="/" hash="places" variant="primary">
-        Explore Places
+        {t("place.explorePlaces")}
       </ButtonLink>
       <ButtonLink to="/" variant="outline">
-        Back Home
+        {t("place.backHome")}
       </ButtonLink>
     </StateShell>
   );
 }
 
 function ErrorState({ onRetry }: { onRetry: () => void }) {
+  const t = useT();
   return (
-    <StateShell heading="We couldn't load this place right now." body="Please try again.">
-      <Button onClick={onRetry}>Try again</Button>
+    <StateShell heading={t("place.errorTitleFull")} body={t("place.errorBody")}>
+      <Button onClick={onRetry}>{t("place.tryAgain")}</Button>
       <ButtonLink to="/" variant="outline">
-        Back Home
+        {t("place.backHome")}
       </ButtonLink>
     </StateShell>
   );

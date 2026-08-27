@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   title: string;
@@ -7,6 +8,7 @@ type Props = {
 };
 
 export function PageShell({ title, description, children }: Props) {
+  const t = useT();
   return (
     <div className="container-page pt-32 pb-16 md:pt-36">
       <header className="max-w-2xl">
@@ -18,9 +20,7 @@ export function PageShell({ title, description, children }: Props) {
       <div className="mt-10 md:mt-12">
         {children ?? (
           <div className="rounded-[var(--radius-card)] border border-dashed border-border bg-card p-10 text-center">
-            <p className="text-sm text-muted-foreground">
-              This page is part of the next build step and will be implemented soon.
-            </p>
+            <p className="text-sm text-muted-foreground">{t("common.pageComingSoon")}</p>
           </div>
         )}
       </div>

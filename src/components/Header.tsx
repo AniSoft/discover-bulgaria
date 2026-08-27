@@ -3,18 +3,19 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
+import { useT, type MessageKey } from "@/lib/i18n";
 
 const navLinks = [
-  { label: "Explore", to: "/" },
-  { label: "Categories", to: "/categories" },
-  { label: "Add a Place", to: "/places/new" },
-  { label: "Favorites", to: "/favorites" },
+  { key: "nav.explore" as MessageKey, to: "/" },
+  { key: "nav.categories" as MessageKey, to: "/categories" },
+  { key: "nav.addPlace" as MessageKey, to: "/places/new" },
+  { key: "nav.favorites" as MessageKey, to: "/favorites" },
 ] as const;
 
 const userMenuLinks = [
-  { label: "Profile", to: "/profile" },
-  { label: "My Places", to: "/my-places" },
-  { label: "Favorites", to: "/favorites" },
+  { key: "nav.profile" as MessageKey, to: "/profile" },
+  { key: "nav.myPlaces" as MessageKey, to: "/my-places" },
+  { key: "nav.favorites" as MessageKey, to: "/favorites" },
 ] as const;
 
 export function Header() {
@@ -23,6 +24,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { user, fullName, initials, isAdmin, signOut } = useAuth();
+  const t = useT();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,10 +65,10 @@ export function Header() {
           Discover Bulgaria
         </Link>
 
-        <nav aria-label="Main navigation" className="hidden items-center gap-9 md:flex">
+        <nav aria-label={t("nav.main")} className="hidden items-center gap-9 md:flex">
           {navLinks.map((link) => (
             <Link
-              key={link.label}
+              key={link.key}
               to={link.to}
               className={cn(
                 "text-base font-medium transition-colors duration-250",
@@ -77,7 +79,7 @@ export function Header() {
               activeOptions={{ exact: link.to === "/" }}
               activeProps={{ className: transparent ? "text-primary-foreground" : "text-primary" }}
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
 
@@ -86,7 +88,7 @@ export function Header() {
               transparent={transparent}
               initials={initials}
               isAdmin={isAdmin}
-              fullName={fullName || user.email || "Account"}
+              fullName={fullName || user.email || t("nav.account")}
               onSignOut={handleSignOut}
             />
           ) : (
@@ -100,7 +102,7 @@ export function Header() {
                   : "bg-primary text-primary-foreground hover:bg-primary-hover",
               )}
             >
-              Sign In
+              {t("nav.signIn")}
             </Link>
           )}
         </nav>
@@ -110,7 +112,7 @@ export function Header() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? t("common.closeMenu") : t("common.openMenu")}
           className={cn(
             "grid size-11 place-items-center rounded-[var(--radius-button)] md:hidden",
             transparent ? "text-primary-foreground" : "text-foreground",
@@ -123,17 +125,17 @@ export function Header() {
       {open ? (
         <nav
           id="mobile-nav"
-          aria-label="Mobile navigation"
+          aria-label={t("nav.mobile")}
           className="border-t border-border bg-background md:hidden"
         >
           <ul className="container-page flex flex-col py-2">
             {navLinks.map((link) => (
-              <li key={link.label}>
+              <li key={link.key}>
                 <Link
                   to={link.to}
                   className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
                 >
-                  {link.label}
+                  {t(link.key)}
                 </Link>
               </li>
             ))}
@@ -153,7 +155,7 @@ export function Header() {
                     to="/profile"
                     className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
                   >
-                    Profile
+                    {t("nav.profile")}
                   </Link>
                 </li>
                 {isAdmin ? (
@@ -162,7 +164,7 @@ export function Header() {
                       to="/admin"
                       className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
                     >
-                      Admin Dashboard
+                      {t("nav.adminDashboard")}
                     </Link>
                   </li>
                 ) : null}
@@ -171,7 +173,7 @@ export function Header() {
                     to="/my-places"
                     className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
                   >
-                    My Places
+                    {t("nav.myPlaces")}
                   </Link>
                 </li>
                 <li>
@@ -180,7 +182,7 @@ export function Header() {
                     onClick={handleSignOut}
                     className="block w-full py-4 text-left text-base font-medium text-accent"
                   >
-                    Sign Out
+                    {t("nav.signOut")}
                   </button>
                 </li>
               </>
@@ -191,7 +193,7 @@ export function Header() {
                   search={{}}
                   className="block py-4 text-base font-medium text-foreground"
                 >
-                  Sign In
+                  {t("nav.signIn")}
                 </Link>
               </li>
             )}
@@ -217,6 +219,7 @@ function UserMenu({
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+  const t = useT();
 
   useEffect(() => {
     if (!open) return;
@@ -241,7 +244,7 @@ function UserMenu({
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label={`Account menu for ${fullName}`}
+        aria-label={t("nav.accountMenu", { name: fullName })}
         className={cn(
           "flex items-center gap-2 rounded-full py-1 pr-2 pl-1 transition-colors duration-250",
           transparent
@@ -275,18 +278,18 @@ function UserMenu({
               onClick={() => setOpen(false)}
               className="block px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary"
             >
-              Admin Dashboard
+              {t("nav.adminDashboard")}
             </Link>
           ) : null}
           {userMenuLinks.map((link) => (
             <Link
-              key={link.label}
+              key={link.key}
               to={link.to}
               role="menuitem"
               onClick={() => setOpen(false)}
               className="block px-4 py-2.5 text-sm text-foreground hover:bg-secondary"
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
           <button
@@ -298,7 +301,7 @@ function UserMenu({
             }}
             className="mt-1 block w-full border-t border-border px-4 py-2.5 text-left text-sm font-medium text-accent hover:bg-secondary"
           >
-            Sign Out
+            {t("nav.signOut")}
           </button>
         </div>
       ) : null}

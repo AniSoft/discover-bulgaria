@@ -5,6 +5,7 @@ import { Button } from "@/components/AppButton";
 import { PageShell } from "@/components/PageShell";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import { useT } from "@/lib/i18n";
 
 const title = "Profile — Discover Bulgaria";
 const description = "Your Discover Bulgaria profile, submissions and saved places.";
@@ -23,13 +24,14 @@ export const Route = createFileRoute("/_authenticated/profile")({
 });
 
 function ProfilePage() {
+  const t = useT();
   const { user, fullName, initials, signOut } = useAuth();
   const navigate = useNavigate();
 
   return (
     <PageShell
-      title="Your profile"
-      description="Update how you appear across Discover Bulgaria and keep your account secure."
+      title={t("auth.yourProfileTitle")}
+      description={t("auth.yourProfileDescription")}
     >
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <section className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-card sm:p-8">
@@ -39,7 +41,7 @@ function ProfilePage() {
             </span>
             <div className="min-w-0">
               <p className="truncate font-display text-2xl text-foreground">
-                {fullName || "Traveller"}
+                {fullName || t("auth.traveller")}
               </p>
               <p className="truncate text-sm text-muted-foreground">{user?.email}</p>
             </div>
@@ -58,14 +60,14 @@ function ProfilePage() {
               navigate({ to: "/", replace: true });
             }}
           >
-            Sign out
+            {t("auth.signOut")}
           </Button>
         </section>
 
         <section className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-card sm:p-8">
-          <h2 className="font-display text-2xl text-foreground">Change password</h2>
+          <h2 className="font-display text-2xl text-foreground">{t("auth.changePasswordTitle")}</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Choose a new password of at least 6 characters.
+            {t("auth.changePasswordDescription")}
           </p>
           <div className="mt-6">
             <PasswordForm />
@@ -77,6 +79,7 @@ function ProfilePage() {
 }
 
 function NameForm({ currentName, email }: { currentName: string; email: string }) {
+  const t = useT();
   const [name, setName] = useState(currentName);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -92,11 +95,11 @@ function NameForm({ currentName, email }: { currentName: string; email: string }
     setSaved(false);
 
     if (!name.trim()) {
-      setError("Full name is required.");
+      setError(t("auth.nameRequired"));
       return;
     }
     if (name.trim().length > 80) {
-      setError("Full name must be under 80 characters.");
+      setError(t("auth.nameTooLong"));
       return;
     }
 
@@ -116,9 +119,9 @@ function NameForm({ currentName, email }: { currentName: string; email: string }
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-5">
       {error ? <FormAlert>{error}</FormAlert> : null}
-      {saved ? <FormAlert tone="success">Your name has been updated.</FormAlert> : null}
+      {saved ? <FormAlert tone="success">{t("auth.nameUpdated")}</FormAlert> : null}
 
-      <Field id="full-name" label="Full name">
+      <Field id="full-name" label={t("auth.fullName")}>
         <input
           id="full-name"
           type="text"
@@ -132,7 +135,7 @@ function NameForm({ currentName, email }: { currentName: string; email: string }
         />
       </Field>
 
-      <Field id="email-readonly" label="Email">
+      <Field id="email-readonly" label={t("auth.email")}>
         <input
           id="email-readonly"
           type="email"
@@ -144,13 +147,14 @@ function NameForm({ currentName, email }: { currentName: string; email: string }
       </Field>
 
       <Button type="submit" disabled={saving}>
-        {saving ? "Saving…" : "Save changes"}
+        {saving ? t("auth.saving") : t("auth.saveChanges")}
       </Button>
     </form>
   );
 }
 
 function PasswordForm() {
+  const t = useT();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<{ password?: string; confirmPassword?: string }>({});
@@ -164,9 +168,9 @@ function PasswordForm() {
     setDone(false);
 
     const next: { password?: string; confirmPassword?: string } = {};
-    if (!password) next.password = "New password is required.";
-    else if (password.length < 6) next.password = "Use at least 6 characters.";
-    if (confirmPassword !== password) next.confirmPassword = "Passwords do not match.";
+    if (!password) next.password = t("auth.newPasswordRequired");
+    else if (password.length < 6) next.password = t("auth.passwordShort");
+    if (confirmPassword !== password) next.confirmPassword = t("auth.passwordsDoNotMatch");
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
@@ -186,9 +190,9 @@ function PasswordForm() {
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-5">
       {formError ? <FormAlert>{formError}</FormAlert> : null}
-      {done ? <FormAlert tone="success">Your password has been changed.</FormAlert> : null}
+      {done ? <FormAlert tone="success">{t("auth.passwordChanged")}</FormAlert> : null}
 
-      <Field id="new-password" label="New password" error={errors.password}>
+      <Field id="new-password" label={t("auth.password")} error={errors.password}>
         <input
           id="new-password"
           type="password"
@@ -200,7 +204,7 @@ function PasswordForm() {
         />
       </Field>
 
-      <Field id="confirm-new-password" label="Confirm new password" error={errors.confirmPassword}>
+      <Field id="confirm-new-password" label={t("auth.confirmPassword")} error={errors.confirmPassword}>
         <input
           id="confirm-new-password"
           type="password"
@@ -213,7 +217,7 @@ function PasswordForm() {
       </Field>
 
       <Button type="submit" variant="accent" disabled={saving}>
-        {saving ? "Updating…" : "Update password"}
+        {saving ? t("auth.updating") : t("auth.updatePassword")}
       </Button>
     </form>
   );

@@ -1,4 +1,5 @@
 import { Button } from "@/components/AppButton";
+import { useT } from "@/lib/i18n";
 
 export function ConfirmDialog({
   open,
@@ -23,6 +24,7 @@ export function ConfirmDialog({
   onCancel: () => void;
   onConfirm: () => void;
 }) {
+  const t = useT();
   if (!open) return null;
 
   return (
@@ -38,14 +40,14 @@ export function ConfirmDialog({
         {detail ? <p className="mt-4 text-sm font-medium text-foreground">{detail}</p> : null}
         <div className="mt-8 flex flex-wrap justify-end gap-3">
           <Button variant="outline" onClick={onCancel} disabled={pending}>
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             onClick={onConfirm}
             disabled={pending}
             variant={destructive ? "destructive" : "primary"}
           >
-            {pending ? (pendingLabel ?? "Working…") : confirmLabel}
+            {pending ? (pendingLabel ?? t("common.working")) : confirmLabel}
           </Button>
         </div>
       </div>

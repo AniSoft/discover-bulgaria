@@ -4,6 +4,7 @@ import { Button, buttonClasses } from "@/components/AppButton";
 import { StatusBadge } from "@/components/places/OwnedPlaceCard";
 import type { AdminPlace } from "@/lib/admin-places.functions";
 import { placeLocation } from "@/lib/place-display";
+import { useT } from "@/lib/i18n";
 
 export function formatDate(value: string) {
   try {
@@ -17,8 +18,8 @@ export function formatDate(value: string) {
   }
 }
 
-export function authorLabel(place: AdminPlace) {
-  return place.author ?? "Community member";
+export function authorLabel(place: AdminPlace, communityMemberLabel: string) {
+  return place.author ?? communityMemberLabel;
 }
 
 export function AdminPlaceRow({
@@ -32,6 +33,7 @@ export function AdminPlaceRow({
   onReject: (place: AdminPlace) => void;
   onDelete: (place: AdminPlace) => void;
 }) {
+  const t = useT();
   const canApprove = place.status !== "published";
   const canReject = place.status !== "rejected";
 
@@ -50,7 +52,9 @@ export function AdminPlaceRow({
               <CalendarDays className="size-3.5" aria-hidden="true" />
               {formatDate(place.created_at)}
             </span>
-            <span>By {authorLabel(place)}</span>
+            <span>
+              {t("admin.by", { name: authorLabel(place, t("admin.communityMember")) })}
+            </span>
           </p>
         </div>
         <StatusBadge status={place.status} />
@@ -63,7 +67,7 @@ export function AdminPlaceRow({
           className={buttonClasses("outline", "sm")}
         >
           <Eye className="size-4" aria-hidden="true" />
-          View
+          {t("admin.view")}
         </Link>
         <Link
           to="/places/$id/edit"
@@ -71,18 +75,18 @@ export function AdminPlaceRow({
           className={buttonClasses("outline", "sm")}
         >
           <Pencil className="size-4" aria-hidden="true" />
-          Edit
+          {t("admin.edit")}
         </Link>
         {canApprove ? (
           <Button variant="primary" size="sm" onClick={() => onApprove(place)}>
             <Check className="size-4" aria-hidden="true" />
-            Approve
+            {t("admin.approve")}
           </Button>
         ) : null}
         {canReject ? (
           <Button variant="outline" size="sm" onClick={() => onReject(place)}>
             <X className="size-4" aria-hidden="true" />
-            Reject
+            {t("admin.reject")}
           </Button>
         ) : null}
         <Button
@@ -91,7 +95,7 @@ export function AdminPlaceRow({
           onClick={() => onDelete(place)}
         >
           <Trash2 className="size-4" aria-hidden="true" />
-          Delete
+          {t("admin.delete")}
         </Button>
       </div>
     </article>

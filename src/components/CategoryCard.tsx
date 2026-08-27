@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import type { Category } from "@/data/categories";
+import { useCategoryLabel, useT } from "@/lib/i18n";
 
 type Props = {
   category: Category;
@@ -8,13 +9,17 @@ type Props = {
 };
 
 export function CategoryCard({ category, count }: Props) {
+  const t = useT();
+  const categoryLabel = useCategoryLabel();
+  const name = categoryLabel(category.name);
+
   return (
     <Link
       to="/"
       search={{ category: category.name }}
       hash="places"
       className="group relative block overflow-hidden rounded-[var(--radius-card)] border border-border bg-card"
-      aria-label={`Explore ${category.name}`}
+      aria-label={t("categories.exploreAria", { category: name })}
     >
       <div className="aspect-4/3 overflow-hidden">
         <img
@@ -32,9 +37,11 @@ export function CategoryCard({ category, count }: Props) {
       />
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
         <div>
-          <h3 className="text-xl text-primary-foreground">{category.name}</h3>
+          <h3 className="text-xl text-primary-foreground">{name}</h3>
           <p className="mt-1 text-xs text-primary-foreground/75">
-            {count === undefined ? "—" : `${count} ${count === 1 ? "place" : "places"}`}
+            {count === undefined
+              ? "—"
+              : t(count === 1 ? "categoryCard.placeCount" : "categoryCard.placesCount", { count })}
           </p>
         </div>
         <ArrowUpRight

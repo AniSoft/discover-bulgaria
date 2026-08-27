@@ -12,6 +12,7 @@ import { deleteMyPlace } from "@/lib/my-places.functions";
 import type { OwnedPlace } from "@/lib/my-places.functions";
 import { myPlacesKey, myPlacesQueryOptions } from "@/lib/my-places.queries";
 import { cn } from "@/lib/utils";
+import { useStatusLabel, useT } from "@/lib/i18n";
 
 const title = "My Places — Discover Bulgaria";
 const description = "Manage the places you have shared with the Discover Bulgaria community.";
@@ -31,14 +32,11 @@ export const Route = createFileRoute("/_authenticated/my-places")({
 
 type Tab = "all" | "for_review" | "published" | "rejected";
 
-const TABS: { value: Tab; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "for_review", label: "For Review" },
-  { value: "published", label: "Published" },
-  { value: "rejected", label: "Rejected" },
-];
+const TAB_VALUES: Tab[] = ["all", "for_review", "published", "rejected"];
 
 function MyPlacesPage() {
+  const t = useT();
+  const statusLabel = useStatusLabel();
   const [tab, setTab] = useState<Tab>("all");
   const [pending, setPending] = useState<OwnedPlace | null>(null);
   const queryClient = useQueryClient();
@@ -51,10 +49,10 @@ function MyPlacesPage() {
         (prev ?? []).filter((p) => p.id !== id),
       );
       setPending(null);
-      toast.success("Place deleted.");
+      toast.success(t("myPlaces.deleted"));
     },
     onError: () => {
-      toast.error("We couldn't delete this place. Please try again.");
+      toast.error(t("myPlaces.deleteError"));
     },
   });
 
@@ -77,34 +75,40 @@ function MyPlacesPage() {
     <div className="container-page pt-34 pb-20">
       <header className="flex flex-wrap items-end justify-between gap-6">
         <div className="max-w-2xl">
-          <h1 className="text-4xl leading-tight text-foreground sm:text-5xl">My Places</h1>
+          <h1 className="text-4xl leading-tight text-foreground sm:text-5xl">
+            {t("myPlaces.title")}
+          </h1>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Manage the places you&apos;ve shared with the Discover Bulgaria community.
+            {t("myPlaces.description")}
           </p>
         </div>
         <ButtonLink to="/places/new" variant="accent">
           <Plus className="size-4" aria-hidden="true" />
-          Add a Place
+          {t("myPlaces.addPlace")}
         </ButtonLink>
       </header>
 
       {!isError && (data?.length ?? 0) > 0 ? (
-        <div className="mt-10 flex flex-wrap gap-2" role="tablist" aria-label="Filter by status">
-          {TABS.map((t) => (
+        <div
+          className="mt-10 flex flex-wrap gap-2"
+          role="tablist"
+          aria-label={t("myPlaces.filterLabel")}
+        >
+          {TAB_VALUES.map((value) => (
             <button
-              key={t.value}
+              key={value}
               role="tab"
-              aria-selected={tab === t.value}
-              onClick={() => setTab(t.value)}
+              aria-selected={tab === value}
+              onClick={() => setTab(value)}
               className={cn(
                 "rounded-full border px-4 py-2 text-sm transition-colors duration-250",
-                tab === t.value
+                tab === value
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-card text-foreground hover:bg-secondary",
               )}
             >
-              {t.label}
-              <span className="ml-2 opacity-70">{counts[t.value]}</span>
+              {statusLabel(value, true)}
+              <span className="ml-2 opacity-70">{counts[value]}</span>
             </button>
           ))}
         </div>
@@ -118,23 +122,20 @@ function MyPlacesPage() {
             ))}
           </div>
         ) : isError ? (
-          <StateCard
-            heading="We couldn't load your places right now."
-            body="Please check your connection and try again."
-          >
-            <Button onClick={() => void refetch()}>Try Again</Button>
+          <StateCard heading={t("myPlaces.loadError")} body={t("myPlaces.checkConnection")}>
+            <Button onClick={() => void refetch()}>{t("common.tryAgain")}</Button>
           </StateCard>
         ) : (data?.length ?? 0) === 0 ? (
-          <StateCard
-            heading="You haven't shared any places yet."
-            body="Know a special corner of Bulgaria?"
-          >
+          <StateCard heading={t("myPlaces.empty")} body={t("myPlaces.emptyBody")}>
             <ButtonLink to="/places/new" variant="accent">
-              Add Your First Place
+              {t("myPlaces.addFirstPlace")}
             </ButtonLink>
           </StateCard>
         ) : visible.length === 0 ? (
-          <StateCard heading="No places in this category yet." body="Try another status filter." />
+          <StateCard
+            heading={t("myPlaces.noneInCategory")}
+            body={t("myPlaces.tryAnotherFilter")}
+          />
         ) : (
           <div className="grid gap-6 md:grid-cols-2">
             {visible.map((place) => (
@@ -153,10 +154,10 @@ function MyPlacesPage() {
         >
           <div className="w-full max-w-md rounded-[var(--radius-card)] border border-border bg-card p-8 shadow-card">
             <h2 id="delete-place-title" className="text-2xl text-foreground">
-              Delete this place?
+              {t("myPlaces.deleteTitle")}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              This action cannot be undone.
+              {t("myPlaces.deleteBody")}
             </p>
             <p className="mt-4 text-sm font-medium text-foreground">{pending.title}</p>
             <div className="mt-8 flex flex-wrap justify-end gap-3">
@@ -165,14 +166,14 @@ function MyPlacesPage() {
                 onClick={() => setPending(null)}
                 disabled={remove.isPending}
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
               <Button
                 variant="destructive"
                 onClick={() => remove.mutate(pending.id)}
                 disabled={remove.isPending}
               >
-                {remove.isPending ? "Deleting…" : "Delete Place"}
+                {remove.isPending ? t("common.deleting") : t("myPlaces.deletePlace")}
               </Button>
             </div>
           </div>

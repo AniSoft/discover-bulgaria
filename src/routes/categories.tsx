@@ -4,6 +4,7 @@ import { CategoryCard } from "@/components/CategoryCard";
 import { PageShell } from "@/components/PageShell";
 import { categories } from "@/data/categories";
 import { categoryCountsQueryOptions } from "@/lib/places.queries";
+import { useT } from "@/lib/i18n";
 
 const title = "Categories — Discover Bulgaria";
 const description =
@@ -23,15 +24,16 @@ export const Route = createFileRoute("/categories")({
 
 function CategoriesPage() {
   const { data: counts, isError } = useQuery(categoryCountsQueryOptions());
+  const t = useT();
 
   return (
     <PageShell
-      title="Categories"
-      description="Eight ways into the country. Pick a direction and start exploring."
+      title={t("categories.pageTitle")}
+      description={t("categories.pageDescription")}
     >
       {isError ? (
         <p className="mb-8 rounded-[var(--radius-card)] border border-dashed border-border bg-card p-6 text-center text-sm text-muted-foreground">
-          We couldn't load places right now. Please try again.
+          {t("common.loadError")}
         </p>
       ) : null}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
