@@ -13,6 +13,8 @@ import { PhotoPicker, type PickedPhoto } from "@/components/places/PhotoPicker";
 import { uploadPlacePhoto } from "@/lib/place-photos.upload";
 import { createPlace } from "@/lib/place-submit.functions";
 import { placeSubmissionSchema } from "@/lib/place-submit.shared";
+import { useT } from "@/lib/i18n";
+import { useMessageTranslator } from "@/lib/i18n/validation";
 
 const title = "Add a Place — Discover Bulgaria";
 const description =
@@ -35,8 +37,10 @@ function NewPlacePage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [photos, setPhotos] = useState<PickedPhoto[]>([]);
-  const [photoWarning, setPhotoWarning] = useState<string | null>(null);
+  const [failedPhotos, setFailedPhotos] = useState(0);
   const submit = useServerFn(createPlace);
+  const t = useT();
+  const translateMessage = useMessageTranslator();
 
   const dirty =
     !submitted &&
@@ -65,11 +69,7 @@ function NewPlacePage() {
       return { failed };
     },
     onSuccess: ({ failed }) => {
-      setPhotoWarning(
-        failed
-          ? `Your place was submitted, but ${failed} photo${failed > 1 ? "s" : ""} couldn't be uploaded. You can add them from My Places.`
-          : null,
-      );
+      setFailedPhotos(failed);
       setSubmitted(true);
     },
     onError: (error) => console.error("[places] submission failed", error),
@@ -87,7 +87,7 @@ function NewPlacePage() {
       const next: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
         const key = String(issue.path[0]);
-        if (!next[key]) next[key] = issue.message;
+        if (!next[key]) next[key] = translateMessage(issue.message);
       }
       setErrors(next);
       return;
@@ -102,17 +102,20 @@ function NewPlacePage() {
         <div className="mx-auto max-w-xl rounded-[var(--radius-card)] border border-border bg-card p-12 text-center shadow-card">
           <CheckCircle2 className="mx-auto size-9 text-accent" aria-hidden="true" />
           <h1 className="mt-5 text-3xl leading-tight text-foreground">
-            Your place has been submitted for review.
+            {t("form.submittedHeading")}
           </h1>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Thank you for helping others discover Bulgaria. An administrator will review your
-            submission before it becomes public.
+            {t("form.submittedBody")}
           </p>
-          {photoWarning ? <p className="mt-4 text-sm text-accent">{photoWarning}</p> : null}
+          {failedPhotos ? (
+            <p className="mt-4 text-sm text-accent">
+              {t("form.photoWarning", { failed: failedPhotos })}
+            </p>
+          ) : null}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <ButtonLink to="/my-places">View My Places</ButtonLink>
+            <ButtonLink to="/my-places">{t("form.viewMyPlaces")}</ButtonLink>
             <ButtonLink to="/" variant="outline">
-              Explore More
+              {t("form.exploreMore")}
             </ButtonLink>
           </div>
         </div>
@@ -124,10 +127,10 @@ function NewPlacePage() {
     <div className="container-page pt-34 pb-24">
       <header className="max-w-2xl">
         <h1 className="text-4xl leading-tight text-foreground sm:text-5xl">
-          Share a place worth discovering
+          {t("form.shareTitle")}
         </h1>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-          Help others discover a special corner of Bulgaria.
+          {t("form.shareSubtitle")}
         </p>
       </header>
 
@@ -143,7 +146,7 @@ function NewPlacePage() {
 
         {mutation.isError ? (
           <p role="alert" className="rounded-[var(--radius-card)] border border-accent/30 bg-secondary px-5 py-4 text-sm text-foreground">
-            We couldn't submit your place right now. Please try again.
+            {t("form.submitErrorGeneric")}
           </p>
         ) : null}
 
@@ -151,12 +154,12 @@ function NewPlacePage() {
           <Button type="submit" size="lg" disabled={mutation.isPending}>
             {mutation.isPending
               ? photos.length
-                ? "Submitting and uploading photos..."
-                : "Submitting..."
-              : "Submit for review"}
+                ? t("form.submittingUploading")
+                : t("form.submitting")
+              : t("form.submitForReview")}
           </Button>
           <p className="text-sm text-muted-foreground">
-            Submissions are reviewed by an administrator before they appear publicly.
+            {t("form.reviewedNotice")}
           </p>
         </div>
       </form>
