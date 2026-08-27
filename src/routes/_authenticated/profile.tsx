@@ -76,7 +76,7 @@ function ProfilePage() {
   );
 }
 
-function NameForm({ currentName }: { currentName: string }) {
+function NameForm({ currentName, email }: { currentName: string; email: string }) {
   const [name, setName] = useState(currentName);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -136,7 +136,7 @@ function NameForm({ currentName }: { currentName: string }) {
         <input
           id="email-readonly"
           type="email"
-          value={useAuth().user?.email ?? ""}
+          value={email}
           readOnly
           disabled
           className={inputClasses(false, "cursor-not-allowed bg-secondary/50 text-muted-foreground")}
