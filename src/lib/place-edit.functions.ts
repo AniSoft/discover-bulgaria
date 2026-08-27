@@ -31,12 +31,12 @@ export const getPlaceForEdit = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }): Promise<EditablePlace | null> => {
-    const { data: row, error } = await context.supabase
-      .from("places")
-      .select(EDIT_COLUMNS)
-      .eq("id", data.id)
-      .eq("owner_id", context.userId)
-      .maybeSingle();
+    const { isAdminUser } = await import("@/lib/admin.server");
+    const admin = await isAdminUser(context.userId);
+
+    let query = context.supabase.from("places").select(EDIT_COLUMNS).eq("id", data.id);
+    if (!admin) query = query.eq("owner_id", context.userId);
+    const { data: row, error } = await query.maybeSingle();
 
     if (error) {
       console.error("[places] getPlaceForEdit failed", error);
@@ -56,12 +56,15 @@ export const updateMyPlace = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => updateSchema.parse(data))
   .handler(async ({ data, context }): Promise<{ slug: string }> => {
-    const { data: current, error: loadError } = await context.supabase
+    const { isAdminUser } = await import("@/lib/admin.server");
+    const admin = await isAdminUser(context.userId);
+
+    let currentQuery = context.supabase
       .from("places")
-      .select("id, slug, title")
-      .eq("id", data.id)
-      .eq("owner_id", context.userId)
-      .maybeSingle();
+      .select("id, slug, title, status")
+      .eq("id", data.id);
+    if (!admin) currentQuery = currentQuery.eq("owner_id", context.userId);
+    const { data: current, error: loadError } = await currentQuery.maybeSingle();
 
     if (loadError) {
       console.error("[places] updateMyPlace load failed", loadError);
@@ -96,11 +99,12 @@ export const updateMyPlace = createServerFn({ method: "POST" })
           ? base
           : `${base}-${attempt}`;
 
-      const { error } = await context.supabase
+      let updateQuery = context.supabase
         .from("places")
         .update({ ...fields, slug })
-        .eq("id", data.id)
-        .eq("owner_id", context.userId);
+        .eq("id", data.id);
+      if (!admin) updateQuery = updateQuery.eq("owner_id", context.userId);
+      const { error } = await updateQuery;
 
       if (!error) return { slug };
       if (!titleChanged || error.code !== "23505") {
