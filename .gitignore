@@ -33,3 +33,8 @@ dist-ssr
 
 # Netlify build output
 .netlify/
+
+# Env files
+.env
+.env.*
+!.env.example
