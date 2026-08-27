@@ -1,5 +1,5 @@
 export const en = {
-  "communityCta.eyebrow": "Join the journal",
+  "communityCta.eyebrow": "Join the journey",
   "home.heroEyebrow": "Discover Bulgaria",
   "home.heroCtaPrimary": "Begin the journey",
   "home.heroCtaSecondary": "Explore the map",
@@ -39,8 +39,9 @@ export const en = {
   "localSecrets.title": "Discover more than the guidebooks show",
   "localSecrets.description": "Small details can make a place unforgettable. Explore useful tips for experiencing some of Bulgaria's most remarkable destinations.",
   "communityCta.title": "Know a place worth discovering?",
-  "communityCta.description": "Share your favorite corner of Bulgaria and help others experience it too.",
-  "communityCta.addPlace": "Add a Place",
+  "communityCta.description": "Share a corner of Bulgaria worth remembering and help someone else discover its story.",
+  "communityCta.addPlace": "Add a place",
+  "communityCta.note": "Your next discovery starts here",
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
