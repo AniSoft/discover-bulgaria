@@ -70,7 +70,18 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted-foreground">{t("footer.rights")}</p>
+          <p className="text-sm text-muted-foreground">
+            {t("footer.creditBeforeLink")}
+            <a
+              href="https://www.anidigit.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground/90 underline-offset-4 transition-colors duration-250 hover:text-primary hover:underline"
+            >
+              AniDigit
+            </a>
+            {t("footer.creditSuffix")}
+          </p>
           <div className="flex items-center gap-2 text-sm" aria-label={t("footer.language")}>
             {languages.map((language, index) => (
               <span key={language.value} className="flex items-center gap-2">
