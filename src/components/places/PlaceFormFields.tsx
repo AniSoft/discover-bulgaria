@@ -86,15 +86,17 @@ export function Section({
   );
 }
 
-/** The shared Add / Edit place form body: sections A–E plus the photos placeholder. */
+/** The shared Add / Edit place form body: sections A–E plus a photos slot. */
 export function PlaceFormFields({
   values,
   errors,
   onChange,
+  photosSlot,
 }: {
   values: PlaceFormValues;
   errors: Record<string, string>;
   onChange: <K extends keyof PlaceFormValues>(key: K, value: PlaceFormValues[K]) => void;
+  photosSlot?: React.ReactNode;
 }) {
   const toggleSuitable = (option: string) =>
     onChange(
@@ -311,11 +313,7 @@ export function PlaceFormFields({
         </div>
       </Section>
 
-      <section className="rounded-[var(--radius-card)] border border-dashed border-border bg-card p-8 text-center">
-        <ImageIcon className="mx-auto size-6 text-muted-foreground" aria-hidden="true" />
-        <h2 className="mt-3 text-2xl leading-snug text-foreground">Photos</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Photo uploads will be available soon.</p>
-      </section>
+      {photosSlot}
     </>
   );
 }
