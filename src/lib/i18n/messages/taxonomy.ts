@@ -20,6 +20,15 @@ export const en = {
   "difficulty.Easy": "Easy",
   "difficulty.Moderate": "Moderate",
   "difficulty.Hard": "Hard",
+  "difficulty.Challenging": "Challenging",
+  "cost.Free": "Free",
+  "region.Dobrich Province": "Dobrich Province",
+  "region.Vidin Province": "Vidin Province",
+  "region.Blagoevgrad Province": "Blagoevgrad Province",
+  "region.Kardzhali Province": "Kardzhali Province",
+  "region.Burgas Province": "Burgas Province",
+  "region.Lovech Province": "Lovech Province",
+  "region.Smolyan Province": "Smolyan Province",
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
@@ -40,4 +49,13 @@ export const bg: Record<keyof typeof en, string> = {
   "difficulty.Easy": "Лесно",
   "difficulty.Moderate": "Средно",
   "difficulty.Hard": "Трудно",
+  "difficulty.Challenging": "Трудно",
+  "cost.Free": "Безплатно",
+  "region.Dobrich Province": "област Добрич",
+  "region.Vidin Province": "област Видин",
+  "region.Blagoevgrad Province": "област Благоевград",
+  "region.Kardzhali Province": "област Кърджали",
+  "region.Burgas Province": "област Бургас",
+  "region.Lovech Province": "област Ловеч",
+  "region.Smolyan Province": "област Смолян",
 };
