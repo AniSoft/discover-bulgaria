@@ -57,7 +57,7 @@ export function Field({
   children: React.ReactNode;
 }) {
   const t = useT();
-  const reqLabel = t("form.required");
+  const reqLabel = t("form.requiredMark");
   return (
     <div>
       <label htmlFor={htmlFor} className="block text-sm font-medium text-foreground">
