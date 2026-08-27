@@ -47,7 +47,7 @@ export const en = {
   "form.shortDescHelp": "A brief summary shown on the place card.",
   "form.fullDescription": "Full Description",
   "form.locationDetails": "Location Details",
-  "form.locationDetailsHelp": "How to find it — nearby landmarks, access roads, parking.",
+  "form.locationDetailsHelp": "How to find it: nearby landmarks, access roads, parking.",
   "form.selectCategory": "Select a category",
   "form.bestTimeToVisit": "Best Time to Visit",
   "form.recommendedDuration": "Recommended Duration",
@@ -147,7 +147,7 @@ export const bg: Record<keyof typeof en, string> = {
   "form.fullDescription": "Пълно описание",
   "form.locationDetails": "Детайли за местоположението",
   "form.locationDetailsHelp":
-    "Как да го намерите — забележителности наблизо, пътища за достъп, паркиране.",
+    "Как да го намерите: забележителности наблизо, пътища за достъп, паркиране.",
   "form.selectCategory": "Изберете категория",
   "form.bestTimeToVisit": "Най-добро време за посещение",
   "form.recommendedDuration": "Препоръчителна продължителност",

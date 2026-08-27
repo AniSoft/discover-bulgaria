@@ -12,7 +12,7 @@ export const en = {
   "auth.profile": "Profile",
   "auth.welcomeBack": "Welcome back",
   "auth.signInDescription":
-    "Pick up where you left off — your saved places and submissions are waiting.",
+    "Pick up where you left off. Your saved places and submissions are waiting.",
   "auth.noAccount": "Don't have an account?",
   "auth.createOne": "Create one",
   "auth.haveAccount": "Already have an account?",
@@ -83,7 +83,7 @@ export const bg: Record<keyof typeof en, string> = {
   "auth.profile": "Профил",
   "auth.welcomeBack": "Добре дошли отново",
   "auth.signInDescription":
-    "Продължете оттам, откъдето спряхте — запазените ви места и предложения ви очакват.",
+    "Продължете оттам, откъдето спряхте. Запазените ви места и предложения ви очакват.",
   "auth.noAccount": "Нямате профил?",
   "auth.createOne": "Създайте профил",
   "auth.haveAccount": "Вече имате профил?",
