@@ -37,7 +37,7 @@ const sizes: Record<Size, string> = {
 };
 
 export function buttonClasses(variant: Variant = "primary", size: Size = "md", className?: string) {
-  return cn(base, variants[variant], sizes[size], className);
+  return cn(base, variant === "link" ? null : sizes[size], variants[variant], className);
 }
 
 export function Button({
