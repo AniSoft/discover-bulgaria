@@ -20,6 +20,8 @@ import {
   type PlacePhoto,
 } from "@/lib/place-photos.shared";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
+import { useMessageTranslator } from "@/lib/i18n/validation";
 
 /** Photo management for a place that already exists (Edit Place, admins included). */
 export function PhotoManager({ placeId }: { placeId: string }) {
@@ -28,6 +30,8 @@ export function PhotoManager({ placeId }: { placeId: string }) {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const t = useT();
+  const translateMessage = useMessageTranslator();
 
   const photosQuery = useQuery(placePhotosQueryOptions(placeId));
   const photos = photosQuery.data ?? [];
@@ -61,7 +65,9 @@ export function PhotoManager({ placeId }: { placeId: string }) {
         await uploadPlacePhoto(placeId, file);
         uploaded += 1;
       }
-      setMessage(uploaded === 1 ? "Photo uploaded." : `${uploaded} photos uploaded.`);
+      setMessage(
+        uploaded === 1 ? t("photos.uploadedOne") : t("photos.uploadedCount", { count: uploaded }),
+      );
     } catch (uploadError) {
       console.error("[photos] upload failed", uploadError);
       const known =
@@ -80,30 +86,30 @@ export function PhotoManager({ placeId }: { placeId: string }) {
     mutationFn: (id: string) => deletePlacePhoto({ data: { id } }),
     onSuccess: async () => {
       setError(null);
-      setMessage("Photo deleted.");
+      setMessage(t("photos.deleted"));
       await refresh();
     },
-    onError: () => setError("We couldn't delete this photo. Please try again."),
+    onError: () => setError(t("photos.deleteError")),
   });
 
   const coverMutation = useMutation({
     mutationFn: (id: string) => setPlaceCoverPhoto({ data: { id } }),
     onSuccess: async () => {
       setError(null);
-      setMessage("Cover photo updated.");
+      setMessage(t("photos.coverUpdated"));
       await refresh();
     },
-    onError: () => setError("We couldn't update the cover photo. Please try again."),
+    onError: () => setError(t("photos.coverError")),
   });
 
   const reorderMutation = useMutation({
     mutationFn: (ids: string[]) => reorderPlacePhotos({ data: { place_id: placeId, ids } }),
     onSuccess: async () => {
       setError(null);
-      setMessage("Photo order saved.");
+      setMessage(t("photos.orderSaved"));
       await refresh();
     },
-    onError: () => setError("We couldn't save the new order. Please try again."),
+    onError: () => setError(t("photos.orderError")),
   });
 
   const move = (index: number, direction: -1 | 1) => {
@@ -121,11 +127,10 @@ export function PhotoManager({ placeId }: { placeId: string }) {
 
   return (
     <section className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-card sm:p-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Section F</p>
-      <h2 className="mt-2 text-2xl leading-snug text-foreground">Photos</h2>
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">{t("photos.section")}</p>
+      <h2 className="mt-2 text-2xl leading-snug text-foreground">{t("photos.title")}</h2>
       <p className="mt-2 text-sm text-muted-foreground">
-        JPG, PNG or WebP up to 1 MB each. Up to {MAX_PLACE_PHOTOS} photos. The first photo becomes
-        the cover unless you choose another one.
+        {t("photos.managerDescription", { max: MAX_PLACE_PHOTOS })}
       </p>
 
       {photosQuery.isPending ? (
@@ -146,13 +151,21 @@ export function PhotoManager({ placeId }: { placeId: string }) {
               onCover={() => coverMutation.mutate(photo.id)}
               onDelete={() => removeMutation.mutate(photo.id)}
               onMove={(direction) => move(index, direction)}
+              labels={{
+                earlier: t("photos.movePhotoEarlier"),
+                later: t("photos.movePhotoLater"),
+                cover: t("photos.makeCover"),
+                delete: t("photos.delete"),
+                coverBadge: t("photos.coverBadge"),
+                alt: t("photos.altPhoto", { index: index + 1 }),
+              }}
             />
           ))}
         </ul>
       ) : (
         <div className="mt-6 rounded-[var(--radius-card)] border border-dashed border-border p-8 text-center">
           <ImageIcon className="mx-auto size-6 text-muted-foreground" aria-hidden="true" />
-          <p className="mt-3 text-sm text-muted-foreground">No photos yet.</p>
+          <p className="mt-3 text-sm text-muted-foreground">{t("photos.empty")}</p>
         </div>
       )}
 
@@ -173,17 +186,17 @@ export function PhotoManager({ placeId }: { placeId: string }) {
           onClick={() => inputRef.current?.click()}
         >
           <Upload className="size-4" aria-hidden="true" />
-          {busy ? "Uploading..." : "Upload photos"}
+          {busy ? t("photos.uploading") : t("photos.upload")}
         </Button>
         <p className="text-sm text-muted-foreground">
-          {photos.length} of {MAX_PLACE_PHOTOS} photos
-          {full ? ` · ${PHOTO_LIMIT_MESSAGE}` : ""}
+          {t("photos.countOf", { count: photos.length, max: MAX_PLACE_PHOTOS })}
+          {full ? ` · ${t("photos.limitMessage", { max: MAX_PLACE_PHOTOS })}` : ""}
         </p>
       </div>
 
       {error ? (
         <p role="alert" className="mt-4 text-sm text-accent">
-          {error}
+          {translateMessage(error)}
         </p>
       ) : message ? (
         <p className="mt-4 text-sm text-primary">{message}</p>
@@ -200,6 +213,7 @@ function PhotoTile({
   onCover,
   onDelete,
   onMove,
+  labels,
 }: {
   photo: PlacePhoto;
   index: number;
@@ -208,6 +222,14 @@ function PhotoTile({
   onCover: () => void;
   onDelete: () => void;
   onMove: (direction: -1 | 1) => void;
+  labels: {
+    earlier: string;
+    later: string;
+    cover: string;
+    delete: string;
+    coverBadge: string;
+    alt: string;
+  };
 }) {
   return (
     <li className="overflow-hidden rounded-[var(--radius-card)] border border-border bg-secondary">
@@ -215,7 +237,7 @@ function PhotoTile({
         {photo.url ? (
           <img
             src={photo.url}
-            alt={`Place photo ${index + 1}`}
+            alt={labels.alt}
             loading="lazy"
             className="size-full object-cover"
           />
@@ -227,35 +249,35 @@ function PhotoTile({
         {photo.is_cover ? (
           <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-card/95 px-2.5 py-1 text-[0.65rem] font-semibold tracking-[0.08em] text-primary">
             <Star className="size-3" aria-hidden="true" />
-            COVER
+            {labels.coverBadge}
           </span>
         ) : null}
       </div>
 
       <div className="flex flex-wrap items-center gap-1 p-2">
         <IconAction
-          label="Move photo earlier"
+          label={labels.earlier}
           disabled={disabled || index === 0}
           onClick={() => onMove(-1)}
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
         </IconAction>
         <IconAction
-          label="Move photo later"
+          label={labels.later}
           disabled={disabled || index === total - 1}
           onClick={() => onMove(1)}
         >
           <ArrowRight className="size-4" aria-hidden="true" />
         </IconAction>
         <IconAction
-          label="Make cover photo"
+          label={labels.cover}
           disabled={disabled || photo.is_cover}
           onClick={onCover}
         >
           <Star className="size-4" aria-hidden="true" />
         </IconAction>
         <IconAction
-          label="Delete photo"
+          label={labels.delete}
           disabled={disabled}
           onClick={onDelete}
           className="ml-auto text-destructive hover:bg-destructive/10"
