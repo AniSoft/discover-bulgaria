@@ -63,19 +63,25 @@ export const listPublishedPlaces = createServerFn({ method: "GET" })
     const category = data.category?.trim();
     if (category) query = query.eq("category", category);
 
-    const q = data.q?.trim().slice(0, 100);
-    if (q) {
-      const escaped = q.replace(/[%,()]/g, " ").trim();
-      if (escaped) {
-        query = query.or(
-          [
-            `title.ilike.%${escaped}%`,
-            `region.ilike.%${escaped}%`,
-            `city.ilike.%${escaped}%`,
-            `short_description.ilike.%${escaped}%`,
-          ].join(","),
-        );
-      }
+    const q = data.q?.replace(/\s+/g, " ").trim().slice(0, 100);
+    const escaped = q ? q.replace(/[%,()*]/g, " ").replace(/\s+/g, " ").trim() : "";
+    if (escaped) {
+      // Bilingual: match English base columns and Bulgarian *_bg translations.
+      query = query.or(
+        [
+          "title",
+          "title_bg",
+          "region",
+          "city",
+          "city_bg",
+          "location_text",
+          "location_text_bg",
+          "short_description",
+          "short_description_bg",
+        ]
+          .map((column) => `${column}.ilike.%${escaped}%`)
+          .join(","),
+      );
     }
 
     const { data: rows, error } = await query;
@@ -84,11 +90,34 @@ export const listPublishedPlaces = createServerFn({ method: "GET" })
       throw new Error("PLACES_LOAD_FAILED");
     }
 
-    const places = (rows ?? []) as Omit<PublicPlace, "cover_url">[];
+    let places = (rows ?? []) as Omit<PublicPlace, "cover_url">[];
+
+    if (escaped) {
+      const needle = escaped.toLocaleLowerCase("bg");
+      const score = (place: Omit<PublicPlace, "cover_url">) => {
+        const titles = [place.title, place.title_bg].filter(Boolean).map((v) =>
+          String(v).toLocaleLowerCase("bg"),
+        );
+        if (titles.some((t) => t === needle)) return 0;
+        if (titles.some((t) => t.includes(needle))) return 1;
+        const places_ = [place.city, place.city_bg, place.region]
+          .filter(Boolean)
+          .map((v) => String(v).toLocaleLowerCase("bg"));
+        if (places_.some((t) => t.includes(needle))) return 2;
+        const summaries = [place.short_description, place.short_description_bg]
+          .filter(Boolean)
+          .map((v) => String(v).toLocaleLowerCase("bg"));
+        if (summaries.some((t) => t.includes(needle))) return 3;
+        return 4;
+      };
+      places = [...places].sort((a, b) => score(a) - score(b));
+    }
+
     const { loadCoverUrls } = await import("@/lib/place-photos.server");
     const covers = await loadCoverUrls(supabase, places.map((p) => p.id));
     return places.map((place) => ({ ...place, cover_url: covers[place.id] ?? null }));
   });
+
 
 export const getPublishedCategoryCounts = createServerFn({ method: "GET" }).handler(
   async (): Promise<Record<string, number>> => {
