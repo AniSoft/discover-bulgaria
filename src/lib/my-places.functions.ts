@@ -64,12 +64,12 @@ export const getOwnedPlaceBySlug = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.object({ slug: z.string().min(1).max(120) }).parse(data))
   .handler(
     async ({ data, context }): Promise<(PublicPlaceDetail & { status: string }) | null> => {
-      const { data: row, error } = await context.supabase
-        .from("places")
-        .select(DETAIL_COLUMNS)
-        .eq("slug", data.slug)
-        .eq("owner_id", context.userId)
-        .maybeSingle();
+      const { isAdminUser } = await import("@/lib/admin.server");
+      const admin = await isAdminUser(context.userId);
+
+      let query = context.supabase.from("places").select(DETAIL_COLUMNS).eq("slug", data.slug);
+      if (!admin) query = query.eq("owner_id", context.userId);
+      const { data: row, error } = await query.maybeSingle();
 
       if (error) {
         console.error("[my-places] getOwnedPlaceBySlug failed", error);
