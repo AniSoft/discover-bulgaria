@@ -46,6 +46,16 @@ export const placeSubmissionSchema = z.object({
   difficulty: z.union([z.enum(PLACE_DIFFICULTIES), z.literal("")]).optional().default(""),
   why_visit: z.string().trim().max(2000).optional().default(""),
   local_secret: z.string().trim().max(2000).optional().default(""),
+  // Optional Bulgarian translations. Empty means "fall back to English".
+  title_bg: z.string().trim().max(120).optional().default(""),
+  short_description_bg: z.string().trim().max(300).optional().default(""),
+  description_bg: z.string().trim().max(5000).optional().default(""),
+  why_visit_bg: z.string().trim().max(2000).optional().default(""),
+  city_bg: z.string().trim().max(100).optional().default(""),
+  best_time_bg: z.string().trim().max(100).optional().default(""),
+  duration_bg: z.string().trim().max(100).optional().default(""),
+  location_text_bg: z.string().trim().max(500).optional().default(""),
+  local_secret_bg: z.string().trim().max(2000).optional().default(""),
 });
 
 export type PlaceSubmission = z.input<typeof placeSubmissionSchema>;
