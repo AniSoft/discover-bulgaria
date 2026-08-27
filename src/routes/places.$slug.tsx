@@ -14,6 +14,7 @@ import { ButtonLink, Button } from "@/components/AppButton";
 import { placeDetailQueryOptions } from "@/lib/places.queries";
 import { placeImage, placeImageAlt, placeLocation } from "@/lib/place-display";
 import { PlaceGallery } from "@/components/places/PlaceGallery";
+import { FavoriteActionButton } from "@/components/FavoriteButton";
 import { useAuth } from "@/lib/auth";
 import { ownedPlaceBySlugQueryOptions } from "@/lib/my-places.queries";
 import { StatusBadge } from "@/components/places/OwnedPlaceCard";
@@ -167,8 +168,11 @@ function PlaceDetail({
           </p>
         </header>
 
-        <div className="mt-8 max-w-3xl">
+        <div className="mt-8 flex max-w-3xl flex-wrap items-center gap-4">
           <Practical place={place} />
+          {ownerStatus ? null : (
+            <FavoriteActionButton placeId={place.id} title={place.title} />
+          )}
         </div>
 
         <div className="max-w-3xl">
