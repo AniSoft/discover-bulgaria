@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { Button } from "@/components/AppButton";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   className?: string;
@@ -12,6 +13,7 @@ type Props = {
 
 export function SearchBar({ className, id = "site-search", value = "", onSearch }: Props) {
   const [query, setQuery] = useState(value);
+  const t = useT();
 
   useEffect(() => {
     setQuery(value);
@@ -30,7 +32,7 @@ export function SearchBar({ className, id = "site-search", value = "", onSearch 
       )}
     >
       <label htmlFor={id} className="sr-only">
-        Search places, regions or experiences
+        {t("common.searchLabel")}
       </label>
       <div className="flex flex-1 items-center gap-3 px-3">
         <Search className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -39,12 +41,12 @@ export function SearchBar({ className, id = "site-search", value = "", onSearch 
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search places, regions or experiences..."
+          placeholder={t("common.searchPlaceholder")}
           className="h-12 w-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
         />
       </div>
       <Button type="submit" size="lg" className="sm:rounded-full">
-        Search
+        {t("common.search")}
       </Button>
     </form>
   );

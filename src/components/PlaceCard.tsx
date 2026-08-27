@@ -3,10 +3,13 @@ import { ArrowRight, Clock, MapPin } from "lucide-react";
 import type { PublicPlace } from "@/lib/places.functions";
 import { FavoriteHeartButton } from "@/components/FavoriteButton";
 import { placeCover, placeImageAlt, placeLocation, placePractical } from "@/lib/place-display";
+import { useCategoryLabel, useT } from "@/lib/i18n";
 
 
 export function PlaceCard({ place }: { place: PublicPlace }) {
   const practical = placePractical(place);
+  const t = useT();
+  const categoryLabel = useCategoryLabel();
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-card transition-shadow duration-250 hover:shadow-lift">
@@ -20,7 +23,7 @@ export function PlaceCard({ place }: { place: PublicPlace }) {
           className="hover-zoom-img size-full object-cover"
         />
         <span className="absolute left-4 top-4 rounded-full bg-card/95 px-3 py-1 text-xs font-medium text-primary">
-          {place.category}
+          {categoryLabel(place.category)}
         </span>
         <FavoriteHeartButton
           placeId={place.id}
@@ -54,7 +57,7 @@ export function PlaceCard({ place }: { place: PublicPlace }) {
             params={{ slug: place.slug }}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors duration-250 hover:text-accent"
           >
-            Explore
+            {t("common.explore")}
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
         </div>

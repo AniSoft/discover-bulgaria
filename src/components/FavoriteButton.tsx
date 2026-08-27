@@ -1,6 +1,7 @@
 import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites.queries";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   placeId: string;
@@ -10,13 +11,14 @@ type Props = {
 
 export function FavoriteHeartButton({ placeId, title, className }: Props) {
   const { isFavorite, toggle, isPending } = useFavorites();
+  const t = useT();
   const saved = isFavorite(placeId);
 
   return (
     <button
       type="button"
       aria-pressed={saved}
-      aria-label={saved ? `Remove ${title} from favorites` : `Save ${title}`}
+      aria-label={saved ? t("place.removeAria", { title }) : t("place.saveAria", { title })}
       disabled={isPending}
       onClick={(event) => {
         event.preventDefault();
@@ -39,13 +41,14 @@ export function FavoriteHeartButton({ placeId, title, className }: Props) {
 
 export function FavoriteActionButton({ placeId, title, className }: Props) {
   const { isFavorite, toggle, isPending } = useFavorites();
+  const t = useT();
   const saved = isFavorite(placeId);
 
   return (
     <button
       type="button"
       aria-pressed={saved}
-      aria-label={saved ? `Remove ${title} from favorites` : `Save ${title}`}
+      aria-label={saved ? t("place.removeAria", { title }) : t("place.saveAria", { title })}
       disabled={isPending}
       onClick={() => toggle(placeId)}
       className={cn(
@@ -60,7 +63,7 @@ export function FavoriteActionButton({ placeId, title, className }: Props) {
         className={cn("size-4 transition-transform duration-250 ease-out", saved && "scale-115 fill-current")}
         aria-hidden="true"
       />
-      {saved ? "Saved" : "Save"}
+      {saved ? t("common.saved") : t("common.save")}
     </button>
   );
 }

@@ -16,6 +16,14 @@ type LocaleContextValue = {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
+// Used when a component renders outside the provider (e.g. the root error
+// boundary): English, no switching, never throws.
+const fallbackValue: LocaleContextValue = {
+  locale: DEFAULT_LOCALE,
+  setLocale: () => {},
+  t: (key, vars) => interpolate(messages[DEFAULT_LOCALE][key] ?? key, vars),
+};
+
 function interpolate(template: string, vars?: Record<string, string | number>) {
   if (!vars) return template;
   return template.replace(/\{(\w+)\}/g, (match, name: string) =>
@@ -49,9 +57,7 @@ export function LocaleProvider({
 }
 
 export function useLocale() {
-  const ctx = useContext(LocaleContext);
-  if (!ctx) throw new Error("useLocale must be used inside <LocaleProvider>");
-  return ctx;
+  return useContext(LocaleContext) ?? fallbackValue;
 }
 
 /** Shorthand for components that only need the translate function. */

@@ -1,6 +1,7 @@
 import heroImage from "@/assets/hero-bulgaria.jpg";
 import { SearchBar } from "@/components/SearchBar";
 import { cn } from "@/lib/utils";
+import { useCategoryLabel, useT } from "@/lib/i18n";
 
 const quickCategories = ["Hidden Gems", "Nature", "Mountains", "Sea", "History & Culture"];
 
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export function Hero({ query, activeCategory, onSearch, onCategory }: Props) {
+  const t = useT();
+  const categoryLabel = useCategoryLabel();
   return (
     <section className="relative flex min-h-[560px] items-center overflow-hidden md:h-[82vh]">
       <img
@@ -26,10 +29,10 @@ export function Hero({ query, activeCategory, onSearch, onCategory }: Props) {
       <div className="container-page relative pt-28 pb-16 md:pt-32">
         <div className="max-w-3xl">
           <h1 className="text-4xl leading-[1.05] text-primary-foreground sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
-            Discover Bulgaria
+            {t("home.heroTitle")}
           </h1>
           <p className="mt-5 max-w-xl text-base text-primary-foreground/85 sm:text-lg">
-            Hidden places. Local stories. Unforgettable experiences.
+            {t("home.heroSubtitle")}
           </p>
 
           <SearchBar className="mt-9 max-w-2xl" id="hero-search" value={query} onSearch={onSearch} />
@@ -48,7 +51,7 @@ export function Hero({ query, activeCategory, onSearch, onCategory }: Props) {
                       active && "border-primary-foreground bg-primary-foreground/25",
                     )}
                   >
-                    {category}
+                    {categoryLabel(category)}
                   </button>
                 </li>
               );

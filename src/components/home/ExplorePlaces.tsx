@@ -3,6 +3,7 @@ import { PlaceCard, PlaceCardSkeleton } from "@/components/PlaceCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/AppButton";
 import { placesQueryOptions } from "@/lib/places.queries";
+import { useCategoryLabel, useT } from "@/lib/i18n";
 
 type Props = {
   q: string;
@@ -14,28 +15,30 @@ export function ExplorePlaces({ q, category, onReset }: Props) {
   const { data, isPending, isError, refetch, isFetching } = useQuery(
     placesQueryOptions({ q, category }),
   );
+  const t = useT();
+  const categoryLabel = useCategoryLabel();
 
   const hasFilters = Boolean(q || category);
   const description = hasFilters
     ? [
-        category ? `Category: ${category}` : null,
-        q ? `Search: “${q}”` : null,
+        category ? t("explorePlaces.categoryLabel", { category: categoryLabel(category) }) : null,
+        q ? t("explorePlaces.searchLabel", { q }) : null,
       ]
         .filter(Boolean)
         .join(" · ")
-    : "A handful of places that reward the detour, chosen for their light, quiet and character.";
+    : t("explorePlaces.defaultDescription");
 
   return (
     <section id="places" className="scroll-mt-24 border-y border-border bg-card py-20 md:py-24">
       <div className="container-page">
         <SectionHeading
-          eyebrow={hasFilters ? "Results" : "Featured"}
-          title="Places worth discovering"
+          eyebrow={hasFilters ? t("explorePlaces.eyebrowResults") : t("explorePlaces.eyebrowFeatured")}
+          title={t("explorePlaces.title")}
           description={description}
           action={
             hasFilters ? (
               <Button variant="outline" onClick={onReset}>
-                Clear filters
+                {t("common.clearFilters")}
               </Button>
             ) : null
           }
@@ -50,26 +53,26 @@ export function ExplorePlaces({ q, category, onReset }: Props) {
             </div>
           ) : isError ? (
             <EmptyBox
-              title="We couldn't load places right now. Please try again."
+              title={t("common.loadError")}
               action={
                 <Button variant="outline" onClick={() => void refetch()} disabled={isFetching}>
-                  Try again
+                  {t("common.tryAgain")}
                 </Button>
               }
             />
           ) : data.length === 0 ? (
             hasFilters ? (
               <EmptyBox
-                title="No places found."
-                body="Try another search or explore a different category."
+                title={t("explorePlaces.noPlacesFound")}
+                body={t("explorePlaces.noPlacesBody")}
                 action={
                   <Button variant="outline" onClick={onReset}>
-                    Reset search and filters
+                    {t("explorePlaces.resetSearch")}
                   </Button>
                 }
               />
             ) : (
-              <EmptyBox title="No places have been published yet." />
+              <EmptyBox title={t("explorePlaces.noneYet")} />
             )
           ) : (
             <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
