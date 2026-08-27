@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AuthProvider } from "@/lib/auth";
+import { LocaleProvider, readLocale, type Locale } from "@/lib/i18n";
 import { Toaster } from "@/components/ui/sonner";
 
 
@@ -78,6 +79,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // Read once per request/navigation on both server and client so SSR markup and
+  // the hydrated client render agree on the active language.
+  beforeLoad: (): { locale: Locale } => ({ locale: readLocale() }),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -113,8 +117,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const { locale } = Route.useRouteContext();
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <HeadContent />
       </head>
@@ -127,10 +132,11 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
+  const { queryClient, locale } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <LocaleProvider initialLocale={locale}>
       <AuthProvider>
         <div className="flex min-h-screen flex-col">
           <Header />
@@ -142,6 +148,7 @@ function RootComponent() {
           <Toaster position="top-center" />
         </div>
       </AuthProvider>
+      </LocaleProvider>
     </QueryClientProvider>
   );
 }
