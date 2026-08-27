@@ -16,7 +16,7 @@ export function ConfirmDialog({
   open: boolean;
   title: string;
   body: string;
-  detail?: string;
+  detail?: string | undefined;
   confirmLabel: string;
   pendingLabel?: string;
   destructive?: boolean;
