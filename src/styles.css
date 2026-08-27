@@ -217,7 +217,7 @@
   font-family: inherit;
 }
 .leaflet-container .leaflet-tile-pane {
-  filter: saturate(0.72) sepia(0.12) contrast(0.96) brightness(1.01);
+  filter: saturate(0.55) sepia(0.22) contrast(0.94) brightness(1.02);
 }
 .leaflet-control-attribution {
   background: color-mix(in oklab, var(--card) 82%, transparent) !important;

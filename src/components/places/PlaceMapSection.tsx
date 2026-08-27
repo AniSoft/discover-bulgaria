@@ -82,11 +82,11 @@ function LeafletMap({
         });
         map = instance;
         L.tileLayer(
-          "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
           {
             maxZoom: 19,
             attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           },
         ).addTo(instance);
 
@@ -99,6 +99,8 @@ function LeafletMap({
         L.marker([coords.lat, coords.lng], { icon, title, alt: title, keyboard: true }).addTo(
           instance,
         );
+        instance.whenReady(() => instance.invalidateSize());
+        setTimeout(() => instance.invalidateSize(), 250);
         setReady(true);
         onReady();
       } catch {
