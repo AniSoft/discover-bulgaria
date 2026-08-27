@@ -36,7 +36,7 @@ export function PlaceCard({ place }: { place: PublicPlace }) {
           <MapPin className="size-4 shrink-0" aria-hidden="true" />
           <span className="truncate">{placeLocation(place)}</span>
         </p>
-        <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-3 mb-5 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
           {place.short_description}
         </p>
 

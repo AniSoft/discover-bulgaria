@@ -40,7 +40,7 @@ export function AdminPlaceRow({
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <span className="text-xs font-medium text-accent">{place.category}</span>
-          <h3 className="mt-1 text-xl leading-snug text-foreground">{place.title}</h3>
+          <h3 className="mt-1 line-clamp-2 text-xl leading-snug text-foreground">{place.title}</h3>
           <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <MapPin className="size-4" aria-hidden="true" />
