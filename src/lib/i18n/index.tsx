@@ -59,21 +59,36 @@ export function useT(): Translate {
   return useLocale().t;
 }
 
+function labelFactory(prefix: string, t: Translate) {
+  return (value: string) => {
+    const key = `${prefix}.${value}` as MessageKey;
+    const label = t(key);
+    // Unknown stored values fall back to the raw database value.
+    return label === key ? value : label;
+  };
+}
+
 /** Display label for a stored (English) category value. */
 export function useCategoryLabel() {
   const { t } = useLocale();
-  return (category: string) => t(`category.${category}` as MessageKey);
+  return labelFactory("category", t);
 }
 
 /** Display label for a stored (English) "suitable for" value. */
 export function useSuitableLabel() {
   const { t } = useLocale();
-  return (value: string) => t(`suitable.${value}` as MessageKey);
+  return labelFactory("suitable", t);
+}
+
+/** Display label for a stored (English) difficulty value. */
+export function useDifficultyLabel() {
+  const { t } = useLocale();
+  return labelFactory("difficulty", t);
 }
 
 /** Display label for a stored place status value. */
 export function useStatusLabel() {
   const { t } = useLocale();
   return (status: string, plural = false) =>
-    t(`${plural ? "statusPlural" : "status"}.${status}` as MessageKey);
+    labelFactory(plural ? "statusPlural" : "status", t)(status);
 }
