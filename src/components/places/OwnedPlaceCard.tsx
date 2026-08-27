@@ -5,6 +5,7 @@ import { placeCover, placeImageAlt, placeLocation } from "@/lib/place-display";
 import type { OwnedPlace } from "@/lib/my-places.functions";
 import { cn } from "@/lib/utils";
 import { useStatusLabel, useT } from "@/lib/i18n";
+import { useLocalizedPlace } from "@/lib/place-i18n";
 
 export const STATUS_META: Record<string, { badge: string; hasNote?: boolean }> = {
   for_review: {
@@ -49,12 +50,13 @@ function formatDate(value: string) {
 }
 
 export function OwnedPlaceCard({
-  place,
+  place: source,
   onDelete,
 }: {
   place: OwnedPlace;
   onDelete: (place: OwnedPlace) => void;
 }) {
+  const place = useLocalizedPlace(source);
   const t = useT();
   const meta = STATUS_META[place.status];
 

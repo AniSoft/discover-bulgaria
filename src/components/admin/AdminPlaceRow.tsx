@@ -5,6 +5,7 @@ import { StatusBadge } from "@/components/places/OwnedPlaceCard";
 import type { AdminPlace } from "@/lib/admin-places.functions";
 import { placeLocation } from "@/lib/place-display";
 import { useT } from "@/lib/i18n";
+import { useLocalizedPlace } from "@/lib/place-i18n";
 
 export function formatDate(value: string) {
   try {

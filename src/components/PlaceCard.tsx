@@ -4,9 +4,11 @@ import type { PublicPlace } from "@/lib/places.functions";
 import { FavoriteHeartButton } from "@/components/FavoriteButton";
 import { placeCover, placeImageAlt, placeLocation, placePractical } from "@/lib/place-display";
 import { useCategoryLabel, useT } from "@/lib/i18n";
+import { useLocalizedPlace } from "@/lib/place-i18n";
 
 
-export function PlaceCard({ place }: { place: PublicPlace }) {
+export function PlaceCard({ place: source }: { place: PublicPlace }) {
+  const place = useLocalizedPlace(source);
   const practical = placePractical(place);
   const t = useT();
   const categoryLabel = useCategoryLabel();

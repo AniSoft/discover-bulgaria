@@ -19,6 +19,7 @@ import { useAuth } from "@/lib/auth";
 import { ownedPlaceBySlugQueryOptions } from "@/lib/my-places.queries";
 import { StatusBadge } from "@/components/places/OwnedPlaceCard";
 import type { PublicPlaceDetail } from "@/lib/places.functions";
+import { useLocalizedPlace } from "@/lib/place-i18n";
 import { useT, useCategoryLabel, useSuitableLabel, useDifficultyLabel } from "@/lib/i18n";
 
 export const Route = createFileRoute("/places/$slug")({
@@ -116,12 +117,13 @@ function Section({ title: heading, children }: { title: string; children: React.
 }
 
 function PlaceDetail({
-  place,
+  place: source,
   ownerStatus,
 }: {
   place: PublicPlaceDetail;
   ownerStatus?: string;
 }) {
+  const place = useLocalizedPlace(source);
   const t = useT();
   const categoryLabel = useCategoryLabel();
   const suitableLabel = useSuitableLabel();
