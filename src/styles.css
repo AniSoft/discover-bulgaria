@@ -261,8 +261,9 @@
   animation: atlas-pulse 3.6s ease-out infinite;
 }
 .atlas-needle {
+  transform-box: fill-box;
   transform-origin: center;
-  animation: atlas-needle 9s ease-in-out infinite;
+  animation: atlas-needle 5s ease-in-out infinite;
 }
 @keyframes atlas-trail {
   to {
@@ -286,10 +287,10 @@
 @keyframes atlas-needle {
   0%,
   100% {
-    transform: rotate(-2.5deg);
+    transform: rotate(-5deg);
   }
   50% {
-    transform: rotate(2.5deg);
+    transform: rotate(5deg);
   }
 }
 @media (prefers-reduced-motion: reduce) {
