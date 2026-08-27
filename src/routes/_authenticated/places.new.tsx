@@ -72,9 +72,9 @@ function Field({
 }: {
   label: string;
   htmlFor: string;
-  required?: boolean;
-  help?: string;
-  error?: string;
+  required?: boolean | undefined;
+  help?: string | undefined;
+  error?: string | undefined;
   children: React.ReactNode;
 }) {
   return (
