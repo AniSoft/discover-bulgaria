@@ -173,9 +173,14 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <ButtonLink to="/my-places">Back to My Places</ButtonLink>
-            <ButtonLink to="/places/$slug" params={{ slug: savedSlug }} variant="outline">
+            <Link
+              to="/places/$slug"
+              params={{ slug: savedSlug }}
+              className={buttonClasses("outline", "md")}
+            >
               View Place
-            </ButtonLink>
+            </Link>
+
           </div>
         </div>
       </Shell>
