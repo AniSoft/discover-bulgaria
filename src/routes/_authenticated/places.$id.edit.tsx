@@ -14,6 +14,8 @@ import { PhotoManager } from "@/components/places/PhotoManager";
 import { placeForEditQueryOptions } from "@/lib/place-edit.queries";
 import { updateMyPlace, type EditablePlace } from "@/lib/place-edit.functions";
 import { placeSubmissionSchema } from "@/lib/place-submit.shared";
+import { useT } from "@/lib/i18n";
+import { useMessageTranslator } from "@/lib/i18n/validation";
 import { myPlacesKey } from "@/lib/my-places.queries";
 import { adminPlacesKey, adminRecentKey, adminStatsKey } from "@/lib/admin-places.queries";
 import { useAuth } from "@/lib/auth";
@@ -72,16 +74,17 @@ function EditSkeleton() {
 }
 
 function NotFound() {
+  const t = useT();
   return (
     <Shell>
       <div className="mx-auto max-w-xl rounded-[var(--radius-card)] border border-border bg-card p-12 text-center shadow-card">
-        <h1 className="text-3xl leading-tight text-foreground">Place not found</h1>
+        <h1 className="text-3xl leading-tight text-foreground">{t("form.notFoundHeading")}</h1>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-          This place doesn't exist, or it isn't one of yours.
+          {t("form.notFoundBody")}
         </p>
         <div className="mt-8">
           <ButtonLink to="/my-places" variant="outline">
-            Back to My Places
+            {t("form.backToMyPlaces")}
           </ButtonLink>
         </div>
       </div>
@@ -92,6 +95,7 @@ function NotFound() {
 function EditPlacePage() {
   const { id } = Route.useParams();
   const query = useQuery(placeForEditQueryOptions(id));
+  const t = useT();
 
   if (query.isPending) return <EditSkeleton />;
   if (query.isError) {
@@ -99,12 +103,12 @@ function EditPlacePage() {
       <Shell>
         <div className="mx-auto max-w-xl rounded-[var(--radius-card)] border border-border bg-card p-12 text-center shadow-card">
           <h1 className="text-3xl leading-tight text-foreground">
-            We couldn't load this place right now.
+            {t("form.loadErrorHeading")}
           </h1>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button onClick={() => void query.refetch()}>Try Again</Button>
+            <Button onClick={() => void query.refetch()}>{t("form.tryAgain")}</Button>
             <ButtonLink to="/my-places" variant="outline">
-              Back to My Places
+              {t("form.backToMyPlaces")}
             </ButtonLink>
           </div>
         </div>
@@ -124,6 +128,8 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
   const [savedSlug, setSavedSlug] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const save = useServerFn(updateMyPlace);
+  const t = useT();
+  const translateMessage = useMessageTranslator();
 
   const dirty = !savedSlug && JSON.stringify(values) !== JSON.stringify(initial);
 
@@ -159,7 +165,7 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
       const next: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
         const key = String(issue.path[0]);
-        if (!next[key]) next[key] = issue.message;
+        if (!next[key]) next[key] = translateMessage(issue.message);
       }
       setErrors(next);
       return;
@@ -174,25 +180,23 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
         <div className="mx-auto max-w-xl rounded-[var(--radius-card)] border border-border bg-card p-12 text-center shadow-card">
           <CheckCircle2 className="mx-auto size-9 text-accent" aria-hidden="true" />
           <h1 className="mt-5 text-3xl leading-tight text-foreground">
-            {isAdmin ? "Changes saved." : "Your changes have been submitted for review."}
+            {isAdmin ? t("form.savedHeadingAdmin") : t("form.savedHeadingUser")}
           </h1>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            {isAdmin
-              ? "The place keeps its current status."
-              : "An administrator will review the updated place before it is published."}
+            {isAdmin ? t("form.savedBodyAdmin") : t("form.savedBodyUser")}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {isAdmin ? (
-              <ButtonLink to="/admin/places">Back to Manage Places</ButtonLink>
+              <ButtonLink to="/admin/places">{t("form.backToManagePlaces")}</ButtonLink>
             ) : (
-              <ButtonLink to="/my-places">Back to My Places</ButtonLink>
+              <ButtonLink to="/my-places">{t("form.backToMyPlaces")}</ButtonLink>
             )}
             <Link
               to="/places/$slug"
               params={{ slug: savedSlug }}
               className={buttonClasses("outline", "md")}
             >
-              View Place
+              {t("form.viewPlace")}
             </Link>
 
           </div>
@@ -204,9 +208,9 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
   return (
     <Shell>
       <header className="max-w-2xl">
-        <h1 className="text-4xl leading-tight text-foreground sm:text-5xl">Edit Place</h1>
+        <h1 className="text-4xl leading-tight text-foreground sm:text-5xl">{t("form.editPlace")}</h1>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-          Update your recommendation and submit it for review again.
+          {t("form.editSubtitle")}
         </p>
       </header>
 
@@ -215,8 +219,8 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
           <Info className="mt-0.5 size-5 shrink-0 text-accent" aria-hidden="true" />
           <p className="text-sm text-foreground">
             {place.status === "published"
-              ? "Editing this published place will send it back for administrator review."
-              : "You can update this place and submit it for review again."}
+              ? t("form.publishedNotice")
+              : t("form.rejectedNotice")}
           </p>
         </div>
       ) : null}
@@ -234,16 +238,16 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
             role="alert"
             className="rounded-[var(--radius-card)] border border-accent/30 bg-secondary px-5 py-4 text-sm text-foreground"
           >
-            We couldn't save your changes right now. Please try again.
+            {t("form.saveError")}
           </p>
         ) : null}
 
         <div className="flex flex-wrap items-center gap-3">
           <Button type="submit" size="lg" disabled={mutation.isPending}>
-            {mutation.isPending ? "Saving..." : "Save Changes"}
+            {mutation.isPending ? t("form.saving") : t("form.updatePlace")}
           </Button>
           <ButtonLink to={isAdmin ? "/admin/places" : "/my-places"} variant="outline" size="lg">
-            Cancel
+            {t("form.cancel")}
           </ButtonLink>
         </div>
       </form>
