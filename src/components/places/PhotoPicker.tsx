@@ -7,6 +7,8 @@ import {
   PHOTO_LIMIT_MESSAGE,
   validatePhotoFiles,
 } from "@/lib/place-photos.shared";
+import { useT } from "@/lib/i18n";
+import { useMessageTranslator } from "@/lib/i18n/validation";
 
 export type PickedPhoto = { id: string; file: File; preview: string };
 
@@ -33,6 +35,8 @@ export function PhotoPicker({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const t = useT();
+  const translateMessage = useMessageTranslator();
 
   useEffect(() => () => photos.forEach((photo) => URL.revokeObjectURL(photo.preview)), [photos]);
 
@@ -70,11 +74,10 @@ export function PhotoPicker({
 
   return (
     <section className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-card sm:p-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Section F</p>
-      <h2 className="mt-2 text-2xl leading-snug text-foreground">Photos</h2>
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">{t("photos.section")}</p>
+      <h2 className="mt-2 text-2xl leading-snug text-foreground">{t("photos.title")}</h2>
       <p className="mt-2 text-sm text-muted-foreground">
-        JPG, PNG or WebP up to 1 MB each. Up to {MAX_PLACE_PHOTOS} photos. Your first photo becomes
-        the cover, and you can change it later from My Places.
+        {t("photos.pickerDescription", { max: MAX_PLACE_PHOTOS })}
       </p>
 
       {photos.length ? (
@@ -87,12 +90,12 @@ export function PhotoPicker({
               <div className="relative aspect-4/3">
                 <img
                   src={photo.preview}
-                  alt={`Selected photo ${index + 1}`}
+                  alt={t("photos.altSelected", { index: index + 1 })}
                   className="size-full object-cover"
                 />
                 {index === 0 ? (
                   <span className="absolute left-2 top-2 rounded-full bg-card/95 px-2.5 py-1 text-[0.65rem] font-semibold tracking-[0.08em] text-primary">
-                    COVER
+                    {t("photos.coverBadge")}
                   </span>
                 ) : null}
               </div>
@@ -102,7 +105,7 @@ export function PhotoPicker({
                 </span>
                 <button
                   type="button"
-                  aria-label={`Remove ${photo.file.name}`}
+                  aria-label={t("photos.remove", { name: photo.file.name })}
                   disabled={disabled}
                   onClick={() => remove(photo.id)}
                   className="grid size-8 shrink-0 place-items-center rounded-full text-destructive transition-colors duration-250 hover:bg-destructive/10 disabled:opacity-35"
@@ -116,7 +119,7 @@ export function PhotoPicker({
       ) : (
         <div className="mt-6 rounded-[var(--radius-card)] border border-dashed border-border p-8 text-center">
           <ImageIcon className="mx-auto size-6 text-muted-foreground" aria-hidden="true" />
-          <p className="mt-3 text-sm text-muted-foreground">No photos selected yet.</p>
+          <p className="mt-3 text-sm text-muted-foreground">{t("photos.emptySelected")}</p>
         </div>
       )}
 
@@ -137,16 +140,17 @@ export function PhotoPicker({
           onClick={() => inputRef.current?.click()}
         >
           <Upload className="size-4" aria-hidden="true" />
-          Select photos
+          {t("photos.selectPhotos")}
         </Button>
         <p className="text-sm text-muted-foreground">
-          {photos.length} of {MAX_PLACE_PHOTOS} selected{full ? ` · ${PHOTO_LIMIT_MESSAGE}` : ""}
+          {t("photos.countSelected", { count: photos.length, max: MAX_PLACE_PHOTOS })}
+          {full ? ` · ${t("photos.limitMessage", { max: MAX_PLACE_PHOTOS })}` : ""}
         </p>
       </div>
 
       {error ? (
         <p role="alert" className="mt-4 text-sm text-accent">
-          {error}
+          {translateMessage(error)}
         </p>
       ) : null}
     </section>
