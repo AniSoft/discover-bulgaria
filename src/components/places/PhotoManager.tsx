@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, ArrowRight, ImageIcon, Star, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/AppButton";
-import { uploadPlacePhoto } from "@/lib/place-photos.client";
+import { uploadPlacePhoto } from "@/lib/place-photos.upload";
 import {
   deletePlacePhoto,
   reorderPlacePhotos,
