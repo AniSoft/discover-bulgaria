@@ -49,6 +49,7 @@ function Index() {
           setSearch({ ...(q ? { q } : {}), ...(value === category ? {} : { category: value }) })
         }
       />
+      <EditorialIntro />
       <CategorySection />
       <ExplorePlaces q={q} category={category} onReset={() => navigate({ search: {}, resetScroll: false })} />
       <LocalSecrets />
