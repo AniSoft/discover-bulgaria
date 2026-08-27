@@ -19,8 +19,12 @@ export type PlaceBgFields = {
 /** Translated columns needed by cards / list views. */
 export const LIST_BG_COLUMNS = "title_bg, short_description_bg, city_bg, duration_bg";
 
+/** Translated columns beyond the list set, for detail views. */
+export const EXTRA_DETAIL_BG_COLUMNS =
+  "description_bg, why_visit_bg, best_time_bg, location_text_bg, local_secret_bg";
+
 /** Translated columns needed by the full place details view. */
-export const DETAIL_BG_COLUMNS = `${LIST_BG_COLUMNS}, description_bg, why_visit_bg, best_time_bg, location_text_bg, local_secret_bg`;
+export const DETAIL_BG_COLUMNS = `${LIST_BG_COLUMNS}, ${EXTRA_DETAIL_BG_COLUMNS}`;
 
 /** All translated columns, for the edit form. */
 export const ALL_BG_COLUMNS = DETAIL_BG_COLUMNS;

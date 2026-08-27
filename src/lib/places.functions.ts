@@ -4,7 +4,7 @@ import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
 import type { PlacePhoto } from "@/lib/place-photos.shared";
 import {
-  DETAIL_BG_COLUMNS,
+  EXTRA_DETAIL_BG_COLUMNS,
   LIST_BG_COLUMNS,
   type PlaceBgFields,
 } from "@/lib/place-i18n.shared";
@@ -112,7 +112,7 @@ export const getPublishedCategoryCounts = createServerFn({ method: "GET" }).hand
   },
 );
 
-const DETAIL_COLUMNS = `${PUBLIC_COLUMNS}, description, why_visit, location_text, suitable_for, best_time, difficulty, local_secret, ${DETAIL_BG_COLUMNS.replace(LIST_BG_COLUMNS + ", ", "")}`;
+const DETAIL_COLUMNS = `${PUBLIC_COLUMNS}, description, why_visit, location_text, suitable_for, best_time, difficulty, local_secret, ${EXTRA_DETAIL_BG_COLUMNS}`;
 
 export const getPublishedPlaceBySlug = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.object({ slug: z.string().min(1).max(120) }).parse(data))
