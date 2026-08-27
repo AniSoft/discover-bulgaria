@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/AppButton";
 import { Field, FormAlert, inputClasses } from "@/components/auth/AuthCard";
+import { useT } from "@/lib/i18n";
 
 const SETUP_ENDPOINT = "/api/public/initial-admin-setup";
 
@@ -11,11 +12,12 @@ const SETUP_ENDPOINT = "/api/public/initial-admin-setup";
  * setup endpoint itself re-checks and refuses once the first admin is created.
  */
 export function InitialAdminSetup() {
+  const t = useT();
   const status = useQuery({
     queryKey: ["admin-setup-status"],
     queryFn: async (): Promise<{ adminExists: boolean }> => {
       const res = await fetch(SETUP_ENDPOINT);
-      if (!res.ok) throw new Error("Could not check admin status.");
+      if (!res.ok) throw new Error(t("auth.couldNotCheckAdminStatus"));
       return res.json();
     },
     staleTime: 60_000,
@@ -41,11 +43,11 @@ export function InitialAdminSetup() {
         body: JSON.stringify({ email: email.trim(), password }),
       });
       const payload = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok) throw new Error(payload.error ?? "Could not create the initial admin.");
+      if (!res.ok) throw new Error(payload.error ?? t("auth.couldNotCreateAdmin"));
       setDone(true);
-      toast.success("Initial admin created. You can sign in with that account now.");
+      toast.success(t("auth.adminCreatedSuccess"));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not create the initial admin.");
+      setError(err instanceof Error ? err.message : t("auth.couldNotCreateAdmin"));
       await status.refetch();
     } finally {
       setSubmitting(false);
@@ -55,43 +57,43 @@ export function InitialAdminSetup() {
 
   return (
     <div className="mt-8 rounded-[var(--radius-button)] border border-dashed border-border bg-secondary/40 p-5">
-      <p className="text-xs font-semibold tracking-[0.16em] text-accent uppercase">Setup</p>
+      <p className="text-xs font-semibold tracking-[0.16em] text-accent uppercase">{t("auth.setupEyebrow")}</p>
       <p className="mt-2 text-sm text-muted-foreground">
-        No administrator exists yet. Create the first admin account for this site.
+        {t("auth.setupDescription")}
       </p>
 
       {open ? (
         <form onSubmit={onSubmit} noValidate className="mt-5 space-y-4">
           {error ? <FormAlert>{error}</FormAlert> : null}
-          <Field id="admin-email" label="Admin email">
+          <Field id="admin-email" label={t("auth.adminEmail")}>
             <input
               id="admin-email"
               type="email"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@example.com"
+              placeholder={t("auth.adminEmailPlaceholder")}
               className={inputClasses()}
             />
           </Field>
-          <Field id="admin-password" label="Admin password">
+          <Field id="admin-password" label={t("auth.adminPassword")}>
             <input
               id="admin-password"
               type="password"
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="At least 8 characters"
+              placeholder={t("auth.adminPasswordPlaceholder")}
               className={inputClasses()}
             />
           </Field>
           <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-            {submitting ? "Creating…" : "Create Initial Admin"}
+            {submitting ? t("auth.creatingEllipsis") : t("auth.createInitialAdmin")}
           </Button>
         </form>
       ) : (
         <Button type="button" variant="outline" className="mt-4" onClick={() => setOpen(true)}>
-          Create Initial Admin
+          {t("auth.createInitialAdmin")}
         </Button>
       )}
     </div>

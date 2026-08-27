@@ -5,6 +5,7 @@ import { Button } from "@/components/AppButton";
 import { supabase } from "@/integrations/supabase/client";
 import { safeRedirect } from "@/lib/safe-redirect";
 import { InitialAdminSetup } from "@/components/auth/InitialAdminSetup";
+import { useT } from "@/lib/i18n";
 
 const title = "Sign In — Discover Bulgaria";
 const description = "Sign in to save favorite places and submit your own discoveries in Bulgaria.";
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
+  const t = useT();
   const navigate = useNavigate();
   const search = Route.useSearch();
   const [email, setEmail] = useState("");
@@ -37,10 +39,10 @@ function LoginPage() {
     setFormError(null);
 
     const nextErrors: { email?: string; password?: string } = {};
-    if (!email.trim()) nextErrors.email = "Email is required.";
+    if (!email.trim()) nextErrors.email = t("auth.emailRequired");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
-      nextErrors.email = "Enter a valid email address.";
-    if (!password) nextErrors.password = "Password is required.";
+      nextErrors.email = t("auth.emailInvalid");
+    if (!password) nextErrors.password = t("auth.passwordRequired");
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
@@ -54,7 +56,7 @@ function LoginPage() {
     if (error) {
       setFormError(
         error.message.toLowerCase().includes("invalid")
-          ? "That email and password combination doesn't match an account."
+          ? t("auth.invalidCredentials")
           : error.message,
       );
       return;
@@ -66,14 +68,14 @@ function LoginPage() {
 
   return (
     <AuthCard
-      eyebrow="Welcome back"
-      title="Sign in"
-      description="Pick up where you left off — your saved places and submissions are waiting."
+      eyebrow={t("auth.welcomeBack")}
+      title={t("auth.signInTitle")}
+      description={t("auth.signInDescription")}
       footer={
         <>
-          Don't have an account?{" "}
+          {t("auth.noAccount")}{" "}
           <Link to="/register" className="font-medium text-primary underline-offset-4 hover:underline">
-            Create one
+            {t("auth.createOne")}
           </Link>
         </>
       }
@@ -81,7 +83,7 @@ function LoginPage() {
       <form onSubmit={onSubmit} noValidate className="space-y-5">
         {formError ? <FormAlert>{formError}</FormAlert> : null}
 
-        <Field id="email" label="Email" error={errors.email}>
+        <Field id="email" label={t("auth.email")} error={errors.email}>
           <input
             id="email"
             name="email"
@@ -89,13 +91,13 @@ function LoginPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder={t("auth.emailPlaceholder")}
             aria-invalid={Boolean(errors.email)}
             className={inputClasses(Boolean(errors.email))}
           />
         </Field>
 
-        <Field id="password" label="Password" error={errors.password}>
+        <Field id="password" label={t("auth.password")} error={errors.password}>
           <input
             id="password"
             name="password"
@@ -103,14 +105,14 @@ function LoginPage() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
+            placeholder={t("auth.passwordPlaceholderDots")}
             aria-invalid={Boolean(errors.password)}
             className={inputClasses(Boolean(errors.password))}
           />
         </Field>
 
         <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-          {submitting ? "Signing in…" : "Sign In"}
+          {submitting ? t("auth.signingIn") : t("auth.signIn")}
         </Button>
       </form>
 
