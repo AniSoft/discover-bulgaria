@@ -85,68 +85,95 @@ export type Database = {
         Row: {
           approximate_cost: string | null
           best_time: string | null
+          best_time_bg: string | null
           category: string
           city: string | null
+          city_bg: string | null
           created_at: string
           description: string
+          description_bg: string | null
           difficulty: string | null
           duration: string | null
+          duration_bg: string | null
           id: string
           local_secret: string | null
+          local_secret_bg: string | null
           location_text: string | null
+          location_text_bg: string | null
           owner_id: string | null
           region: string
           short_description: string
+          short_description_bg: string | null
           slug: string
           status: string
           suitable_for: string[]
           title: string
+          title_bg: string | null
           updated_at: string
           why_visit: string | null
+          why_visit_bg: string | null
         }
         Insert: {
           approximate_cost?: string | null
           best_time?: string | null
+          best_time_bg?: string | null
           category: string
           city?: string | null
+          city_bg?: string | null
           created_at?: string
           description: string
+          description_bg?: string | null
           difficulty?: string | null
           duration?: string | null
+          duration_bg?: string | null
           id?: string
           local_secret?: string | null
+          local_secret_bg?: string | null
           location_text?: string | null
+          location_text_bg?: string | null
           owner_id?: string | null
           region: string
           short_description: string
+          short_description_bg?: string | null
           slug: string
           status?: string
           suitable_for?: string[]
           title: string
+          title_bg?: string | null
           updated_at?: string
           why_visit?: string | null
+          why_visit_bg?: string | null
         }
         Update: {
           approximate_cost?: string | null
           best_time?: string | null
+          best_time_bg?: string | null
           category?: string
           city?: string | null
+          city_bg?: string | null
           created_at?: string
           description?: string
+          description_bg?: string | null
           difficulty?: string | null
           duration?: string | null
+          duration_bg?: string | null
           id?: string
           local_secret?: string | null
+          local_secret_bg?: string | null
           location_text?: string | null
+          location_text_bg?: string | null
           owner_id?: string | null
           region?: string
           short_description?: string
+          short_description_bg?: string | null
           slug?: string
           status?: string
           suitable_for?: string[]
           title?: string
+          title_bg?: string | null
           updated_at?: string
           why_visit?: string | null
+          why_visit_bg?: string | null
         }
         Relationships: []
       }
