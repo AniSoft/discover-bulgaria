@@ -4,39 +4,34 @@ import { buttonClasses, Button } from "@/components/AppButton";
 import { placeCover, placeImageAlt, placeLocation } from "@/lib/place-display";
 import type { OwnedPlace } from "@/lib/my-places.functions";
 import { cn } from "@/lib/utils";
+import { useStatusLabel, useT } from "@/lib/i18n";
 
-export const STATUS_META: Record<
-  string,
-  { label: string; badge: string; note?: string }
-> = {
+export const STATUS_META: Record<string, { badge: string; hasNote?: boolean }> = {
   for_review: {
-    label: "FOR REVIEW",
     badge: "border-warning/40 bg-warning/12 text-warning",
-    note: "Waiting for administrator review.",
+    hasNote: true,
   },
   published: {
-    label: "PUBLISHED",
     badge: "border-success/30 bg-success/10 text-success",
   },
   rejected: {
-    label: "REJECTED",
     badge: "border-destructive/30 bg-destructive/10 text-destructive",
   },
 };
 
 export function StatusBadge({ status }: { status: string }) {
+  const statusLabel = useStatusLabel();
   const meta = STATUS_META[status] ?? {
-    label: status.toUpperCase(),
     badge: "border-border bg-secondary text-muted-foreground",
   };
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-3 py-1 text-[0.68rem] font-semibold tracking-[0.12em]",
+        "inline-flex items-center rounded-full border px-3 py-1 text-[0.68rem] font-semibold tracking-[0.12em] uppercase",
         meta.badge,
       )}
     >
-      {meta.label}
+      {statusLabel(status)}
     </span>
   );
 }
@@ -60,6 +55,7 @@ export function OwnedPlaceCard({
   place: OwnedPlace;
   onDelete: (place: OwnedPlace) => void;
 }) {
+  const t = useT();
   const meta = STATUS_META[place.status];
 
   return (
@@ -95,10 +91,12 @@ export function OwnedPlaceCard({
 
       <p className="mt-4 mb-6 flex items-center gap-1.5 text-xs text-muted-foreground">
         <CalendarDays className="size-3.5" aria-hidden="true" />
-        Added {formatDate(place.created_at)}
+        {t("myPlaces.added", { date: formatDate(place.created_at) })}
       </p>
 
-      {meta?.note ? <p className="mt-2 text-xs text-warning">{meta.note}</p> : null}
+      {meta?.hasNote ? (
+        <p className="mt-2 text-xs text-warning">{t("myPlaces.waitingForReview")}</p>
+      ) : null}
 
       <div className="mt-auto flex flex-wrap gap-2 border-t border-border pt-5">
         <Link
@@ -107,7 +105,7 @@ export function OwnedPlaceCard({
           className={buttonClasses("outline", "sm")}
         >
           <Eye className="size-4" aria-hidden="true" />
-          View
+          {t("common.view")}
         </Link>
         <Link
           to="/places/$id/edit"
@@ -115,7 +113,7 @@ export function OwnedPlaceCard({
           className={buttonClasses("outline", "sm")}
         >
           <Pencil className="size-4" aria-hidden="true" />
-          Edit
+          {t("common.edit")}
         </Link>
         <Button
           variant="destructive-ghost"
@@ -123,7 +121,7 @@ export function OwnedPlaceCard({
           onClick={() => onDelete(place)}
         >
           <Trash2 className="size-4" aria-hidden="true" />
-          Delete
+          {t("common.delete")}
         </Button>
       </div>
       </div>
