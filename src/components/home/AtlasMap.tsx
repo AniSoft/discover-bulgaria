@@ -116,33 +116,34 @@ export function AtlasMap() {
         </g>
         {/* river */}
         <path
-          d="M40 116C90 126 130 112 176 122C222 132 258 118 304 126C350 134 392 120 470 128"
+          d="M56 150C96 158 132 144 176 152C220 160 254 148 300 154C346 160 392 148 460 154"
           stroke="var(--forest)"
-          strokeWidth="1.5"
+          strokeWidth="1.4"
           opacity="0.4"
           fill="none"
         />
         {/* mountain ridges */}
-        <Ridge x={150} y={182} s={1.15} />
-        <Ridge x={196} y={172} s={0.9} o={0.6} />
-        <Ridge x={244} y={186} s={1.05} />
-        <Ridge x={300} y={178} s={0.85} o={0.6} />
-        <Ridge x={206} y={252} s={1.1} />
-        <Ridge x={258} y={262} s={0.9} o={0.65} />
-        <Ridge x={352} y={236} s={1} />
+        <Ridge x={152} y={216} s={1.1} />
+        <Ridge x={192} y={208} s={0.85} o={0.6} />
+        <Ridge x={236} y={220} s={1.05} />
+        <Ridge x={286} y={212} s={0.85} o={0.6} />
+        <Ridge x={332} y={222} s={1} />
+        <Ridge x={214} y={262} s={1.1} />
+        <Ridge x={256} y={270} s={0.9} o={0.65} />
+        <Ridge x={330} y={258} s={0.95} o={0.7} />
         {/* forests */}
         {([
-          [124, 210], [136, 222], [150, 214], [326, 208], [338, 218], [350, 206],
-          [402, 240], [414, 250], [268, 232], [280, 224],
+          [124, 206], [136, 218], [150, 240], [366, 200], [378, 210], [390, 198],
+          [386, 244], [398, 254], [286, 236], [298, 228],
         ] as ReadonlyArray<readonly [number, number]>).map(([x, y], i) => (
           <Tree key={i} x={x} y={y} s={i % 3 === 0 ? 1.15 : 0.95} />
         ))}
       </g>
 
       {/* Coastline hatching (east) */}
-      <g stroke="var(--forest)" strokeWidth="0.7" opacity="0.35">
-        {[100, 118, 136, 154, 172, 190, 208].map((y, i) => (
-          <path key={y} d={`M${478 + (i % 2) * 3} ${y}l9 4`} />
+      <g stroke="var(--forest)" strokeWidth="0.7" opacity="0.3">
+        {[132, 150, 168, 186, 204, 222, 240, 258].map((y, i) => (
+          <path key={y} d={`M${452 + (i % 2) * 3} ${y}l10 4`} />
         ))}
       </g>
 
@@ -172,11 +173,12 @@ export function AtlasMap() {
 
       {/* Elegant experience icons beside stops */}
       <g opacity="0.75">
-        <g transform="translate(96 118)"><StopIcon kind="ruin" /></g>
-        <g transform="translate(232 166)"><StopIcon kind="cave" /></g>
-        <g transform="translate(300 290)"><StopIcon kind="village" /></g>
-        <g transform="translate(448 146)"><StopIcon kind="cliff" /></g>
+        <g transform="translate(106 152)"><StopIcon kind="ruin" /></g>
+        <g transform="translate(212 170)"><StopIcon kind="cave" /></g>
+        <g transform="translate(288 284)"><StopIcon kind="village" /></g>
+        <g transform="translate(424 160)"><StopIcon kind="cliff" /></g>
       </g>
+
 
       {/* Compass rose */}
       <g transform="translate(74 326)">
