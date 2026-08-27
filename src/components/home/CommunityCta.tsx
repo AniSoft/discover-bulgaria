@@ -54,7 +54,7 @@ function MapMotif() {
         stroke="var(--forest)"
         strokeWidth="1.4"
         strokeLinejoin="round"
-        fill="hsl(var(--forest) / 0.045)"
+        fill="color-mix(in oklab, var(--forest) 5%, transparent)"
       />
 
       {/* Expedition route — terracotta */}
