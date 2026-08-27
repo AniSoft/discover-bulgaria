@@ -15,7 +15,7 @@ export function LocalSecrets() {
         />
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {localSecrets.map((secret) => (
-            <LocalSecretCard key={secret.title} secret={secret} />
+            <LocalSecretCard key={secret.id} secret={secret} />
           ))}
         </div>
       </div>
