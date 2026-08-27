@@ -14,13 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      places: {
+        Row: {
+          approximate_cost: string | null
+          best_time: string | null
+          category: string
+          city: string | null
+          created_at: string
+          description: string
+          difficulty: string | null
+          duration: string | null
+          id: string
+          local_secret: string | null
+          location_text: string | null
+          owner_id: string | null
+          region: string
+          short_description: string
+          slug: string
+          status: string
+          suitable_for: string[]
+          title: string
+          updated_at: string
+          why_visit: string | null
+        }
+        Insert: {
+          approximate_cost?: string | null
+          best_time?: string | null
+          category: string
+          city?: string | null
+          created_at?: string
+          description: string
+          difficulty?: string | null
+          duration?: string | null
+          id?: string
+          local_secret?: string | null
+          location_text?: string | null
+          owner_id?: string | null
+          region: string
+          short_description: string
+          slug: string
+          status?: string
+          suitable_for?: string[]
+          title: string
+          updated_at?: string
+          why_visit?: string | null
+        }
+        Update: {
+          approximate_cost?: string | null
+          best_time?: string | null
+          category?: string
+          city?: string | null
+          created_at?: string
+          description?: string
+          difficulty?: string | null
+          duration?: string | null
+          id?: string
+          local_secret?: string | null
+          location_text?: string | null
+          owner_id?: string | null
+          region?: string
+          short_description?: string
+          slug?: string
+          status?: string
+          suitable_for?: string[]
+          title?: string
+          updated_at?: string
+          why_visit?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
