@@ -126,15 +126,19 @@ export const setPlaceCoverPhoto = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }): Promise<{ id: string }> => {
-    const { error } = await context.supabase
+    const { data: updated, error } = await context.supabase
       .from("place_photos")
       .update({ is_cover: true })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .select("id");
 
     if (error) {
       console.error("[photos] setPlaceCoverPhoto failed", error);
       throw new Error("PHOTO_COVER_FAILED");
     }
+    // RLS filters out photos the caller may not manage: report that clearly
+    // instead of pretending the change succeeded.
+    if (!updated || updated.length === 0) throw new Error("PHOTO_NOT_FOUND");
     return { id: data.id };
   });
 
