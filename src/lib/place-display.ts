@@ -14,7 +14,7 @@ import photo from "@/assets/cat-photo.jpg";
 import food from "@/assets/cat-food.jpg";
 import type { PublicPlace } from "@/lib/places.functions";
 
-// Temporary placeholder imagery until photo uploads are implemented.
+// Editorial fallback imagery for places without uploaded photos.
 const bySlug: Record<string, string> = {
   "tyulenovo-cliffs": tyulenovo,
   kovachevitsa,
@@ -37,6 +37,13 @@ const byCategory: Record<string, string> = {
 
 export function placeImage(place: Pick<PublicPlace, "slug" | "category">) {
   return bySlug[place.slug] ?? byCategory[place.category] ?? nature;
+}
+
+/** Uploaded cover photo when the place has one, otherwise the editorial fallback. */
+export function placeCover(
+  place: Pick<PublicPlace, "slug" | "category"> & { cover_url?: string | null },
+) {
+  return place.cover_url ?? placeImage(place);
 }
 
 export function placeImageAlt(place: Pick<PublicPlace, "title" | "category">) {

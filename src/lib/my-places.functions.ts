@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { PublicPlaceDetail } from "@/lib/places.functions";
+import type { PlacePhoto } from "@/lib/place-photos.shared";
 
 export type OwnedPlace = {
   id: string;
@@ -15,6 +16,7 @@ export type OwnedPlace = {
   duration: string | null;
   status: string;
   created_at: string;
+  cover_url: string | null;
 };
 
 const OWNED_COLUMNS =
@@ -35,18 +37,33 @@ export const listMyPlaces = createServerFn({ method: "GET" })
       console.error("[my-places] listMyPlaces failed", error);
       throw new Error("MY_PLACES_LOAD_FAILED");
     }
-    return (data ?? []) as OwnedPlace[];
+
+    const places = (data ?? []) as Omit<OwnedPlace, "cover_url">[];
+    const { loadCoverUrls } = await import("@/lib/place-photos.server");
+    const covers = await loadCoverUrls(context.supabase, places.map((p) => p.id));
+    return places.map((place) => ({ ...place, cover_url: covers[place.id] ?? null }));
   });
 
 export const deleteMyPlace = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }): Promise<{ id: string }> => {
+    // Collect the files first: the rows disappear with the place (cascade).
+    const { data: photos } = await context.supabase
+      .from("place_photos")
+      .select("storage_path")
+      .eq("place_id", data.id);
+
     const { error } = await context.supabase
       .from("places")
       .delete()
       .eq("id", data.id)
       .eq("owner_id", context.userId);
+
+    if (!error && photos?.length) {
+      const { removePhotoObjects } = await import("@/lib/place-photos.server");
+      await removePhotoObjects(context.supabase, photos.map((p) => p.storage_path));
+    }
 
     if (error) {
       console.error("[my-places] deleteMyPlace failed", error);
@@ -63,7 +80,10 @@ export const getOwnedPlaceBySlug = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => z.object({ slug: z.string().min(1).max(120) }).parse(data))
   .handler(
-    async ({ data, context }): Promise<(PublicPlaceDetail & { status: string }) | null> => {
+    async ({
+      data,
+      context,
+    }): Promise<(PublicPlaceDetail & { status: string }) | null> => {
       const { isAdminUser } = await import("@/lib/admin.server");
       const admin = await isAdminUser(context.userId);
 
@@ -75,7 +95,17 @@ export const getOwnedPlaceBySlug = createServerFn({ method: "GET" })
         console.error("[my-places] getOwnedPlaceBySlug failed", error);
         throw new Error("PLACE_LOAD_FAILED");
       }
-      return (row as (PublicPlaceDetail & { status: string }) | null) ?? null;
+      if (!row) return null;
+
+      const place = row as Omit<PublicPlaceDetail, "cover_url" | "photos"> & { status: string };
+      const { loadPlacePhotos } = await import("@/lib/place-photos.server");
+      const photos: PlacePhoto[] =
+        (await loadPlacePhotos(context.supabase, [place.id]))[place.id] ?? [];
+      return {
+        ...place,
+        photos,
+        cover_url: photos.find((photo) => photo.is_cover)?.url ?? photos[0]?.url ?? null,
+      };
     },
   );
 
@@ -94,5 +124,5 @@ export const getOwnedPlaceById = createServerFn({ method: "GET" })
       console.error("[my-places] getOwnedPlaceById failed", error);
       throw new Error("PLACE_LOAD_FAILED");
     }
-    return (row as OwnedPlace | null) ?? null;
+    return row ? ({ ...row, cover_url: null } as OwnedPlace) : null;
   });

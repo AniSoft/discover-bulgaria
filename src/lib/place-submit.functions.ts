@@ -5,12 +5,12 @@ import { placeSubmissionSchema, slugify } from "@/lib/place-submit.shared";
 export const createPlace = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => placeSubmissionSchema.parse(data))
-  .handler(async ({ data, context }): Promise<{ slug: string }> => {
+  .handler(async ({ data, context }): Promise<{ slug: string; id: string }> => {
     const base = slugify(data.title) || "place";
 
     for (let attempt = 1; attempt <= 25; attempt++) {
       const slug = attempt === 1 ? base : `${base}-${attempt}`;
-      const { error } = await context.supabase.from("places").insert({
+      const { data: inserted, error } = await context.supabase.from("places").insert({
         title: data.title,
         slug,
         short_description: data.short_description,
@@ -29,9 +29,9 @@ export const createPlace = createServerFn({ method: "POST" })
         // Ownership and status are decided server-side, never by the client.
         owner_id: context.userId,
         status: "for_review",
-      });
+      }).select("id").single();
 
-      if (!error) return { slug };
+      if (!error && inserted) return { slug, id: inserted.id };
       if (error.code !== "23505") {
         console.error("[places] createPlace failed", error);
         throw new Error("PLACE_SUBMIT_FAILED");
