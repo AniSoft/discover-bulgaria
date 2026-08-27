@@ -13,6 +13,7 @@ import {
 import { ButtonLink, Button } from "@/components/AppButton";
 import { placeDetailQueryOptions } from "@/lib/places.queries";
 import { placeImage, placeImageAlt, placeLocation } from "@/lib/place-display";
+import { PlaceMapSection } from "@/components/places/PlaceMapSection";
 import { PlaceGallery } from "@/components/places/PlaceGallery";
 import { FavoriteActionButton } from "@/components/FavoriteButton";
 import { useAuth } from "@/lib/auth";
@@ -221,6 +222,20 @@ function PlaceDetail({
             <p className="text-foreground">{placeLocation(place)}</p>
             {place.location_text ? <p className="mt-2">{place.location_text}</p> : null}
           </Section>
+        </div>
+
+        <PlaceMapSection
+          slug={source.slug}
+          title={place.title}
+          location={placeLocation(place)}
+          regionLabel={[place.city, place.region, t("map.country")]
+            .filter(Boolean)
+            .join(" · ")
+            .toUpperCase()}
+        />
+
+        <div className="max-w-3xl">
+
 
           {place.local_secret ? (
             <section className="mt-14 rounded-[var(--radius-card)] border border-accent/25 bg-secondary p-8">

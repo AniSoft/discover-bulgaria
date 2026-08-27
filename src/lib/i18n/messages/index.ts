@@ -8,6 +8,7 @@ import * as forms from "./forms";
 import * as dashboard from "./dashboard";
 import * as photos from "./photos";
 import * as footer from "./footer";
+import * as map from "./map";
 
 export const enMessages = {
   ...common.en,
@@ -20,6 +21,7 @@ export const enMessages = {
   ...dashboard.en,
   ...photos.en,
   ...footer.en,
+  ...map.en,
 };
 
 export const bgMessages: Record<MessageKey, string> = {
@@ -33,6 +35,7 @@ export const bgMessages: Record<MessageKey, string> = {
   ...dashboard.bg,
   ...photos.bg,
   ...footer.bg,
+  ...map.bg,
 };
 
 export type MessageKey = keyof typeof enMessages;

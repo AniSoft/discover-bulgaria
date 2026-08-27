@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "leaflet/dist/leaflet.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -208,4 +209,43 @@
     transform: scale(1.03);
     filter: brightness(1.04);
   }
+}
+
+/* Discover Bulgaria map treatment — restrained, editorial cartography. */
+.leaflet-container {
+  background: var(--secondary);
+  font-family: inherit;
+}
+.leaflet-container .leaflet-tile-pane {
+  filter: saturate(0.55) sepia(0.22) contrast(0.94) brightness(1.02);
+}
+.leaflet-control-attribution {
+  background: color-mix(in oklab, var(--card) 82%, transparent) !important;
+  font-size: 10px;
+}
+.leaflet-bar a {
+  color: var(--primary);
+}
+.db-marker {
+  position: relative;
+}
+.db-marker__ring,
+.db-marker__dot {
+  position: absolute;
+  border-radius: 9999px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.db-marker__ring {
+  width: 26px;
+  height: 26px;
+  border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+}
+.db-marker__dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--card) 80%, transparent);
 }
