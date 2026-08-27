@@ -22,6 +22,7 @@ import { Route as PlacesSlugRouteImport } from './routes/places.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminPlacesRouteImport } from './routes/_authenticated/admin/places'
 import { Route as AuthenticatedPlacesNewRouteImport } from './routes/_authenticated/places.new'
+import { Route as ApiPublicInitialAdminSetupRouteImport } from './routes/api/public/initial-admin-setup'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -88,6 +89,12 @@ const AuthenticatedPlacesNewRoute = AuthenticatedPlacesNewRouteImport.update({
   path: '/places/new',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicInitialAdminSetupRoute =
+  ApiPublicInitialAdminSetupRouteImport.update({
+    id: '/api/public/initial-admin-setup',
+    path: '/api/public/initial-admin-setup',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/places/$slug': typeof PlacesSlugRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/places/new': typeof AuthenticatedPlacesNewRoute
+  '/api/public/initial-admin-setup': typeof ApiPublicInitialAdminSetupRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -114,6 +122,7 @@ export interface FileRoutesByTo {
   '/places/$slug': typeof PlacesSlugRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/places/new': typeof AuthenticatedPlacesNewRoute
+  '/api/public/initial-admin-setup': typeof ApiPublicInitialAdminSetupRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -130,6 +139,7 @@ export interface FileRoutesById {
   '/places/$slug': typeof PlacesSlugRoute
   '/_authenticated/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/_authenticated/places/new': typeof AuthenticatedPlacesNewRoute
+  '/api/public/initial-admin-setup': typeof ApiPublicInitialAdminSetupRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/places/$slug'
     | '/admin/places'
     | '/places/new'
+    | '/api/public/initial-admin-setup'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/places/$slug'
     | '/admin/places'
     | '/places/new'
+    | '/api/public/initial-admin-setup'
     | '/admin'
   id:
     | '__root__'
@@ -174,6 +186,7 @@ export interface FileRouteTypes {
     | '/places/$slug'
     | '/_authenticated/admin/places'
     | '/_authenticated/places/new'
+    | '/api/public/initial-admin-setup'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -184,6 +197,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   PlacesSlugRoute: typeof PlacesSlugRoute
+  ApiPublicInitialAdminSetupRoute: typeof ApiPublicInitialAdminSetupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -279,6 +293,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlacesNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/initial-admin-setup': {
+      id: '/api/public/initial-admin-setup'
+      path: '/api/public/initial-admin-setup'
+      fullPath: '/api/public/initial-admin-setup'
+      preLoaderRoute: typeof ApiPublicInitialAdminSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -324,6 +345,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   PlacesSlugRoute: PlacesSlugRoute,
+  ApiPublicInitialAdminSetupRoute: ApiPublicInitialAdminSetupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
