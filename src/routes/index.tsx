@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Hero } from "@/components/Hero";
+import { EditorialIntro } from "@/components/home/EditorialIntro";
 import { CategorySection } from "@/components/home/CategorySection";
 import { ExplorePlaces } from "@/components/home/ExplorePlaces";
 import { LocalSecrets } from "@/components/home/LocalSecrets";
