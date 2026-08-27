@@ -45,7 +45,7 @@ export const en = {
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
-  "communityCta.eyebrow": "Присъедини се",
+  "communityCta.eyebrow": "Стани част от пътешествието",
   "home.heroEyebrow": "Открий България",
   "home.heroCtaPrimary": "Започни пътешествието",
   "home.heroCtaSecondary": "Разгледай местата",
@@ -84,7 +84,8 @@ export const bg: Record<keyof typeof en, string> = {
   "localSecrets.eyebrow": "СЪВЕТИ ЗА ПЪТУВАНЕ",
   "localSecrets.title": "Открий повече от това, което пише в пътеводителите",
   "localSecrets.description": "Понякога малките детайли правят едно място незабравимо. Открий полезни съвети за някои от най-впечатляващите места в България.",
-  "communityCta.title": "Знаеш ли място, което си струва да бъде открито?",
-  "communityCta.description": "Сподели любимото си кътче от България и помогни на другите да го изживеят и те.",
+  "communityCta.title": "Знаеш място, което си струва да бъде открито?",
+  "communityCta.description": "Сподели кътче от България, което си струва да бъде запомнено, и помогни на някой друг да открие неговата история.",
   "communityCta.addPlace": "Добави място",
+  "communityCta.note": "Следващото откритие започва оттук",
 };
