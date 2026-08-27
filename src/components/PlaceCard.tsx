@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Clock, Heart, MapPin } from "lucide-react";
+import { ArrowRight, Clock, MapPin } from "lucide-react";
 import type { PublicPlace } from "@/lib/places.functions";
+import { FavoriteHeartButton } from "@/components/FavoriteButton";
 import { placeCover, placeImageAlt, placeLocation, placePractical } from "@/lib/place-display";
+
 
 export function PlaceCard({ place }: { place: PublicPlace }) {
   const practical = placePractical(place);
