@@ -40,7 +40,7 @@ export function PlaceCard({ place }: { place: PublicPlace }) {
           {place.short_description}
         </p>
 
-        <div className="mt-5 flex items-center justify-between gap-3 border-t border-border pt-4 mt-auto">
+        <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4 [&]:mt-auto">
           <span className="flex items-center gap-1.5 text-sm text-foreground">
             {practical ? (
               <>
