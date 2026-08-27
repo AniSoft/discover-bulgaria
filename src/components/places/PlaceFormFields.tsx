@@ -346,6 +346,51 @@ export function PlaceFormFields({
         </div>
       </Section>
 
+      {showTranslations ? (
+        <Section step={t("form.sectionF")} heading={t("form.translations")}>
+          <p className="-mt-2 text-sm text-muted-foreground">{t("form.translationsHelp")}</p>
+          {(
+            [
+              ["title_bg", "form.placeName", "input", 120],
+              ["short_description_bg", "form.shortDescription", "input", 300],
+              ["description_bg", "form.fullDescription", "textarea", 5000],
+              ["why_visit_bg", "form.whyVisit", "textarea", 2000],
+              ["city_bg", "form.city", "input", 100],
+              ["location_text_bg", "form.locationDetails", "textarea", 500],
+              ["best_time_bg", "form.bestTimeToVisit", "input", 100],
+              ["duration_bg", "form.duration", "input", 100],
+              ["local_secret_bg", "form.localSecret", "textarea", 2000],
+            ] as const
+          ).map(([key, labelKey, kind, max]) => (
+            <Field
+              key={key}
+              label={`${t(labelKey)} (BG)`}
+              htmlFor={key}
+              error={errors[key]}
+            >
+              {kind === "textarea" ? (
+                <textarea
+                  id={key}
+                  value={values[key]}
+                  rows={4}
+                  maxLength={max}
+                  onChange={(e) => onChange(key, e.target.value)}
+                  className={cn(inputClass, "resize-y leading-relaxed")}
+                />
+              ) : (
+                <input
+                  id={key}
+                  value={values[key]}
+                  maxLength={max}
+                  onChange={(e) => onChange(key, e.target.value)}
+                  className={inputClass}
+                />
+              )}
+            </Field>
+          ))}
+        </Section>
+      ) : null}
+
       {photosSlot}
     </>
   );
