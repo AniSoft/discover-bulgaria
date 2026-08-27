@@ -20,6 +20,7 @@ import { Route as AuthenticatedMyPlacesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as PlacesSlugRouteImport } from './routes/places.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminPlacesRouteImport } from './routes/_authenticated/admin/places'
 import { Route as AuthenticatedPlacesNewRouteImport } from './routes/_authenticated/places.new'
 
 const IndexRoute = IndexRouteImport.update({
@@ -76,6 +77,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminPlacesRoute =
+  AuthenticatedAdminPlacesRouteImport.update({
+    id: '/places',
+    path: '/places',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedPlacesNewRoute = AuthenticatedPlacesNewRouteImport.update({
   id: '/places/new',
   path: '/places/new',
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/my-places': typeof AuthenticatedMyPlacesRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/places/$slug': typeof PlacesSlugRoute
+  '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/places/new': typeof AuthenticatedPlacesNewRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -104,6 +112,7 @@ export interface FileRoutesByTo {
   '/my-places': typeof AuthenticatedMyPlacesRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/places/$slug': typeof PlacesSlugRoute
+  '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/places/new': typeof AuthenticatedPlacesNewRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -119,6 +128,7 @@ export interface FileRoutesById {
   '/_authenticated/my-places': typeof AuthenticatedMyPlacesRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/places/$slug': typeof PlacesSlugRoute
+  '/_authenticated/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/_authenticated/places/new': typeof AuthenticatedPlacesNewRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
     | '/my-places'
     | '/profile'
     | '/places/$slug'
+    | '/admin/places'
     | '/places/new'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -146,6 +157,7 @@ export interface FileRouteTypes {
     | '/my-places'
     | '/profile'
     | '/places/$slug'
+    | '/admin/places'
     | '/places/new'
     | '/admin'
   id:
@@ -160,6 +172,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-places'
     | '/_authenticated/profile'
     | '/places/$slug'
+    | '/_authenticated/admin/places'
     | '/_authenticated/places/new'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/places': {
+      id: '/_authenticated/admin/places'
+      path: '/places'
+      fullPath: '/admin/places'
+      preLoaderRoute: typeof AuthenticatedAdminPlacesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/places/new': {
       id: '/_authenticated/places/new'
       path: '/places/new'
@@ -263,11 +283,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminPlacesRoute: typeof AuthenticatedAdminPlacesRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminPlacesRoute: AuthenticatedAdminPlacesRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }
 
