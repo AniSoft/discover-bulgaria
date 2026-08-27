@@ -57,7 +57,7 @@ export function CommunityCta() {
               {t("communityCta.description")}
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-6">
-              <ButtonLink to="/places/new" variant="primary" size="lg">
+              <ButtonLink to="/places/new" variant="primary" size="lg" className="group">
                 {t("communityCta.addPlace")}
                 <ArrowRight
                   className="size-4 transition-transform duration-300 group-hover:translate-x-1"
