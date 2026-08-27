@@ -249,3 +249,56 @@
   background: var(--accent);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--card) 80%, transparent);
 }
+
+/* --- Atlas map illustration motion --- */
+.atlas-route {
+  stroke-dashoffset: 0;
+  animation: atlas-trail 24s linear infinite;
+}
+.atlas-pulse {
+  transform-origin: center;
+  opacity: 0.5;
+  animation: atlas-pulse 3.6s ease-out infinite;
+}
+.atlas-needle {
+  transform-origin: center;
+  animation: atlas-needle 9s ease-in-out infinite;
+}
+@keyframes atlas-trail {
+  to {
+    stroke-dashoffset: -170;
+  }
+}
+@keyframes atlas-pulse {
+  0% {
+    transform: scale(0.72);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+@keyframes atlas-needle {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atlas-route,
+  .atlas-pulse,
+  .atlas-needle {
+    animation: none;
+  }
+  .atlas-pulse {
+    opacity: 0.35;
+  }
+}
