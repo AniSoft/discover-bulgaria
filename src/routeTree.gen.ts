@@ -10,20 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as CategoriesRouteImport } from './routes/categories'
-import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as MyPlacesRouteImport } from './routes/my-places'
-import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as AuthenticatedFavoritesRouteImport } from './routes/_authenticated/favorites'
+import { Route as AuthenticatedMyPlacesRouteImport } from './routes/_authenticated/my-places'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminPlacesRouteImport } from './routes/admin.places'
 import { Route as PlacesSlugRouteImport } from './routes/places.$slug'
-import { Route as PlacesNewRouteImport } from './routes/places.new'
+import { Route as AuthenticatedPlacesNewRouteImport } from './routes/_authenticated/places.new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategoriesRoute = CategoriesRouteImport.update({
@@ -31,30 +36,30 @@ const CategoriesRoute = CategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FavoritesRoute = FavoritesRouteImport.update({
-  id: '/favorites',
-  path: '/favorites',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MyPlacesRoute = MyPlacesRouteImport.update({
-  id: '/my-places',
-  path: '/my-places',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedFavoritesRoute = AuthenticatedFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMyPlacesRoute = AuthenticatedMyPlacesRouteImport.update({
+  id: '/my-places',
+  path: '/my-places',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
@@ -71,105 +76,104 @@ const PlacesSlugRoute = PlacesSlugRouteImport.update({
   path: '/places/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlacesNewRoute = PlacesNewRouteImport.update({
+const AuthenticatedPlacesNewRoute = AuthenticatedPlacesNewRouteImport.update({
   id: '/places/new',
   path: '/places/new',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
-  '/favorites': typeof FavoritesRoute
   '/login': typeof LoginRoute
-  '/my-places': typeof MyPlacesRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/favorites': typeof AuthenticatedFavoritesRoute
+  '/my-places': typeof AuthenticatedMyPlacesRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/admin/places': typeof AdminPlacesRoute
   '/places/$slug': typeof PlacesSlugRoute
-  '/places/new': typeof PlacesNewRoute
   '/admin/': typeof AdminIndexRoute
+  '/places/new': typeof AuthenticatedPlacesNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
-  '/favorites': typeof FavoritesRoute
   '/login': typeof LoginRoute
-  '/my-places': typeof MyPlacesRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/favorites': typeof AuthenticatedFavoritesRoute
+  '/my-places': typeof AuthenticatedMyPlacesRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/admin/places': typeof AdminPlacesRoute
   '/places/$slug': typeof PlacesSlugRoute
-  '/places/new': typeof PlacesNewRoute
   '/admin': typeof AdminIndexRoute
+  '/places/new': typeof AuthenticatedPlacesNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/categories': typeof CategoriesRoute
-  '/favorites': typeof FavoritesRoute
   '/login': typeof LoginRoute
-  '/my-places': typeof MyPlacesRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/_authenticated/favorites': typeof AuthenticatedFavoritesRoute
+  '/_authenticated/my-places': typeof AuthenticatedMyPlacesRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/admin/places': typeof AdminPlacesRoute
   '/places/$slug': typeof PlacesSlugRoute
-  '/places/new': typeof PlacesNewRoute
   '/admin/': typeof AdminIndexRoute
+  '/_authenticated/places/new': typeof AuthenticatedPlacesNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/categories'
-    | '/favorites'
     | '/login'
+    | '/register'
+    | '/favorites'
     | '/my-places'
     | '/profile'
-    | '/register'
     | '/admin/places'
     | '/places/$slug'
-    | '/places/new'
     | '/admin/'
+    | '/places/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/categories'
-    | '/favorites'
     | '/login'
+    | '/register'
+    | '/favorites'
     | '/my-places'
     | '/profile'
-    | '/register'
     | '/admin/places'
     | '/places/$slug'
-    | '/places/new'
     | '/admin'
+    | '/places/new'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/categories'
-    | '/favorites'
     | '/login'
-    | '/my-places'
-    | '/profile'
     | '/register'
+    | '/_authenticated/favorites'
+    | '/_authenticated/my-places'
+    | '/_authenticated/profile'
     | '/admin/places'
     | '/places/$slug'
-    | '/places/new'
     | '/admin/'
+    | '/_authenticated/places/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   CategoriesRoute: typeof CategoriesRoute
-  FavoritesRoute: typeof FavoritesRoute
   LoginRoute: typeof LoginRoute
-  MyPlacesRoute: typeof MyPlacesRoute
-  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   AdminPlacesRoute: typeof AdminPlacesRoute
   PlacesSlugRoute: typeof PlacesSlugRoute
-  PlacesNewRoute: typeof PlacesNewRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -182,18 +186,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/categories': {
       id: '/categories'
       path: '/categories'
       fullPath: '/categories'
       preLoaderRoute: typeof CategoriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/favorites': {
-      id: '/favorites'
-      path: '/favorites'
-      fullPath: '/favorites'
-      preLoaderRoute: typeof FavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -203,26 +207,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/my-places': {
-      id: '/my-places'
-      path: '/my-places'
-      fullPath: '/my-places'
-      preLoaderRoute: typeof MyPlacesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/register': {
       id: '/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/favorites': {
+      id: '/_authenticated/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof AuthenticatedFavoritesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-places': {
+      id: '/_authenticated/my-places'
+      path: '/my-places'
+      fullPath: '/my-places'
+      preLoaderRoute: typeof AuthenticatedMyPlacesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/admin/': {
       id: '/admin/'
@@ -245,27 +256,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlacesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/places/new': {
-      id: '/places/new'
+    '/_authenticated/places/new': {
+      id: '/_authenticated/places/new'
       path: '/places/new'
       fullPath: '/places/new'
-      preLoaderRoute: typeof PlacesNewRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedPlacesNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedFavoritesRoute: typeof AuthenticatedFavoritesRoute
+  AuthenticatedMyPlacesRoute: typeof AuthenticatedMyPlacesRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedPlacesNewRoute: typeof AuthenticatedPlacesNewRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedFavoritesRoute: AuthenticatedFavoritesRoute,
+  AuthenticatedMyPlacesRoute: AuthenticatedMyPlacesRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedPlacesNewRoute: AuthenticatedPlacesNewRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   CategoriesRoute: CategoriesRoute,
-  FavoritesRoute: FavoritesRoute,
   LoginRoute: LoginRoute,
-  MyPlacesRoute: MyPlacesRoute,
-  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   AdminPlacesRoute: AdminPlacesRoute,
   PlacesSlugRoute: PlacesSlugRoute,
-  PlacesNewRoute: PlacesNewRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
