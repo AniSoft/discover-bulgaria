@@ -1,0 +1,33 @@
+export const en = {
+  "nav.explore": "Explore",
+  "nav.categories": "Categories",
+  "nav.addPlace": "Add a Place",
+  "nav.favorites": "Favorites",
+  "nav.signIn": "Sign In",
+  "nav.profile": "Profile",
+  "nav.myPlaces": "My Places",
+  "nav.signOut": "Sign Out",
+  "nav.adminDashboard": "Admin Dashboard",
+  "nav.managePlaces": "Manage Places",
+  "nav.main": "Main navigation",
+  "nav.mobile": "Mobile navigation",
+  "nav.accountMenu": "Account menu for {name}",
+  "nav.account": "Account",
+} as const;
+
+export const bg: Record<keyof typeof en, string> = {
+  "nav.explore": "Разгледай",
+  "nav.categories": "Категории",
+  "nav.addPlace": "Добави място",
+  "nav.favorites": "Любими",
+  "nav.signIn": "Вход",
+  "nav.profile": "Профил",
+  "nav.myPlaces": "Моите места",
+  "nav.signOut": "Изход",
+  "nav.adminDashboard": "Админ панел",
+  "nav.managePlaces": "Управление на места",
+  "nav.main": "Основна навигация",
+  "nav.mobile": "Мобилна навигация",
+  "nav.accountMenu": "Меню на профила на {name}",
+  "nav.account": "Профил",
+};
