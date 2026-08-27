@@ -24,7 +24,7 @@ export function authorLabel(place: AdminPlace, communityMemberLabel: string) {
 }
 
 export function AdminPlaceRow({
-  place,
+  place: source,
   onApprove,
   onReject,
   onDelete,
@@ -34,6 +34,7 @@ export function AdminPlaceRow({
   onReject: (place: AdminPlace) => void;
   onDelete: (place: AdminPlace) => void;
 }) {
+  const place = useLocalizedPlace(source);
   const t = useT();
   const canApprove = place.status !== "published";
   const canReject = place.status !== "rejected";
