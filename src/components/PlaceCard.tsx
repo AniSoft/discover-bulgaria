@@ -31,16 +31,16 @@ export function PlaceCard({ place }: { place: PublicPlace }) {
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-2xl leading-snug text-foreground">{place.title}</h3>
+        <h3 className="line-clamp-2 text-2xl leading-snug text-foreground">{place.title}</h3>
         <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
-          <MapPin className="size-4" aria-hidden="true" />
-          {placeLocation(place)}
+          <MapPin className="size-4 shrink-0" aria-hidden="true" />
+          <span className="truncate">{placeLocation(place)}</span>
         </p>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
           {place.short_description}
         </p>
 
-        <div className="mt-5 flex items-center justify-between gap-3 border-t border-border pt-4">
+        <div className="mt-5 flex items-center justify-between gap-3 border-t border-border pt-4 mt-auto">
           <span className="flex items-center gap-1.5 text-sm text-foreground">
             {practical ? (
               <>
