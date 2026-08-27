@@ -3,6 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { PublicPlaceDetail } from "@/lib/places.functions";
 import type { PlacePhoto } from "@/lib/place-photos.shared";
+import { DETAIL_BG_COLUMNS, LIST_BG_COLUMNS, type PlaceBgFields } from "@/lib/place-i18n.shared";
 
 export type OwnedPlace = {
   id: string;
@@ -17,10 +18,9 @@ export type OwnedPlace = {
   status: string;
   created_at: string;
   cover_url: string | null;
-};
+} & PlaceBgFields;
 
-const OWNED_COLUMNS =
-  "id, slug, title, region, city, category, short_description, approximate_cost, duration, status, created_at";
+const OWNED_COLUMNS = `id, slug, title, region, city, category, short_description, approximate_cost, duration, status, created_at, ${LIST_BG_COLUMNS}`;
 
 /** Lists places owned by the signed-in user, any status. RLS scopes the rows. */
 export const listMyPlaces = createServerFn({ method: "GET" })
@@ -72,8 +72,7 @@ export const deleteMyPlace = createServerFn({ method: "POST" })
     return { id: data.id };
   });
 
-const DETAIL_COLUMNS =
-  "id, slug, title, region, city, category, short_description, approximate_cost, duration, description, why_visit, location_text, suitable_for, best_time, difficulty, local_secret, status";
+const DETAIL_COLUMNS = `id, slug, title, region, city, category, short_description, approximate_cost, duration, description, why_visit, location_text, suitable_for, best_time, difficulty, local_secret, status, ${DETAIL_BG_COLUMNS}`;
 
 /** Owner-only preview of a place that is not published yet. */
 export const getOwnedPlaceBySlug = createServerFn({ method: "GET" })

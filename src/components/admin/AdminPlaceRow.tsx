@@ -5,6 +5,7 @@ import { StatusBadge } from "@/components/places/OwnedPlaceCard";
 import type { AdminPlace } from "@/lib/admin-places.functions";
 import { placeLocation } from "@/lib/place-display";
 import { useT } from "@/lib/i18n";
+import { useLocalizedPlace } from "@/lib/place-i18n";
 
 export function formatDate(value: string) {
   try {
@@ -23,7 +24,7 @@ export function authorLabel(place: AdminPlace, communityMemberLabel: string) {
 }
 
 export function AdminPlaceRow({
-  place,
+  place: source,
   onApprove,
   onReject,
   onDelete,
@@ -33,6 +34,7 @@ export function AdminPlaceRow({
   onReject: (place: AdminPlace) => void;
   onDelete: (place: AdminPlace) => void;
 }) {
+  const place = useLocalizedPlace(source);
   const t = useT();
   const canApprove = place.status !== "published";
   const canReject = place.status !== "rejected";

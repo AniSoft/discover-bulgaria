@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, Eye, MapPin } from "lucide-react";
 import { Button, buttonClasses } from "@/components/AppButton";
+import { useLocalizedPlaces } from "@/lib/place-i18n";
 import { StatusBadge } from "@/components/places/OwnedPlaceCard";
 import { authorLabel, formatDate } from "@/components/admin/AdminPlaceRow";
 import {
@@ -31,6 +32,7 @@ function AdminDashboardPage() {
   const t = useT();
   const stats = useQuery(adminStatsQueryOptions());
   const recent = useQuery(adminRecentSubmissionsQueryOptions());
+  const recentPlaces = useLocalizedPlaces(recent.data);
 
   const cards = [
     { label: t("admin.waitingForReview"), value: stats.data?.for_review },
@@ -118,7 +120,7 @@ function AdminDashboardPage() {
               <p className="text-sm text-muted-foreground">{t("admin.noRecentSubmissions")}</p>
             </div>
           ) : (
-            recent.data?.map((place) => (
+            recentPlaces.map((place) => (
               <article
                 key={place.id}
                 className="flex flex-wrap items-center justify-between gap-4 rounded-[var(--radius-card)] border border-border bg-card p-5 shadow-card"

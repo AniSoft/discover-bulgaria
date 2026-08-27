@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { LIST_BG_COLUMNS, type PlaceBgFields } from "@/lib/place-i18n.shared";
 
 export type AdminPlace = {
   id: string;
@@ -13,7 +14,7 @@ export type AdminPlace = {
   created_at: string;
   owner_id: string | null;
   author: string | null;
-};
+} & PlaceBgFields;
 
 export type AdminStats = {
   for_review: number;
@@ -22,8 +23,7 @@ export type AdminStats = {
   total: number;
 };
 
-const ADMIN_COLUMNS =
-  "id, slug, title, region, city, category, status, created_at, owner_id";
+const ADMIN_COLUMNS = `id, slug, title, region, city, category, status, created_at, owner_id, ${LIST_BG_COLUMNS}`;
 
 const statusValues = ["for_review", "published", "rejected"] as const;
 

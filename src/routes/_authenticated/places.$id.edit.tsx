@@ -52,6 +52,15 @@ function toFormValues(place: EditablePlace): PlaceFormValues {
     difficulty: place.difficulty ?? "",
     why_visit: place.why_visit ?? "",
     local_secret: place.local_secret ?? "",
+    title_bg: place.title_bg ?? "",
+    short_description_bg: place.short_description_bg ?? "",
+    description_bg: place.description_bg ?? "",
+    why_visit_bg: place.why_visit_bg ?? "",
+    city_bg: place.city_bg ?? "",
+    best_time_bg: place.best_time_bg ?? "",
+    duration_bg: place.duration_bg ?? "",
+    location_text_bg: place.location_text_bg ?? "",
+    local_secret_bg: place.local_secret_bg ?? "",
   };
 }
 
@@ -231,6 +240,7 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
           errors={errors}
           onChange={onChange}
           photosSlot={<PhotoManager placeId={place.id} />}
+          showTranslations={isAdmin}
         />
 
         {mutation.isError ? (

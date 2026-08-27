@@ -3,6 +3,11 @@ import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
 import type { PlacePhoto } from "@/lib/place-photos.shared";
+import {
+  EXTRA_DETAIL_BG_COLUMNS,
+  LIST_BG_COLUMNS,
+  type PlaceBgFields,
+} from "@/lib/place-i18n.shared";
 
 export type PublicPlace = {
   id: string;
@@ -15,7 +20,7 @@ export type PublicPlace = {
   approximate_cost: string | null;
   duration: string | null;
   cover_url: string | null;
-};
+} & PlaceBgFields;
 
 export type PublicPlaceDetail = PublicPlace & {
   description: string;
@@ -26,10 +31,10 @@ export type PublicPlaceDetail = PublicPlace & {
   difficulty: string | null;
   local_secret: string | null;
   photos: PlacePhoto[];
-};
+} & PlaceBgFields;
 
 const PUBLIC_COLUMNS =
-  "id, slug, title, region, city, category, short_description, approximate_cost, duration";
+  `id, slug, title, region, city, category, short_description, approximate_cost, duration, ${LIST_BG_COLUMNS}`;
 
 function publicClient() {
   return createClient<Database>(
@@ -107,7 +112,7 @@ export const getPublishedCategoryCounts = createServerFn({ method: "GET" }).hand
   },
 );
 
-const DETAIL_COLUMNS = `${PUBLIC_COLUMNS}, description, why_visit, location_text, suitable_for, best_time, difficulty, local_secret`;
+const DETAIL_COLUMNS = `${PUBLIC_COLUMNS}, description, why_visit, location_text, suitable_for, best_time, difficulty, local_secret, ${EXTRA_DETAIL_BG_COLUMNS}`;
 
 export const getPublishedPlaceBySlug = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.object({ slug: z.string().min(1).max(120) }).parse(data))
