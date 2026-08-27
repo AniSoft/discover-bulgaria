@@ -24,7 +24,7 @@ export const featuredPlaces: Place[] = [
     category: "Sea",
     description:
       "Sun-bleached rock arches and sea caves where the Black Sea turns an improbable shade of blue.",
-    practical: "Free · 2-3 h",
+    practical: "Free · 2–3 h",
     image: tyulenovo,
     alt: "Aerial view of red sea cliffs and a rock arch above deep blue water",
   },
@@ -46,7 +46,7 @@ export const featuredPlaces: Place[] = [
     category: "History & Culture",
     description:
       "An Ottoman-era arch spanning the Arda gorge, wrapped in morning mist and older legends.",
-    practical: "Free · 1-2 h",
+    practical: "Free · 1–2 h",
     image: devilsBridge,
     alt: "Old stone arch bridge crossing a misty river gorge",
   },
@@ -57,7 +57,7 @@ export const featuredPlaces: Place[] = [
     category: "Best Views",
     description:
       "Towering sandstone pillars that swallow a medieval fortress and glow deep red at sunset.",
-    practical: "8 lv · 2-3 h",
+    practical: "€4 · 2–3 h",
     image: belogradchik,
     alt: "Red sandstone rock formations glowing at sunset above green forest",
   },
@@ -68,7 +68,7 @@ export const featuredPlaces: Place[] = [
     category: "Food & Wine",
     description:
       "Whitewashed Rhodope houses, bagpipe schools and slow winter meals beside a mountain river.",
-    practical: "Free · 3-4 h",
+    practical: "Free · 3–4 h",
     image: shirokaLaka,
     alt: "White Rhodope village houses with dark wooden balconies in winter",
   },
@@ -79,7 +79,7 @@ export const featuredPlaces: Place[] = [
     category: "Photo Spots",
     description:
       "A Thracian rock sanctuary hidden in oak forest a short walk from the sea, best at first light.",
-    practical: "5 lv · 1-2 h",
+    practical: "€2.50 · 1–2 h",
     image: beglikTash,
     alt: "Megalithic stone sanctuary surrounded by oak forest in morning light",
   },
