@@ -4,6 +4,7 @@ import devilsBridge from "@/assets/place-devils-bridge.jpg";
 import belogradchik from "@/assets/place-belogradchik.jpg";
 import shirokaLaka from "@/assets/place-shiroka-laka.jpg";
 import beglikTash from "@/assets/place-beglik-tash.jpg";
+import neutralPlaceholder from "@/assets/placeholder-neutral.svg";
 import hiddenGems from "@/assets/cat-hidden-gems.jpg";
 import nature from "@/assets/cat-nature.jpg";
 import mountains from "@/assets/cat-mountains.jpg";
@@ -22,6 +23,9 @@ const bySlug: Record<string, string> = {
   "belogradchik-rocks": belogradchik,
   "shiroka-laka": shirokaLaka,
   "beglik-tash": beglikTash,
+  // No verified Prohodna Cave photo exists yet — use the neutral placeholder
+  // instead of the Nature category image (a waterfall), which is unrelated.
+  "prohodna-cave": neutralPlaceholder,
 };
 
 const byCategory: Record<string, string> = {
