@@ -18,7 +18,7 @@ export function Hero() {
 
       <div className="container-page relative pt-28 pb-16 md:pt-32">
         <div className="max-w-3xl">
-          <h1 className="text-4xl leading-[1.05] text-primary-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="text-4xl leading-[1.05] text-primary-foreground sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
             Discover Bulgaria
           </h1>
           <p className="mt-5 max-w-xl text-base text-primary-foreground/85 sm:text-lg">

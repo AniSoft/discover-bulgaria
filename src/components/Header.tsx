@@ -33,29 +33,31 @@ export function Header() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-250",
-        transparent ? "bg-transparent" : "border-b border-border bg-background/95 backdrop-blur-sm",
+        transparent
+          ? "bg-linear-to-b from-overlay/55 via-overlay/20 to-transparent"
+          : "border-b border-border bg-background/95 backdrop-blur-sm",
       )}
     >
-      <div className="container-page flex h-18 items-center justify-between gap-6">
+      <div className="container-page flex h-20 items-center justify-between gap-6">
         <Link
           to="/"
           className={cn(
-            "font-display text-xl tracking-tight transition-colors duration-250 sm:text-2xl",
-            transparent ? "text-primary-foreground" : "text-primary",
+            "font-display text-2xl tracking-tight transition-colors duration-250 sm:text-[1.7rem]",
+            transparent ? "text-primary-foreground drop-shadow-[0_1px_6px_oklch(0_0_0/45%)]" : "text-primary",
           )}
         >
           Discover Bulgaria
         </Link>
 
-        <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
+        <nav aria-label="Main navigation" className="hidden items-center gap-9 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               to={link.to}
               className={cn(
-                "text-sm font-medium transition-colors duration-250",
+                "text-base font-medium transition-colors duration-250",
                 transparent
-                  ? "text-primary-foreground/90 hover:text-primary-foreground"
+                  ? "text-primary-foreground hover:text-primary-foreground/80 drop-shadow-[0_1px_4px_oklch(0_0_0/45%)]"
                   : "text-foreground/80 hover:text-primary",
               )}
               activeOptions={{ exact: link.to === "/" }}
@@ -67,9 +69,9 @@ export function Header() {
           <Link
             to="/login"
             className={cn(
-              "rounded-[var(--radius-button)] px-5 py-2.5 text-sm font-medium transition-colors duration-250",
+              "rounded-[var(--radius-button)] px-5 py-2.5 text-[15px] font-medium transition-colors duration-250",
               transparent
-                ? "border border-primary-foreground/60 text-primary-foreground hover:bg-primary-foreground/10"
+                ? "border border-primary-foreground/70 bg-overlay/25 text-primary-foreground backdrop-blur-sm hover:bg-primary-foreground/15"
                 : "bg-primary text-primary-foreground hover:bg-primary-hover",
             )}
           >
