@@ -49,22 +49,38 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-250",
+        "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-500",
         transparent
-          ? "bg-linear-to-b from-overlay/55 via-overlay/20 to-transparent"
-          : "border-b border-border bg-background/95 backdrop-blur-sm",
+          ? "bg-linear-to-b from-overlay/60 via-overlay/25 to-transparent"
+          : "border-b border-border bg-background/92 backdrop-blur-md",
       )}
     >
-      <div className="container-page flex h-20 items-center justify-between gap-6">
+      <div className="container-page flex h-20 items-center justify-between gap-6 md:h-[5.5rem]">
         <Link
           to="/"
           className={cn(
-            "font-display text-2xl tracking-tight transition-colors duration-250 sm:text-[1.7rem]",
-            transparent ? "text-primary-foreground drop-shadow-[0_1px_6px_oklch(0_0_0/45%)]" : "text-primary",
+            "group flex items-center gap-2.5 transition-colors duration-500",
+            transparent
+              ? "text-primary-foreground drop-shadow-[0_1px_6px_oklch(0_0_0/45%)]"
+              : "text-primary",
           )}
         >
-          Discover Bulgaria
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className="size-5 shrink-0 opacity-80 transition-transform duration-500 group-hover:rotate-45"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          >
+            <circle cx="12" cy="12" r="9.2" />
+            <path d="M15.6 8.4 10.9 10.9 8.4 15.6 13.1 13.1Z" />
+          </svg>
+          <span className="font-display text-[1.45rem] leading-none tracking-[-0.02em] sm:text-[1.6rem]">
+            Discover <span className="italic">Bulgaria</span>
+          </span>
         </Link>
+
 
         <nav aria-label={t("nav.main")} className="hidden items-center gap-9 md:flex">
           {navLinks.map((link) => (
