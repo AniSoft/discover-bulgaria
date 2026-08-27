@@ -24,14 +24,14 @@ function MapMotif() {
       aria-hidden="true"
     >
       {/* Topographic contour bands — soft sage / moss */}
-      <g stroke="hsl(var(--stone))" strokeWidth="1" opacity="0.55" fill="none">
+      <g stroke="var(--stone)" strokeWidth="1" opacity="0.55" fill="none">
         <path d="M-20 330C80 310 160 345 260 325C360 305 430 340 500 320" />
         <path d="M-20 352C90 332 170 366 270 346C370 326 440 360 500 342" />
         <path d="M-20 22C70 40 150 8 250 26C350 44 430 12 500 30" opacity="0.7" />
       </g>
 
       {/* Inner terrain contours echoing the silhouette */}
-      <g stroke="hsl(var(--stone))" strokeWidth="1" fill="none" opacity="0.6">
+      <g stroke="var(--stone)" strokeWidth="1" fill="none" opacity="0.6">
         <path
           d={BG_OUTLINE}
           transform="translate(230 172) scale(0.82) translate(-230 -172)"
@@ -51,7 +51,7 @@ function MapMotif() {
       {/* Bulgaria silhouette — deep forest */}
       <path
         d={BG_OUTLINE}
-        stroke="hsl(var(--forest))"
+        stroke="var(--forest)"
         strokeWidth="1.4"
         strokeLinejoin="round"
         fill="hsl(var(--forest) / 0.045)"
@@ -60,7 +60,7 @@ function MapMotif() {
       {/* Expedition route — terracotta */}
       <path
         d={ROUTE}
-        stroke="hsl(var(--accent))"
+        stroke="var(--accent)"
         strokeWidth="1.5"
         strokeDasharray="2 7"
         strokeLinecap="round"
@@ -70,20 +70,20 @@ function MapMotif() {
       {/* Destination markers */}
       {MARKERS.map((m, i) => (
         <g key={i}>
-          <circle cx={m.x} cy={m.y} r="9" stroke="hsl(var(--accent))" strokeWidth="1" opacity="0.45" />
-          <circle cx={m.x} cy={m.y} r="3" fill="hsl(var(--accent))" />
+          <circle cx={m.x} cy={m.y} r="9" stroke="var(--accent)" strokeWidth="1" opacity="0.45" />
+          <circle cx={m.x} cy={m.y} r="3" fill="var(--accent)" />
         </g>
       ))}
 
       {/* Minimal compass rose */}
       <g transform="translate(56 326)" opacity="0.7">
-        <circle r="14" stroke="hsl(var(--forest))" strokeWidth="1" opacity="0.6" />
-        <path d="M0 -10L3 0L0 10L-3 0Z" fill="hsl(var(--accent))" />
-        <path d="M-10 0L0 3L10 0L0 -3Z" fill="hsl(var(--forest))" opacity="0.55" />
+        <circle r="14" stroke="var(--forest)" strokeWidth="1" opacity="0.6" />
+        <path d="M0 -10L3 0L0 10L-3 0Z" fill="var(--accent)" />
+        <path d="M-10 0L0 3L10 0L0 -3Z" fill="var(--forest)" opacity="0.55" />
       </g>
 
       {/* Coordinate ticks */}
-      <g stroke="hsl(var(--forest))" strokeWidth="1" opacity="0.35">
+      <g stroke="var(--forest)" strokeWidth="1" opacity="0.35">
         <path d="M442 300v20M432 310h20" />
       </g>
     </svg>
