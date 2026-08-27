@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, Copy, ExternalLink, Navigation } from "lucide-react";
-import { toast } from "sonner";
 import { useT } from "@/lib/i18n";
 import { buttonClasses } from "@/components/AppButton";
 import {
@@ -17,7 +16,6 @@ import { cn } from "@/lib/utils";
 function openExternal(url: string) {
   const newWindow = window.open(url, "_blank", "noopener,noreferrer");
   if (newWindow) newWindow.opener = null;
-  return Boolean(newWindow);
 }
 
 /** Decorative contour motif — never interactive. */
@@ -261,11 +259,7 @@ export function PlaceMapSection({
               <dd className="mt-3 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => {
-                    if (!openExternal(directionsUrl(coords, query))) {
-                      toast.error(t("map.popupBlocked"));
-                    }
-                  }}
+                  onClick={() => openExternal(directionsUrl(coords, query))}
                   className={buttonClasses("primary", "md", "rounded-[8px]")}
                 >
                   <Navigation className="size-4" aria-hidden="true" />
@@ -273,11 +267,7 @@ export function PlaceMapSection({
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (!openExternal(googleMapsUrl(coords, query))) {
-                      toast.error(t("map.popupBlocked"));
-                    }
-                  }}
+                  onClick={() => openExternal(googleMapsUrl(coords, query))}
                   className={buttonClasses("outline", "md", "rounded-[8px]")}
                 >
                   <ExternalLink className="size-4" aria-hidden="true" />

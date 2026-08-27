@@ -12,7 +12,6 @@ export const en = {
   "map.copied": "Coordinates copied",
   "map.loading": "Loading map",
   "map.error": "The map cannot be loaded right now.",
-  "map.popupBlocked": "Your browser blocked Google Maps from opening. Allow pop-ups and try again.",
   "map.aria": "Map showing the location of {title}",
   "map.markerAria": "{title} destination marker",
 } as const;
@@ -31,7 +30,6 @@ export const bg: Record<keyof typeof en, string> = {
   "map.copied": "Координатите са копирани",
   "map.loading": "Картата се зарежда",
   "map.error": "Картата не може да бъде заредена в момента.",
-  "map.popupBlocked": "Браузърът блокира отварянето на Google Maps. Разрешете изскачащите прозорци и опитайте отново.",
   "map.aria": "Карта с местоположението на {title}",
   "map.markerAria": "Маркер за {title}",
 };
