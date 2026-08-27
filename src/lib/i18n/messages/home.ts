@@ -46,6 +46,7 @@ export const en = {
   "communityCta.description": "Share a corner of Bulgaria worth remembering and help someone else discover its story.",
   "communityCta.addPlace": "Add a place",
   "communityCta.note": "Your next discovery starts here",
+  "communityCta.mapLabel": "A country shaped by roads, ridgelines and stories",
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
@@ -96,4 +97,5 @@ export const bg: Record<keyof typeof en, string> = {
   "communityCta.description": "Сподели кътче от България, което си струва да бъде запомнено, и помогни на някой друг да открие неговата история.",
   "communityCta.addPlace": "Добави място",
   "communityCta.note": "Следващото откритие започва оттук",
+  "communityCta.mapLabel": "Страна, оформена от пътища, била и истории",
 };

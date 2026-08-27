@@ -2,37 +2,89 @@ import { ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/AppButton";
 import { useT } from "@/lib/i18n";
 
-function RouteMotif() {
+// Stylized editorial silhouette of Bulgaria — conceptual cartography, not a literal map.
+const BG_OUTLINE =
+  "M45 55C70 40 95 60 120 50C150 42 175 60 205 55C240 50 260 65 295 55C330 48 360 60 395 55C410 90 405 120 415 150C410 190 420 230 405 265C370 290 340 275 310 285C275 295 250 278 220 288C190 296 170 280 145 290C120 270 130 245 115 220C100 195 115 170 100 145C85 120 95 90 70 75C55 66 48 60 45 55Z";
+
+// Conceptual route: Black Sea coast → Rhodopes → Northwest rocks.
+const ROUTE = "M398 180C340 210 300 250 225 262C165 272 130 200 108 140C100 118 98 102 96 96";
+
+const MARKERS: ReadonlyArray<{ x: number; y: number }> = [
+  { x: 398, y: 180 },
+  { x: 225, y: 262 },
+  { x: 96, y: 96 },
+];
+
+function MapMotif() {
   return (
     <svg
       viewBox="0 0 480 380"
-      className="h-auto w-full max-w-[480px] text-forest"
+      className="h-auto w-full max-w-[480px]"
       fill="none"
       aria-hidden="true"
     >
-      <g opacity="0.16" stroke="currentColor" strokeWidth="1">
-        <ellipse cx="250" cy="200" rx="200" ry="140" />
-        <ellipse cx="250" cy="200" rx="160" ry="110" />
-        <ellipse cx="250" cy="200" rx="120" ry="82" />
-        <ellipse cx="250" cy="200" rx="80" ry="54" />
-        <ellipse cx="250" cy="200" rx="42" ry="28" />
+      {/* Topographic contour bands — soft sage / moss */}
+      <g stroke="var(--stone)" strokeWidth="1" opacity="0.55" fill="none">
+        <path d="M-20 330C80 310 160 345 260 325C360 305 430 340 500 320" />
+        <path d="M-20 352C90 332 170 366 270 346C370 326 440 360 500 342" />
+        <path d="M-20 22C70 40 150 8 250 26C350 44 430 12 500 30" opacity="0.7" />
       </g>
+
+      {/* Inner terrain contours echoing the silhouette */}
+      <g stroke="var(--stone)" strokeWidth="1" fill="none" opacity="0.6">
+        <path
+          d={BG_OUTLINE}
+          transform="translate(230 172) scale(0.82) translate(-230 -172)"
+        />
+        <path
+          d={BG_OUTLINE}
+          transform="translate(230 172) scale(0.62) translate(-230 -172)"
+          opacity="0.65"
+        />
+        <path
+          d={BG_OUTLINE}
+          transform="translate(230 172) scale(0.4) translate(-230 -172)"
+          opacity="0.45"
+        />
+      </g>
+
+      {/* Bulgaria silhouette — deep forest */}
       <path
-        d="M40 300C120 250 140 150 230 140C320 130 330 70 420 82"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeDasharray="6 7"
-        strokeLinecap="round"
-        className="text-accent"
-        opacity="0.75"
+        d={BG_OUTLINE}
+        stroke="var(--forest)"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+        fill="color-mix(in oklab, var(--forest) 5%, transparent)"
       />
-      <circle cx="40" cy="300" r="3.5" fill="currentColor" className="text-forest" opacity="0.5" />
-      <g className="text-accent">
-        <circle cx="420" cy="82" r="6" fill="currentColor" />
-        <circle cx="420" cy="82" r="13" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+
+      {/* Expedition route — terracotta */}
+      <path
+        d={ROUTE}
+        stroke="var(--accent)"
+        strokeWidth="1.5"
+        strokeDasharray="2 7"
+        strokeLinecap="round"
+        opacity="0.9"
+      />
+
+      {/* Destination markers */}
+      {MARKERS.map((m, i) => (
+        <g key={i}>
+          <circle cx={m.x} cy={m.y} r="9" stroke="var(--accent)" strokeWidth="1" opacity="0.45" />
+          <circle cx={m.x} cy={m.y} r="3" fill="var(--accent)" />
+        </g>
+      ))}
+
+      {/* Minimal compass rose */}
+      <g transform="translate(56 326)" opacity="0.7">
+        <circle r="14" stroke="var(--forest)" strokeWidth="1" opacity="0.6" />
+        <path d="M0 -10L3 0L0 10L-3 0Z" fill="var(--accent)" />
+        <path d="M-10 0L0 3L10 0L0 -3Z" fill="var(--forest)" opacity="0.55" />
       </g>
-      <g stroke="currentColor" strokeWidth="1" opacity="0.35">
-        <path d="M60 60v22M49 71h22" />
+
+      {/* Coordinate ticks */}
+      <g stroke="var(--forest)" strokeWidth="1" opacity="0.35">
+        <path d="M442 300v20M432 310h20" />
       </g>
     </svg>
   );
@@ -67,8 +119,11 @@ export function CommunityCta() {
               <span className="eyebrow text-muted-foreground/80">{t("communityCta.note")}</span>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end">
-            <RouteMotif />
+          <div className="flex flex-col items-center gap-6 lg:items-end">
+            <MapMotif />
+            <p className="eyebrow max-w-[340px] text-center text-muted-foreground/80 lg:text-right">
+              {t("communityCta.mapLabel")}
+            </p>
           </div>
         </div>
       </div>
