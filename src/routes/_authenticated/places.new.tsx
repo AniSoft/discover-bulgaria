@@ -10,7 +10,7 @@ import {
   type PlaceFormValues,
 } from "@/components/places/PlaceFormFields";
 import { PhotoPicker, type PickedPhoto } from "@/components/places/PhotoPicker";
-import { uploadPlacePhoto } from "@/lib/place-photos.client";
+import { uploadPlacePhoto } from "@/lib/place-photos.upload";
 import { createPlace } from "@/lib/place-submit.functions";
 import { placeSubmissionSchema } from "@/lib/place-submit.shared";
 
