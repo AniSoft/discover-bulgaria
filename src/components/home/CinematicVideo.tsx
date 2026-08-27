@@ -42,7 +42,7 @@ export function CinematicVideo() {
 
   return (
     <section ref={sectionRef} className="relative w-full overflow-hidden bg-forest-deep">
-      <div className="relative h-[70vh] min-h-[420px] w-full md:h-auto md:aspect-[21/9]">
+      <div className="relative h-[440px] w-full sm:h-[500px] md:h-[560px] lg:h-[62vh] lg:max-h-[700px]">
         <img
           src={posterImage}
           alt=""
