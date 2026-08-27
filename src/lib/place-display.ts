@@ -26,6 +26,9 @@ const bySlug: Record<string, string> = {
   // No verified Prohodna Cave photo exists yet — use the neutral placeholder
   // instead of the Nature category image (a waterfall), which is unrelated.
   "prohodna-cave": neutralPlaceholder,
+  // No verified Krushuna Waterfalls photo — the Nature category image shows an
+  // unrelated waterfall, which would read as a false depiction of the site.
+  "krushuna-waterfalls": neutralPlaceholder,
 };
 
 const byCategory: Record<string, string> = {
