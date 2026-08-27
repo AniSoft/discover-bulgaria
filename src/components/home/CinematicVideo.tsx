@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import posterImage from "@/assets/place-belogradchik.jpg";
-import journeyVideo from "@/assets/discover-bulgaria-journey.mp4.asset.json";
-import journeyVideoWebm from "@/assets/discover-bulgaria-journey.webm.asset.json";
 import { useT } from "@/lib/i18n";
+
+/** Served from the deployed site itself (public/media), so it works on any host. */
+const VIDEO_MP4 = "/media/discover-bulgaria-journey.mp4";
+const VIDEO_WEBM = "/media/discover-bulgaria-journey.webm";
 
 /**
  * Cinematic atmospheric background video section.
