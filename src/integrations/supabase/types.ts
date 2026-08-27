@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      place_photos: {
+        Row: {
+          created_at: string
+          id: string
+          is_cover: boolean
+          place_id: string
+          sort_order: number
+          storage_path: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_cover?: boolean
+          place_id: string
+          sort_order?: number
+          storage_path: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_cover?: boolean
+          place_id?: string
+          sort_order?: number
+          storage_path?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_photos_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       places: {
         Row: {
           approximate_cost: string | null
@@ -89,6 +127,10 @@ export type Database = {
     }
     Functions: {
       is_admin: { Args: never; Returns: boolean }
+      place_id_from_object_name: {
+        Args: { object_name: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
