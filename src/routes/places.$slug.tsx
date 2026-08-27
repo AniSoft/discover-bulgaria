@@ -120,7 +120,7 @@ function PlaceDetail({
           <div className="mb-6 flex flex-wrap items-center gap-3 rounded-[var(--radius-card)] border border-border bg-secondary px-5 py-3">
             <StatusBadge status={ownerStatus} />
             <p className="text-sm text-muted-foreground">
-              Private preview — only you can see this place until it is published.
+              Private preview — this place is not public until it is published.
             </p>
           </div>
         ) : null}

@@ -14,6 +14,8 @@ import { placeForEditQueryOptions } from "@/lib/place-edit.queries";
 import { updateMyPlace, type EditablePlace } from "@/lib/place-edit.functions";
 import { placeSubmissionSchema } from "@/lib/place-submit.shared";
 import { myPlacesKey } from "@/lib/my-places.queries";
+import { adminPlacesKey, adminRecentKey, adminStatsKey } from "@/lib/admin-places.queries";
+import { useAuth } from "@/lib/auth";
 
 const title = "Edit Place — Discover Bulgaria";
 const description = "Update a place you have shared with the Discover Bulgaria community.";
@@ -114,6 +116,7 @@ function EditPlacePage() {
 }
 
 function EditPlaceForm({ place }: { place: EditablePlace }) {
+  const { isAdmin } = useAuth();
   const initial = useMemo(() => toFormValues(place), [place]);
   const [values, setValues] = useState<PlaceFormValues>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -136,6 +139,9 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
       setSavedSlug(result.slug);
       void queryClient.invalidateQueries({ queryKey: myPlacesKey });
       void queryClient.invalidateQueries({ queryKey: ["places", "edit", place.id] });
+      void queryClient.invalidateQueries({ queryKey: adminPlacesKey });
+      void queryClient.invalidateQueries({ queryKey: adminRecentKey });
+      void queryClient.invalidateQueries({ queryKey: adminStatsKey });
     },
     onError: (error) => console.error("[places] update failed", error),
   });
@@ -167,13 +173,19 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
         <div className="mx-auto max-w-xl rounded-[var(--radius-card)] border border-border bg-card p-12 text-center shadow-card">
           <CheckCircle2 className="mx-auto size-9 text-accent" aria-hidden="true" />
           <h1 className="mt-5 text-3xl leading-tight text-foreground">
-            Your changes have been submitted for review.
+            {isAdmin ? "Changes saved." : "Your changes have been submitted for review."}
           </h1>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            An administrator will review the updated place before it is published.
+            {isAdmin
+              ? "The place keeps its current status."
+              : "An administrator will review the updated place before it is published."}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <ButtonLink to="/my-places">Back to My Places</ButtonLink>
+            {isAdmin ? (
+              <ButtonLink to="/admin/places">Back to Manage Places</ButtonLink>
+            ) : (
+              <ButtonLink to="/my-places">Back to My Places</ButtonLink>
+            )}
             <Link
               to="/places/$slug"
               params={{ slug: savedSlug }}
@@ -197,7 +209,7 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
         </p>
       </header>
 
-      {place.status === "published" || place.status === "rejected" ? (
+      {!isAdmin && (place.status === "published" || place.status === "rejected") ? (
         <div className="mt-8 flex max-w-3xl items-start gap-3 rounded-[var(--radius-card)] border border-accent/25 bg-secondary px-5 py-4">
           <Info className="mt-0.5 size-5 shrink-0 text-accent" aria-hidden="true" />
           <p className="text-sm text-foreground">
@@ -224,7 +236,7 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
           <Button type="submit" size="lg" disabled={mutation.isPending}>
             {mutation.isPending ? "Saving..." : "Save Changes"}
           </Button>
-          <ButtonLink to="/my-places" variant="outline" size="lg">
+          <ButtonLink to={isAdmin ? "/admin/places" : "/my-places"} variant="outline" size="lg">
             Cancel
           </ButtonLink>
         </div>
