@@ -106,10 +106,25 @@ function Section({ title: heading, children }: { title: string; children: React.
   );
 }
 
-function PlaceDetail({ place }: { place: PublicPlaceDetail }) {
+function PlaceDetail({
+  place,
+  ownerStatus,
+}: {
+  place: PublicPlaceDetail;
+  ownerStatus?: string;
+}) {
   return (
     <article className="pb-20">
       <div className="container-page pt-30">
+        {ownerStatus ? (
+          <div className="mb-6 flex flex-wrap items-center gap-3 rounded-[var(--radius-card)] border border-border bg-secondary px-5 py-3">
+            <StatusBadge status={ownerStatus} />
+            <p className="text-sm text-muted-foreground">
+              Private preview — only you can see this place until it is published.
+            </p>
+          </div>
+        ) : null}
+
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
           <Link to="/" className="transition-colors duration-250 hover:text-accent">
             Explore
