@@ -2,11 +2,11 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { PublicPlace } from "@/lib/places.functions";
+import { LIST_BG_COLUMNS } from "@/lib/place-i18n.shared";
 
 export type FavoritePlace = PublicPlace & { favorited_at: string };
 
-const PLACE_COLUMNS =
-  "id, slug, title, region, city, category, short_description, approximate_cost, duration, status";
+const PLACE_COLUMNS = `id, slug, title, region, city, category, short_description, approximate_cost, duration, status, ${LIST_BG_COLUMNS}`;
 
 /** IDs of the places the signed-in user saved. RLS scopes the rows to them. */
 export const listFavoriteIds = createServerFn({ method: "GET" })

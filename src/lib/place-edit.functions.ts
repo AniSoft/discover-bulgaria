@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { placeSubmissionSchema, slugify } from "@/lib/place-submit.shared";
+import { ALL_BG_COLUMNS } from "@/lib/place-i18n.shared";
 
 export type EditablePlace = {
   id: string;
@@ -21,10 +22,18 @@ export type EditablePlace = {
   approximate_cost: string | null;
   difficulty: string | null;
   local_secret: string | null;
+  title_bg: string | null;
+  short_description_bg: string | null;
+  description_bg: string | null;
+  why_visit_bg: string | null;
+  city_bg: string | null;
+  best_time_bg: string | null;
+  duration_bg: string | null;
+  location_text_bg: string | null;
+  local_secret_bg: string | null;
 };
 
-const EDIT_COLUMNS =
-  "id, slug, status, title, short_description, description, why_visit, region, city, location_text, category, suitable_for, best_time, duration, approximate_cost, difficulty, local_secret";
+const EDIT_COLUMNS = `id, slug, status, title, short_description, description, why_visit, region, city, location_text, category, suitable_for, best_time, duration, approximate_cost, difficulty, local_secret, ${ALL_BG_COLUMNS}`;
 
 /** Loads a place the signed-in user owns, for editing. RLS scopes the row. */
 export const getPlaceForEdit = createServerFn({ method: "GET" })
@@ -90,6 +99,15 @@ export const updateMyPlace = createServerFn({ method: "POST" })
       approximate_cost: data.approximate_cost || null,
       difficulty: data.difficulty || null,
       local_secret: data.local_secret || null,
+      title_bg: data.title_bg || null,
+      short_description_bg: data.short_description_bg || null,
+      description_bg: data.description_bg || null,
+      why_visit_bg: data.why_visit_bg || null,
+      city_bg: data.city_bg || null,
+      best_time_bg: data.best_time_bg || null,
+      duration_bg: data.duration_bg || null,
+      location_text_bg: data.location_text_bg || null,
+      local_secret_bg: data.local_secret_bg || null,
     };
 
     for (let attempt = 1; attempt <= 25; attempt++) {
