@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Clock, Heart, MapPin } from "lucide-react";
 import type { PublicPlace } from "@/lib/places.functions";
-import { placeImage, placeImageAlt, placeLocation, placePractical } from "@/lib/place-display";
+import { placeCover, placeImageAlt, placeLocation, placePractical } from "@/lib/place-display";
 
 export function PlaceCard({ place }: { place: PublicPlace }) {
   const practical = placePractical(place);
@@ -10,7 +10,7 @@ export function PlaceCard({ place }: { place: PublicPlace }) {
     <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-card transition-shadow duration-250 hover:shadow-lift">
       <div className="relative aspect-4/3 overflow-hidden">
         <img
-          src={placeImage(place)}
+          src={placeCover(place)}
           alt={placeImageAlt(place)}
           loading="lazy"
           width={1024}

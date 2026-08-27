@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
+import type { PlacePhoto } from "@/lib/place-photos.shared";
 
 export type PublicPlace = {
   id: string;
@@ -13,6 +14,7 @@ export type PublicPlace = {
   short_description: string;
   approximate_cost: string | null;
   duration: string | null;
+  cover_url: string | null;
 };
 
 export type PublicPlaceDetail = PublicPlace & {
@@ -23,6 +25,7 @@ export type PublicPlaceDetail = PublicPlace & {
   best_time: string | null;
   difficulty: string | null;
   local_secret: string | null;
+  photos: PlacePhoto[];
 };
 
 const PUBLIC_COLUMNS =
@@ -75,7 +78,11 @@ export const listPublishedPlaces = createServerFn({ method: "GET" })
       console.error("[places] listPublishedPlaces failed", error);
       throw new Error("PLACES_LOAD_FAILED");
     }
-    return (rows ?? []) as PublicPlace[];
+
+    const places = (rows ?? []) as Omit<PublicPlace, "cover_url">[];
+    const { loadCoverUrls } = await import("@/lib/place-photos.server");
+    const covers = await loadCoverUrls(supabase, places.map((p) => p.id));
+    return places.map((place) => ({ ...place, cover_url: covers[place.id] ?? null }));
   });
 
 export const getPublishedCategoryCounts = createServerFn({ method: "GET" }).handler(
@@ -117,5 +124,14 @@ export const getPublishedPlaceBySlug = createServerFn({ method: "GET" })
       console.error("[places] getPublishedPlaceBySlug failed", error);
       throw new Error("PLACE_LOAD_FAILED");
     }
-    return (row as PublicPlaceDetail | null) ?? null;
+    if (!row) return null;
+
+    const place = row as Omit<PublicPlaceDetail, "cover_url" | "photos">;
+    const { loadPlacePhotos } = await import("@/lib/place-photos.server");
+    const photos = (await loadPlacePhotos(supabase, [place.id]))[place.id] ?? [];
+    return {
+      ...place,
+      photos,
+      cover_url: photos.find((photo) => photo.is_cover)?.url ?? photos[0]?.url ?? null,
+    };
   });

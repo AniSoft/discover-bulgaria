@@ -134,7 +134,18 @@ export const deletePlaceAsAdmin = createServerFn({ method: "POST" })
     const { assertAdmin } = await import("@/lib/admin.server");
     await assertAdmin(context.userId);
 
+    const { data: photos } = await context.supabase
+      .from("place_photos")
+      .select("storage_path")
+      .eq("place_id", data.id);
+
     const { error } = await context.supabase.from("places").delete().eq("id", data.id);
+
+    if (!error && photos?.length) {
+      const { removePhotoObjects } = await import("@/lib/place-photos.server");
+      await removePhotoObjects(context.supabase, photos.map((p) => p.storage_path));
+    }
+
     if (error) {
       console.error("[admin] deletePlaceAsAdmin failed", error);
       throw new Error("ADMIN_DELETE_FAILED");

@@ -13,6 +13,7 @@ import {
 import { ButtonLink, Button } from "@/components/AppButton";
 import { placeDetailQueryOptions } from "@/lib/places.queries";
 import { placeImage, placeImageAlt, placeLocation } from "@/lib/place-display";
+import { PlaceGallery } from "@/components/places/PlaceGallery";
 import { useAuth } from "@/lib/auth";
 import { ownedPlaceBySlugQueryOptions } from "@/lib/my-places.queries";
 import { StatusBadge } from "@/components/places/OwnedPlaceCard";
@@ -142,17 +143,13 @@ function PlaceDetail({
           <span className="text-foreground">{place.title}</span>
         </nav>
 
-        <div className="mt-6 overflow-hidden rounded-[var(--radius-card)] border border-border bg-secondary">
-          <div className="relative aspect-21/9 max-h-[520px] w-full">
-            <img
-              src={placeImage(place)}
-              alt={placeImageAlt(place)}
-              className="size-full object-cover"
-              width={1600}
-              height={686}
-            />
-          </div>
-        </div>
+        <PlaceGallery
+          photos={place.photos ?? []}
+          title={place.title}
+          fallbackSrc={placeImage(place)}
+          fallbackAlt={placeImageAlt(place)}
+        />
+
 
         <header className="mt-8 max-w-3xl">
           <span className="inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary">

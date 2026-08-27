@@ -10,6 +10,7 @@ import {
   emptyPlaceFormValues,
   type PlaceFormValues,
 } from "@/components/places/PlaceFormFields";
+import { PhotoManager } from "@/components/places/PhotoManager";
 import { placeForEditQueryOptions } from "@/lib/place-edit.queries";
 import { updateMyPlace, type EditablePlace } from "@/lib/place-edit.functions";
 import { placeSubmissionSchema } from "@/lib/place-submit.shared";
@@ -221,7 +222,12 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
       ) : null}
 
       <form onSubmit={onSubmit} noValidate className="mt-8 grid max-w-3xl gap-6">
-        <PlaceFormFields values={values} errors={errors} onChange={onChange} />
+        <PlaceFormFields
+          values={values}
+          errors={errors}
+          onChange={onChange}
+          photosSlot={<PhotoManager placeId={place.id} />}
+        />
 
         {mutation.isError ? (
           <p
