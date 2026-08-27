@@ -1,5 +1,4 @@
 import { Button } from "@/components/AppButton";
-import { cn } from "@/lib/utils";
 
 export function ConfirmDialog({
   open,
