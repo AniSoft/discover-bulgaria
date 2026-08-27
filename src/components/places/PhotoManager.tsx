@@ -12,9 +12,11 @@ import { placePhotosKey, placePhotosQueryOptions } from "@/lib/place-photos.quer
 import {
   MAX_PLACE_PHOTOS,
   PHOTO_ACCEPT_ATTR,
+  PHOTO_CONTENT_MESSAGE,
+  PHOTO_FILE_MESSAGE,
   PHOTO_LIMIT_MESSAGE,
   PHOTO_UPLOAD_ERROR,
-  validatePhotoFile,
+  validatePhotoFiles,
   type PlacePhoto,
 } from "@/lib/place-photos.shared";
 import { cn } from "@/lib/utils";
@@ -44,7 +46,8 @@ export function PhotoManager({ placeId }: { placeId: string }) {
       return;
     }
 
-    const invalid = selected.map(validatePhotoFile).find(Boolean);
+    // Checks the filename, declared type, size and the actual image bytes.
+    const invalid = await validatePhotoFiles(selected);
     if (invalid) {
       setError(invalid);
       if (inputRef.current) inputRef.current.value = "";
@@ -61,11 +64,11 @@ export function PhotoManager({ placeId }: { placeId: string }) {
       setMessage(uploaded === 1 ? "Photo uploaded." : `${uploaded} photos uploaded.`);
     } catch (uploadError) {
       console.error("[photos] upload failed", uploadError);
-      setError(
-        uploadError instanceof Error && uploadError.message.startsWith("Please")
-          ? uploadError.message
-          : PHOTO_UPLOAD_ERROR,
-      );
+      const known =
+        uploadError instanceof Error &&
+        (uploadError.message === PHOTO_FILE_MESSAGE ||
+          uploadError.message === PHOTO_CONTENT_MESSAGE);
+      setError(known ? (uploadError as Error).message : PHOTO_UPLOAD_ERROR);
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";

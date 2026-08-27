@@ -55,26 +55,31 @@ export const Route = createFileRoute("/places/$slug")({
 
 function PlaceDetailsPage() {
   const { slug } = Route.useParams();
+  const { place: loaderPlace } = Route.useLoaderData();
   const { user } = useAuth();
-  const { data, isPending, isError, refetch } = useQuery(placeDetailQueryOptions(slug));
+
+  // The loader already resolved this place, so the first client render must
+  // start from that same value. Falling back to a loading skeleton here would
+  // not match the server-rendered HTML and breaks hydration.
+  const { data, isError, refetch } = useQuery({
+    ...placeDetailQueryOptions(slug),
+    ...(loaderPlace ? { initialData: loaderPlace } : {}),
+  });
+
+  const place = data ?? loaderPlace;
 
   // Owners may preview their own not-yet-published places (RLS scopes the row).
-  const ownerFallback = useQuery(
-    ownedPlaceBySlugQueryOptions(slug, Boolean(user) && !isPending && !isError && !data),
-  );
+  const ownerFallback = useQuery(ownedPlaceBySlugQueryOptions(slug, Boolean(user) && !place));
 
-  if (isPending) return <DetailSkeleton />;
+  if (place) return <PlaceDetail place={place} />;
   if (isError) return <ErrorState onRetry={() => void refetch()} />;
-  if (!data) {
-    if (user && (ownerFallback.isPending || ownerFallback.isFetching)) return <DetailSkeleton />;
-    if (ownerFallback.data) {
-      return <PlaceDetail place={ownerFallback.data} ownerStatus={ownerFallback.data.status} />;
-    }
-    return <NotFoundState />;
+  if (user && (ownerFallback.isPending || ownerFallback.isFetching)) return <DetailSkeleton />;
+  if (ownerFallback.data) {
+    return <PlaceDetail place={ownerFallback.data} ownerStatus={ownerFallback.data.status} />;
   }
-
-  return <PlaceDetail place={data} />;
+  return <NotFoundState />;
 }
+
 
 
 function Practical({ place }: { place: PublicPlaceDetail }) {

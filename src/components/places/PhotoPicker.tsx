@@ -5,7 +5,7 @@ import {
   MAX_PLACE_PHOTOS,
   PHOTO_ACCEPT_ATTR,
   PHOTO_LIMIT_MESSAGE,
-  validatePhotoFile,
+  validatePhotoFiles,
 } from "@/lib/place-photos.shared";
 
 export type PickedPhoto = { id: string; file: File; preview: string };
@@ -36,7 +36,7 @@ export function PhotoPicker({
 
   useEffect(() => () => photos.forEach((photo) => URL.revokeObjectURL(photo.preview)), [photos]);
 
-  const addFiles = (files: FileList | null) => {
+  const addFiles = async (files: FileList | null) => {
     if (!files?.length) return;
     setError(null);
     const selected = [...files];
@@ -47,7 +47,8 @@ export function PhotoPicker({
       return;
     }
 
-    const invalid = selected.map(validatePhotoFile).find(Boolean);
+    // Checks the filename, declared type, size and the actual image bytes.
+    const invalid = await validatePhotoFiles(selected);
     if (invalid) {
       setError(invalid);
       if (inputRef.current) inputRef.current.value = "";
@@ -57,6 +58,7 @@ export function PhotoPicker({
     onChange([...photos, ...selected.map(makePickedPhoto)]);
     if (inputRef.current) inputRef.current.value = "";
   };
+
 
   const remove = (id: string) => {
     const target = photos.find((photo) => photo.id === id);
@@ -124,7 +126,7 @@ export function PhotoPicker({
         multiple
         accept={PHOTO_ACCEPT_ATTR}
         className="sr-only"
-        onChange={(event) => addFiles(event.target.files)}
+        onChange={(event) => void addFiles(event.target.files)}
       />
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
