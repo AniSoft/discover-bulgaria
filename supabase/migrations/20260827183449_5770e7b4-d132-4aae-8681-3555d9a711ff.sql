@@ -1,0 +1,1 @@
+UPDATE public.places SET status = 'published' WHERE id = '7e75f89c-f350-4530-ba27-a2ee8657f3b4' AND slug = 'devils-bridge';
