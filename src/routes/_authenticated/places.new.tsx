@@ -5,7 +5,7 @@ const title = "Add a Place — Discover Bulgaria";
 const description =
   "Share a place worth discovering in Bulgaria and help other travellers experience it too.";
 
-export const Route = createFileRoute("/places/new")({
+export const Route = createFileRoute("/_authenticated/places/new")({
   head: () => ({
     meta: [
       { title },

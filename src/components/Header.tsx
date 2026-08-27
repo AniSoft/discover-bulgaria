@@ -1,7 +1,8 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { ChevronDown, Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/auth";
 
 const navLinks = [
   { label: "Explore", to: "/" },
@@ -10,11 +11,19 @@ const navLinks = [
   { label: "Favorites", to: "/favorites" },
 ] as const;
 
+const userMenuLinks = [
+  { label: "Profile", to: "/profile" },
+  { label: "My Places", to: "/my-places" },
+  { label: "Favorites", to: "/favorites" },
+] as const;
+
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { user, fullName, initials, signOut } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -28,6 +37,11 @@ export function Header() {
   }, [pathname]);
 
   const transparent = isHome && !scrolled && !open;
+
+  async function handleSignOut() {
+    await signOut();
+    navigate({ to: "/", replace: true });
+  }
 
   return (
     <header
@@ -66,17 +80,28 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/login"
-            className={cn(
-              "rounded-[var(--radius-button)] px-5 py-2.5 text-[15px] font-medium transition-colors duration-250",
-              transparent
-                ? "border border-primary-foreground/70 bg-overlay/25 text-primary-foreground backdrop-blur-sm hover:bg-primary-foreground/15"
-                : "bg-primary text-primary-foreground hover:bg-primary-hover",
-            )}
-          >
-            Sign In
-          </Link>
+
+          {user ? (
+            <UserMenu
+              transparent={transparent}
+              initials={initials}
+              fullName={fullName || user.email || "Account"}
+              onSignOut={handleSignOut}
+            />
+          ) : (
+            <Link
+              to="/login"
+              search={{}}
+              className={cn(
+                "rounded-[var(--radius-button)] px-5 py-2.5 text-[15px] font-medium transition-colors duration-250",
+                transparent
+                  ? "border border-primary-foreground/70 bg-overlay/25 text-primary-foreground backdrop-blur-sm hover:bg-primary-foreground/15"
+                  : "bg-primary text-primary-foreground hover:bg-primary-hover",
+              )}
+            >
+              Sign In
+            </Link>
+          )}
         </nav>
 
         <button
@@ -101,19 +126,152 @@ export function Header() {
           className="border-t border-border bg-background md:hidden"
         >
           <ul className="container-page flex flex-col py-2">
-            {[...navLinks, { label: "Sign In", to: "/login" } as const].map((link) => (
+            {navLinks.map((link) => (
               <li key={link.label}>
                 <Link
                   to={link.to}
-                  className="block border-b border-border/60 py-4 text-base font-medium text-foreground last:border-0"
+                  className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
                 >
                   {link.label}
                 </Link>
               </li>
             ))}
+
+            {user ? (
+              <>
+                <li className="flex items-center gap-3 border-b border-border/60 py-4">
+                  <span className="grid size-9 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                    {initials}
+                  </span>
+                  <span className="truncate text-sm text-muted-foreground">
+                    {fullName || user.email}
+                  </span>
+                </li>
+                <li>
+                  <Link
+                    to="/profile"
+                    className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
+                  >
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/my-places"
+                    className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
+                  >
+                    My Places
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="block w-full py-4 text-left text-base font-medium text-accent"
+                  >
+                    Sign Out
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link
+                  to="/login"
+                  search={{}}
+                  className="block py-4 text-base font-medium text-foreground"
+                >
+                  Sign In
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       ) : null}
     </header>
+  );
+}
+
+function UserMenu({
+  transparent,
+  initials,
+  fullName,
+  onSignOut,
+}: {
+  transparent: boolean;
+  initials: string;
+  fullName: string;
+  onSignOut: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) setOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={`Account menu for ${fullName}`}
+        className={cn(
+          "flex items-center gap-2 rounded-full py-1 pr-2 pl-1 transition-colors duration-250",
+          transparent
+            ? "border border-primary-foreground/60 bg-overlay/25 text-primary-foreground backdrop-blur-sm hover:bg-primary-foreground/15"
+            : "border border-border bg-card text-foreground hover:bg-secondary",
+        )}
+      >
+        <span className="grid size-9 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+          {initials}
+        </span>
+        <ChevronDown className={cn("size-4 transition-transform", open && "rotate-180")} />
+      </button>
+
+      {open ? (
+        <div
+          role="menu"
+          className="absolute right-0 mt-3 w-56 overflow-hidden rounded-[var(--radius-card)] border border-border bg-card py-2 shadow-lift"
+        >
+          <p className="truncate px-4 pb-2 text-xs text-muted-foreground">{fullName}</p>
+          {userMenuLinks.map((link) => (
+            <Link
+              key={link.label}
+              to={link.to}
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2.5 text-sm text-foreground hover:bg-secondary"
+            >
+              {link.label}
+            </Link>
+          ))}
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setOpen(false);
+              onSignOut();
+            }}
+            className="mt-1 block w-full border-t border-border px-4 py-2.5 text-left text-sm font-medium text-accent hover:bg-secondary"
+          >
+            Sign Out
+          </button>
+        </div>
+      ) : null}
+    </div>
   );
 }
