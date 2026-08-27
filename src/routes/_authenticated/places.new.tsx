@@ -9,6 +9,8 @@ import {
   emptyPlaceFormValues,
   type PlaceFormValues,
 } from "@/components/places/PlaceFormFields";
+import { PhotoPicker, type PickedPhoto } from "@/components/places/PhotoPicker";
+import { uploadPlacePhoto } from "@/lib/place-photos.client";
 import { createPlace } from "@/lib/place-submit.functions";
 import { placeSubmissionSchema } from "@/lib/place-submit.shared";
 
@@ -32,9 +34,13 @@ function NewPlacePage() {
   const [values, setValues] = useState<PlaceFormValues>(emptyPlaceFormValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [photos, setPhotos] = useState<PickedPhoto[]>([]);
+  const [photoWarning, setPhotoWarning] = useState<string | null>(null);
   const submit = useServerFn(createPlace);
 
-  const dirty = !submitted && JSON.stringify(values) !== JSON.stringify(emptyPlaceFormValues);
+  const dirty =
+    !submitted &&
+    (photos.length > 0 || JSON.stringify(values) !== JSON.stringify(emptyPlaceFormValues));
 
   useEffect(() => {
     if (!dirty) return;
@@ -44,8 +50,28 @@ function NewPlacePage() {
   }, [dirty]);
 
   const mutation = useMutation({
-    mutationFn: (data: PlaceFormValues) => submit({ data }),
-    onSuccess: () => setSubmitted(true),
+    // The place row must exist before photos can be uploaded into its folder.
+    mutationFn: async (data: PlaceFormValues) => {
+      const created = await submit({ data });
+      let failed = 0;
+      for (const photo of photos) {
+        try {
+          await uploadPlacePhoto(created.id, photo.file);
+        } catch (error) {
+          failed += 1;
+          console.error("[places] photo upload failed", error);
+        }
+      }
+      return { failed };
+    },
+    onSuccess: ({ failed }) => {
+      setPhotoWarning(
+        failed
+          ? `Your place was submitted, but ${failed} photo${failed > 1 ? "s" : ""} couldn't be uploaded. You can add them from My Places.`
+          : null,
+      );
+      setSubmitted(true);
+    },
     onError: (error) => console.error("[places] submission failed", error),
   });
 
@@ -82,6 +108,7 @@ function NewPlacePage() {
             Thank you for helping others discover Bulgaria. An administrator will review your
             submission before it becomes public.
           </p>
+          {photoWarning ? <p className="mt-4 text-sm text-accent">{photoWarning}</p> : null}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <ButtonLink to="/my-places">View My Places</ButtonLink>
             <ButtonLink to="/" variant="outline">
@@ -105,7 +132,14 @@ function NewPlacePage() {
       </header>
 
       <form onSubmit={onSubmit} noValidate className="mt-10 grid max-w-3xl gap-6">
-        <PlaceFormFields values={values} errors={errors} onChange={onChange} />
+        <PlaceFormFields
+          values={values}
+          errors={errors}
+          onChange={onChange}
+          photosSlot={
+            <PhotoPicker photos={photos} onChange={setPhotos} disabled={mutation.isPending} />
+          }
+        />
 
         {mutation.isError ? (
           <p role="alert" className="rounded-[var(--radius-card)] border border-accent/30 bg-secondary px-5 py-4 text-sm text-foreground">
@@ -115,7 +149,11 @@ function NewPlacePage() {
 
         <div className="flex flex-wrap items-center gap-3">
           <Button type="submit" size="lg" disabled={mutation.isPending}>
-            {mutation.isPending ? "Submitting..." : "Submit for review"}
+            {mutation.isPending
+              ? photos.length
+                ? "Submitting and uploading photos..."
+                : "Submitting..."
+              : "Submit for review"}
           </Button>
           <p className="text-sm text-muted-foreground">
             Submissions are reviewed by an administrator before they appear publicly.

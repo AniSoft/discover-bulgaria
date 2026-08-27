@@ -1,4 +1,4 @@
-import { ImageIcon, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { SUITABLE_FOR_OPTIONS } from "@/lib/place-submit.shared";
 import { PLACE_CATEGORIES, PLACE_COSTS, PLACE_DIFFICULTIES } from "@/lib/places.types";
 import { cn } from "@/lib/utils";
