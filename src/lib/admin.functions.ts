@@ -1,16 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-/** Returns true when at least one auth user has app_metadata.is_admin === true. */
-export const getAdminSetupStatus = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data, error } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
-  if (error) throw new Error("Could not check admin status.");
-  const adminExists = data.users.some(
-    (u) => (u.app_metadata as Record<string, unknown> | null)?.["is_admin"] === true,
-  );
-  return { adminExists };
-});
+
 
 /** Server-verified admin check for the signed-in user. */
 export const verifyAdmin = createServerFn({ method: "GET" })
