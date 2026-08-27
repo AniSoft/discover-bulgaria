@@ -1,4 +1,5 @@
 import { createIsomorphicFn } from "@tanstack/react-start";
+import { getCookie } from "@tanstack/react-start/server";
 
 export const LOCALES = ["en", "bg"] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -24,10 +25,6 @@ function fromDocumentCookie(): Locale {
  */
 export const readLocale = createIsomorphicFn()
   .server((): Locale => {
-    // Imported lazily so the browser bundle never pulls in server-only code.
-    const { getCookie } = require("@tanstack/react-start/server") as {
-      getCookie: (name: string) => string | undefined;
-    };
     const value = getCookie(LOCALE_COOKIE);
     return isLocale(value) ? value : DEFAULT_LOCALE;
   })
