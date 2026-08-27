@@ -45,12 +45,21 @@ export const registerPlacePhoto = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data, context }): Promise<PlacePhoto> => {
-    const { withSignedUrls, removePhotoObjects } = await import("@/lib/place-photos.server");
+    const { withSignedUrls, removePhotoObjects, isStoredPhotoAcceptable } = await import(
+      "@/lib/place-photos.server"
+    );
 
     if (!isValidPhotoPath(data.place_id, data.storage_path)) {
       await removePhotoObjects(context.supabase, [data.storage_path]);
       throw new Error("PHOTO_PATH_INVALID");
     }
+
+    // Trust the stored bytes, not the client's claim about them.
+    if (!(await isStoredPhotoAcceptable(context.supabase, data.storage_path))) {
+      await removePhotoObjects(context.supabase, [data.storage_path]);
+      throw new Error("PHOTO_TYPE_INVALID");
+    }
+
 
     const { data: existing, error: countError } = await context.supabase
       .from("place_photos")

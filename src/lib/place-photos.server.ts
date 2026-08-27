@@ -1,10 +1,33 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
-import { PLACE_IMAGES_BUCKET, type PlacePhoto } from "@/lib/place-photos.shared";
+import {
+  MAX_PHOTO_BYTES,
+  PLACE_IMAGES_BUCKET,
+  sniffPhotoMime,
+  type PlacePhoto,
+} from "@/lib/place-photos.shared";
 
 type Client = SupabaseClient<Database>;
 
 const SIGNED_URL_TTL = 60 * 60; // one hour
+
+/**
+ * Server-side guard: reads the object that was just uploaded and confirms the
+ * bytes really are a JPEG, PNG or WebP within the size limit. The browser
+ * checks the same rules, but a request crafted outside the app would not.
+ */
+export async function isStoredPhotoAcceptable(client: Client, path: string): Promise<boolean> {
+  const { data, error } = await client.storage.from(PLACE_IMAGES_BUCKET).download(path);
+  if (error || !data) {
+    console.error("[photos] verification download failed", error);
+    return false;
+  }
+  if (data.size > MAX_PHOTO_BYTES) return false;
+
+  const header = new Uint8Array(await data.slice(0, 16).arrayBuffer());
+  return sniffPhotoMime(header) !== null;
+}
+
 
 /**
  * Signs storage paths with whichever client (anon, user, admin) is calling.
