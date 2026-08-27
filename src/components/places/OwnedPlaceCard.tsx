@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { CalendarDays, MapPin, Pencil, Trash2, Eye } from "lucide-react";
 import { buttonClasses, Button } from "@/components/AppButton";
-import { placeLocation } from "@/lib/place-display";
+import { placeCover, placeImageAlt, placeLocation } from "@/lib/place-display";
 import type { OwnedPlace } from "@/lib/my-places.functions";
 import { cn } from "@/lib/utils";
 
@@ -63,7 +63,19 @@ export function OwnedPlaceCard({
   const meta = STATUS_META[place.status];
 
   return (
-    <article className="flex flex-col rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-card">
+    <article className="flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-card">
+      <div className="aspect-21/9 w-full overflow-hidden bg-secondary">
+        <img
+          src={placeCover(place)}
+          alt={placeImageAlt(place)}
+          loading="lazy"
+          width={1024}
+          height={439}
+          className="size-full object-cover"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <span className="text-xs font-medium text-accent">{place.category}</span>
@@ -114,6 +126,7 @@ export function OwnedPlaceCard({
           <Trash2 className="size-4" aria-hidden="true" />
           Delete
         </Button>
+      </div>
       </div>
     </article>
   );
