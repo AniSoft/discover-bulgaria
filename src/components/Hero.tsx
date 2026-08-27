@@ -1,10 +1,17 @@
-import { Link } from "@tanstack/react-router";
 import heroImage from "@/assets/hero-bulgaria.jpg";
 import { SearchBar } from "@/components/SearchBar";
+import { cn } from "@/lib/utils";
 
-const quickCategories = ["Hidden Gems", "Nature", "Mountains", "Sea", "Culture"];
+const quickCategories = ["Hidden Gems", "Nature", "Mountains", "Sea", "History & Culture"];
 
-export function Hero() {
+type Props = {
+  query: string;
+  activeCategory: string;
+  onSearch: (value: string) => void;
+  onCategory: (value: string) => void;
+};
+
+export function Hero({ query, activeCategory, onSearch, onCategory }: Props) {
   return (
     <section className="relative flex min-h-[560px] items-center overflow-hidden md:h-[82vh]">
       <img
@@ -25,19 +32,27 @@ export function Hero() {
             Hidden places. Local stories. Unforgettable experiences.
           </p>
 
-          <SearchBar className="mt-9 max-w-2xl" id="hero-search" />
+          <SearchBar className="mt-9 max-w-2xl" id="hero-search" value={query} onSearch={onSearch} />
 
           <ul className="mt-6 flex flex-wrap gap-2.5">
-            {quickCategories.map((category) => (
-              <li key={category}>
-                <Link
-                  to="/categories"
-                  className="inline-flex rounded-full border border-primary-foreground/40 px-4 py-2 text-sm text-primary-foreground transition-colors duration-250 hover:bg-primary-foreground/15"
-                >
-                  {category}
-                </Link>
-              </li>
-            ))}
+            {quickCategories.map((category) => {
+              const active = category === activeCategory;
+              return (
+                <li key={category}>
+                  <button
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => onCategory(category)}
+                    className={cn(
+                      "inline-flex rounded-full border border-primary-foreground/40 px-4 py-2 text-sm text-primary-foreground transition-colors duration-250 hover:bg-primary-foreground/15",
+                      active && "border-primary-foreground bg-primary-foreground/25",
+                    )}
+                  >
+                    {category}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
