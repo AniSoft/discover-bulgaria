@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { cn } from "@/lib/utils";
 import { useT, type MessageKey } from "@/lib/i18n";
 
 const columns = [
@@ -32,28 +31,33 @@ export function Footer() {
   const t = useT();
 
   return (
-    <footer className="mt-24 border-t border-border bg-card">
-      <div className="container-page py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+    <footer className="mt-24 bg-forest-deep text-primary-foreground">
+      <div className="container-page py-16 md:py-20">
+        <p className="font-display text-3xl leading-tight text-primary-foreground/95 sm:text-4xl md:text-5xl md:max-w-2xl">
+          {t("footer.closingLine")}
+        </p>
+        <div className="topo-rule mt-10 text-primary-foreground" aria-hidden="true" />
+
+        <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="font-display text-2xl text-primary">Discover Bulgaria</p>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="font-display text-2xl">
+              Discover <span className="italic">Bulgaria</span>
+            </p>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-primary-foreground/65">
               {t("footer.tagline")}
             </p>
           </div>
 
           {columns.map((column) => (
             <nav key={column.titleKey} aria-label={t(column.titleKey)}>
-              <h2 className="font-sans text-xs font-semibold uppercase tracking-[0.16em] text-foreground">
-                {t(column.titleKey)}
-              </h2>
-              <ul className="mt-4 space-y-3">
+              <h2 className="eyebrow text-primary-foreground/55">{t(column.titleKey)}</h2>
+              <ul className="mt-5 space-y-3">
                 {column.links.map((link) => (
                   <li key={link.labelKey}>
                     <Link
                       to={link.to}
                       search={{}}
-                      className="text-sm text-muted-foreground underline-offset-4 transition-colors duration-250 hover:text-primary hover:underline"
+                      className="text-sm text-primary-foreground/80 underline-offset-4 transition-colors duration-300 hover:text-primary-foreground hover:underline"
                     >
                       {t(link.labelKey)}
                     </Link>
@@ -64,19 +68,20 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted-foreground">
+        <div className="mt-14 flex flex-col gap-4 border-t border-primary-foreground/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs tracking-wide text-primary-foreground/55">
             {t("footer.creditBeforeLink")}
             <a
               href="https://www.anidigit.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground/90 underline-offset-4 transition-colors duration-250 hover:text-primary hover:underline"
+              className="text-primary-foreground/85 underline-offset-4 transition-colors duration-300 hover:text-primary-foreground hover:underline"
             >
               AniDigit
             </a>
             {t("footer.creditSuffix")}
           </p>
+          <p className="eyebrow text-primary-foreground/40">42.7° N · 25.4° E</p>
         </div>
       </div>
     </footer>

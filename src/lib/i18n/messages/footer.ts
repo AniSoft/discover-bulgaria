@@ -1,4 +1,5 @@
 export const en = {
+  "footer.closingLine": "Where the road becomes a story.",
   "footer.discover": "Discover",
   "footer.community": "Community",
   "footer.tagline": "Hidden places, local stories and unforgettable experiences across Bulgaria.",
@@ -13,6 +14,7 @@ export const en = {
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
+  "footer.closingLine": "Там, където пътят се превръща в история.",
   "footer.discover": "Открий",
   "footer.community": "Общност",
   "footer.tagline": "Скрити места, местни истории и незабравими преживявания из цяла България.",

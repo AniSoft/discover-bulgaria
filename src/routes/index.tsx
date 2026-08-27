@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Hero } from "@/components/Hero";
+import { EditorialIntro } from "@/components/home/EditorialIntro";
 import { CategorySection } from "@/components/home/CategorySection";
 import { ExplorePlaces } from "@/components/home/ExplorePlaces";
 import { LocalSecrets } from "@/components/home/LocalSecrets";
@@ -48,6 +49,7 @@ function Index() {
           setSearch({ ...(q ? { q } : {}), ...(value === category ? {} : { category: value }) })
         }
       />
+      <EditorialIntro />
       <CategorySection />
       <ExplorePlaces q={q} category={category} onReset={() => navigate({ search: {}, resetScroll: false })} />
       <LocalSecrets />

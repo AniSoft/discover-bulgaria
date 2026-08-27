@@ -49,36 +49,54 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-250",
+        "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-500",
         transparent
-          ? "bg-linear-to-b from-overlay/55 via-overlay/20 to-transparent"
-          : "border-b border-border bg-background/95 backdrop-blur-sm",
+          ? "bg-linear-to-b from-overlay/60 via-overlay/25 to-transparent"
+          : "border-b border-border bg-background/92 backdrop-blur-md",
       )}
     >
-      <div className="container-page flex h-20 items-center justify-between gap-6">
+      <div className="container-page flex h-20 items-center justify-between gap-6 md:h-[5.5rem]">
         <Link
           to="/"
           className={cn(
-            "font-display text-2xl tracking-tight transition-colors duration-250 sm:text-[1.7rem]",
-            transparent ? "text-primary-foreground drop-shadow-[0_1px_6px_oklch(0_0_0/45%)]" : "text-primary",
+            "group flex items-center gap-2.5 transition-colors duration-500",
+            transparent
+              ? "text-primary-foreground drop-shadow-[0_1px_6px_oklch(0_0_0/45%)]"
+              : "text-primary",
           )}
         >
-          Discover Bulgaria
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className="size-5 shrink-0 opacity-80 transition-transform duration-500 group-hover:rotate-45"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          >
+            <circle cx="12" cy="12" r="9.2" />
+            <path d="M15.6 8.4 10.9 10.9 8.4 15.6 13.1 13.1Z" />
+          </svg>
+          <span className="font-display text-[1.45rem] leading-none tracking-[-0.02em] sm:text-[1.6rem]">
+            Discover <span className="italic">Bulgaria</span>
+          </span>
         </Link>
 
-        <nav aria-label={t("nav.main")} className="hidden items-center gap-9 md:flex">
+
+        <nav aria-label={t("nav.main")} className="hidden items-center gap-8 md:flex lg:gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.key}
               to={link.to}
               className={cn(
-                "text-base font-medium transition-colors duration-250",
+                "relative text-[0.8125rem] font-semibold tracking-[0.12em] uppercase transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full",
                 transparent
-                  ? "text-primary-foreground hover:text-primary-foreground/80 drop-shadow-[0_1px_4px_oklch(0_0_0/45%)]"
-                  : "text-foreground/80 hover:text-primary",
+                  ? "text-primary-foreground/90 hover:text-primary-foreground drop-shadow-[0_1px_4px_oklch(0_0_0/45%)]"
+                  : "text-foreground/75 hover:text-primary",
               )}
               activeOptions={{ exact: link.to === "/" }}
-              activeProps={{ className: transparent ? "text-primary-foreground" : "text-primary" }}
+              activeProps={{
+                className: transparent ? "text-primary-foreground after:w-full" : "text-primary after:w-full",
+              }}
             >
               {t(link.key)}
             </Link>
@@ -99,12 +117,13 @@ export function Header() {
               to="/login"
               search={{}}
               className={cn(
-                "rounded-[var(--radius-button)] px-5 py-2.5 text-[15px] font-medium transition-colors duration-250",
+                "rounded-[var(--radius-button)] border px-5 py-2.5 text-[0.8125rem] font-semibold tracking-[0.12em] uppercase transition-colors duration-300",
                 transparent
-                  ? "border border-primary-foreground/70 bg-overlay/25 text-primary-foreground backdrop-blur-sm hover:bg-primary-foreground/15"
-                  : "bg-primary text-primary-foreground hover:bg-primary-hover",
+                  ? "border-primary-foreground/60 text-primary-foreground hover:bg-primary-foreground/15"
+                  : "border-primary bg-primary text-primary-foreground hover:bg-primary-hover",
               )}
             >
+
               {t("nav.signIn")}
             </Link>
           )}
