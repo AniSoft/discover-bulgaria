@@ -22,11 +22,11 @@ const STOPS: ReadonlyArray<Point> = [
   { x: 106, y: 178, label: "NW", icon: "ruin" },
   { x: 214, y: 196, label: "C", icon: "cave" },
   { x: 288, y: 258, label: "S", icon: "village" },
-  { x: 424, y: 186, label: "E", icon: "cliff" },
+  { x: 408, y: 182, label: "E", icon: "cliff" },
 ];
 
 const ROUTE =
-  "M106 178C138 186 158 178 180 186C196 192 202 190 214 196C238 208 246 232 272 250C280 256 284 258 288 258C324 254 344 232 372 214C390 202 408 194 424 186";
+  "M106 178C138 186 158 178 180 186C196 192 202 190 214 196C238 208 246 232 272 250C280 256 284 258 288 258C324 254 344 232 372 214C382 198 396 190 408 182";
 
 
 function Ridge({ x, y, s = 1, o = 0.75 }: { x: number; y: number; s?: number; o?: number }) {
@@ -134,7 +134,7 @@ export function AtlasMap() {
         {/* forests */}
         {([
           [124, 206], [136, 218], [150, 240], [366, 200], [378, 210], [390, 198],
-          [386, 244], [398, 254], [286, 236], [298, 228],
+          [386, 244], [398, 254], [150, 262], [162, 252],
         ] as ReadonlyArray<readonly [number, number]>).map(([x, y], i) => (
           <Tree key={i} x={x} y={y} s={i % 3 === 0 ? 1.15 : 0.95} />
         ))}
@@ -175,8 +175,8 @@ export function AtlasMap() {
       <g opacity="0.75">
         <g transform="translate(106 152)"><StopIcon kind="ruin" /></g>
         <g transform="translate(212 170)"><StopIcon kind="cave" /></g>
-        <g transform="translate(288 284)"><StopIcon kind="village" /></g>
-        <g transform="translate(424 160)"><StopIcon kind="cliff" /></g>
+        <g transform="translate(288 232)"><StopIcon kind="village" /></g>
+        <g transform="translate(408 156)"><StopIcon kind="cliff" /></g>
       </g>
 
 
