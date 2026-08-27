@@ -82,19 +82,21 @@ export function Header() {
         </Link>
 
 
-        <nav aria-label={t("nav.main")} className="hidden items-center gap-9 md:flex">
+        <nav aria-label={t("nav.main")} className="hidden items-center gap-8 md:flex lg:gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.key}
               to={link.to}
               className={cn(
-                "text-base font-medium transition-colors duration-250",
+                "relative text-[0.8125rem] font-semibold tracking-[0.12em] uppercase transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full",
                 transparent
-                  ? "text-primary-foreground hover:text-primary-foreground/80 drop-shadow-[0_1px_4px_oklch(0_0_0/45%)]"
-                  : "text-foreground/80 hover:text-primary",
+                  ? "text-primary-foreground/90 hover:text-primary-foreground drop-shadow-[0_1px_4px_oklch(0_0_0/45%)]"
+                  : "text-foreground/75 hover:text-primary",
               )}
               activeOptions={{ exact: link.to === "/" }}
-              activeProps={{ className: transparent ? "text-primary-foreground" : "text-primary" }}
+              activeProps={{
+                className: transparent ? "text-primary-foreground after:w-full" : "text-primary after:w-full",
+              }}
             >
               {t(link.key)}
             </Link>
@@ -115,12 +117,13 @@ export function Header() {
               to="/login"
               search={{}}
               className={cn(
-                "rounded-[var(--radius-button)] px-5 py-2.5 text-[15px] font-medium transition-colors duration-250",
+                "rounded-[var(--radius-button)] border px-5 py-2.5 text-[0.8125rem] font-semibold tracking-[0.12em] uppercase transition-colors duration-300",
                 transparent
-                  ? "border border-primary-foreground/70 bg-overlay/25 text-primary-foreground backdrop-blur-sm hover:bg-primary-foreground/15"
-                  : "bg-primary text-primary-foreground hover:bg-primary-hover",
+                  ? "border-primary-foreground/60 text-primary-foreground hover:bg-primary-foreground/15"
+                  : "border-primary bg-primary text-primary-foreground hover:bg-primary-hover",
               )}
             >
+
               {t("nav.signIn")}
             </Link>
           )}
