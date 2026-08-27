@@ -1,4 +1,5 @@
 export const en = {
+  "communityCta.eyebrow": "Join the journal",
   "home.heroEyebrow": "Discover Bulgaria",
   "home.heroCtaPrimary": "Begin the journey",
   "home.heroCtaSecondary": "Explore the map",
@@ -43,6 +44,7 @@ export const en = {
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
+  "communityCta.eyebrow": "Присъедини се",
   "home.heroEyebrow": "Открий България",
   "home.heroCtaPrimary": "Започни пътешествието",
   "home.heroCtaSecondary": "Разгледай местата",
