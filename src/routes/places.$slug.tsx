@@ -13,6 +13,7 @@ import {
 import { ButtonLink, Button } from "@/components/AppButton";
 import { placeDetailQueryOptions } from "@/lib/places.queries";
 import { placeImage, placeImageAlt, placeLocation } from "@/lib/place-display";
+import { PlaceGallery } from "@/components/places/PlaceGallery";
 import { useAuth } from "@/lib/auth";
 import { ownedPlaceBySlugQueryOptions } from "@/lib/my-places.queries";
 import { StatusBadge } from "@/components/places/OwnedPlaceCard";
