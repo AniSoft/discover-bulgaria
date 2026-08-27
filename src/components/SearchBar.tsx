@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/AppButton";
 import { cn } from "@/lib/utils";
 
 type Props = {
