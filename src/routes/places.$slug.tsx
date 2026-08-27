@@ -15,18 +15,36 @@ import { placeDetailQueryOptions } from "@/lib/places.queries";
 import { placeImage, placeImageAlt, placeLocation } from "@/lib/place-display";
 import type { PublicPlaceDetail } from "@/lib/places.functions";
 
-const title = "Place Details — Discover Bulgaria";
-const description = "Details, practical information and local tips for a place in Bulgaria.";
-
 export const Route = createFileRoute("/places/$slug")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  loader: async ({ params, context }) => {
+    try {
+      const place = await context.queryClient.ensureQueryData(
+        placeDetailQueryOptions(params.slug),
+      );
+      return { place };
+    } catch {
+      return { place: null };
+    }
+  },
+  head: ({ loaderData }) => {
+    const place = loaderData?.place;
+    const title = place
+      ? `${place.title} — Discover Bulgaria`
+      : "Place not found — Discover Bulgaria";
+    const description = place?.short_description ??
+      "Details, practical information and local tips for places in Bulgaria.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        ...(place ? [] : [{ name: "robots", content: "noindex" }]),
+      ],
+    };
+  },
+  errorComponent: () => <ErrorState onRetry={() => window.location.reload()} />,
+  notFoundComponent: () => <NotFoundState />,
   component: PlaceDetailsPage,
 });
 
