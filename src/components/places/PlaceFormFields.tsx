@@ -19,6 +19,15 @@ export type PlaceFormValues = {
   difficulty: string;
   why_visit: string;
   local_secret: string;
+  title_bg: string;
+  short_description_bg: string;
+  description_bg: string;
+  why_visit_bg: string;
+  city_bg: string;
+  best_time_bg: string;
+  duration_bg: string;
+  location_text_bg: string;
+  local_secret_bg: string;
 };
 
 export const emptyPlaceFormValues: PlaceFormValues = {
@@ -36,6 +45,15 @@ export const emptyPlaceFormValues: PlaceFormValues = {
   difficulty: "",
   why_visit: "",
   local_secret: "",
+  title_bg: "",
+  short_description_bg: "",
+  description_bg: "",
+  why_visit_bg: "",
+  city_bg: "",
+  best_time_bg: "",
+  duration_bg: "",
+  location_text_bg: "",
+  local_secret_bg: "",
 };
 
 export const inputClass =
@@ -103,11 +121,14 @@ export function PlaceFormFields({
   errors,
   onChange,
   photosSlot,
+  showTranslations = false,
 }: {
   values: PlaceFormValues;
   errors: Record<string, string>;
   onChange: <K extends keyof PlaceFormValues>(key: K, value: PlaceFormValues[K]) => void;
   photosSlot?: React.ReactNode;
+  /** Shows the optional Bulgarian translation section (admin editing). */
+  showTranslations?: boolean;
 }) {
   const t = useT();
   const toggleSuitable = (option: string) =>
