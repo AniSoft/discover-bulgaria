@@ -1,41 +1,36 @@
 import { useEffect, useRef, useState } from "react";
 import posterImage from "@/assets/place-belogradchik.jpg";
+import journeyVideo from "@/assets/discover-bulgaria-journey.mp4.asset.json";
+import journeyVideoWebm from "@/assets/discover-bulgaria-journey.webm.asset.json";
 import { useT } from "@/lib/i18n";
 
 /**
- * Cinematic atmospheric video section.
- *
- * REAL FOOTAGE GOES HERE:
- *   public/videos/bulgaria-cinematic.webm  (preferred, VP9/AV1)
- *   public/videos/bulgaria-cinematic.mp4   (H.264 fallback)
- * Until a licensed Bulgaria video file is added at those paths, the section
- * gracefully renders the poster photograph only. No footage is invented.
+ * Cinematic atmospheric background video section.
+ * Footage: drone flight over the Rhodope Mountains near Pamporovo, Bulgaria
+ * (Pixabay, Content License — free for commercial use, no attribution required).
+ * Optimized to 1920x1080 H.264, 14s, no audio track, served from CDN storage.
  */
-const SOURCES = [
-  { src: "/videos/bulgaria-cinematic.webm", type: "video/webm" },
-  { src: "/videos/bulgaria-cinematic.mp4", type: "video/mp4" },
-];
 
 export function CinematicVideo() {
   const t = useT();
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [playVideo, setPlayVideo] = useState(false);
+  const [mountVideo, setMountVideo] = useState(false);
+  const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const smallScreen = window.matchMedia("(max-width: 767px)").matches;
     const saveData =
       (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData ===
       true;
-    if (reducedMotion || smallScreen || saveData) return;
+    if (reducedMotion || saveData) return;
 
     const el = sectionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
-          setPlayVideo(true);
+          setMountVideo(true);
           observer.disconnect();
         }
       },
@@ -56,24 +51,43 @@ export function CinematicVideo() {
           decoding="async"
           className="absolute inset-0 size-full object-cover"
         />
-        {playVideo && !failed ? (
+        {mountVideo ? (
           <video
             autoPlay
             muted
             loop
             playsInline
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
             preload="metadata"
             poster={posterImage}
             aria-hidden="true"
             tabIndex={-1}
-            onError={() => setFailed(true)}
-            className="absolute inset-0 size-full object-cover"
+            ref={(node) => {
+              if (node) node.muted = true;
+            }}
+            onCanPlay={(e) => {
+              const v = e.currentTarget;
+              v.muted = true;
+              void v.play().catch(() => undefined);
+              setReady(true);
+            }}
+            onError={() => {
+              setFailed(true);
+              setReady(false);
+            }}
+            className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${
+              ready && !failed ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ pointerEvents: "none" }}
           >
-            {SOURCES.map((s) => (
-              <source key={s.src} src={s.src} type={s.type} />
-            ))}
+            <source src={journeyVideoWebm.url} type="video/webm" />
+            <source src={journeyVideo.url} type="video/mp4" />
           </video>
         ) : null}
+
+
 
         <div
           className="absolute inset-0 bg-overlay/65"
