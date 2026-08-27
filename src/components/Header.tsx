@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 import { useT, type MessageKey } from "@/lib/i18n";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const navLinks = [
   { key: "nav.explore" as MessageKey, to: "/" },
@@ -83,6 +84,8 @@ export function Header() {
             </Link>
           ))}
 
+          <LanguageSwitcher transparent={transparent} />
+
           {user ? (
             <UserMenu
               transparent={transparent}
@@ -139,6 +142,10 @@ export function Header() {
                 </Link>
               </li>
             ))}
+
+            <li className="border-b border-border/60 py-4">
+              <LanguageSwitcher />
+            </li>
 
             {user ? (
               <>

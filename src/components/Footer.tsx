@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { useLocale, type Locale, type MessageKey } from "@/lib/i18n";
+import { useT, type MessageKey } from "@/lib/i18n";
 
 const columns = [
   {
@@ -28,13 +28,8 @@ const columns = [
   },
 ];
 
-const languages: { value: Locale; label: string }[] = [
-  { value: "en", label: "English" },
-  { value: "bg", label: "Български" },
-];
-
 export function Footer() {
-  const { t, locale, setLocale } = useLocale();
+  const t = useT();
 
   return (
     <footer className="mt-24 border-t border-border bg-card">
@@ -82,31 +77,6 @@ export function Footer() {
             </a>
             {t("footer.creditSuffix")}
           </p>
-          <div className="flex items-center gap-2 text-sm" aria-label={t("footer.language")}>
-            {languages.map((language, index) => (
-              <span key={language.value} className="flex items-center gap-2">
-                {index > 0 ? (
-                  <span aria-hidden="true" className="text-border">
-                    |
-                  </span>
-                ) : null}
-                <button
-                  type="button"
-                  lang={language.value}
-                  onClick={() => setLocale(language.value)}
-                  aria-current={locale === language.value ? "true" : undefined}
-                  className={cn(
-                    "underline-offset-4 transition-colors duration-250 hover:text-primary",
-                    locale === language.value
-                      ? "font-medium text-foreground"
-                      : "text-muted-foreground/70",
-                  )}
-                >
-                  {language.label}
-                </button>
-              </span>
-            ))}
-          </div>
         </div>
       </div>
     </footer>
