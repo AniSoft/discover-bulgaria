@@ -6,7 +6,7 @@ import { categories } from "@/data/categories";
 import { categoryCountsQueryOptions } from "@/lib/places.queries";
 import { useT } from "@/lib/i18n";
 
-const title = "Categories — Discover Bulgaria";
+const title = "Categories | Discover Bulgaria";
 const description =
   "Browse Bulgarian places by category: hidden gems, nature, mountains, sea, history, views, photo spots and food & wine.";
 

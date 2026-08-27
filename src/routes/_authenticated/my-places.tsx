@@ -14,7 +14,7 @@ import { myPlacesKey, myPlacesQueryOptions } from "@/lib/my-places.queries";
 import { cn } from "@/lib/utils";
 import { useStatusLabel, useT } from "@/lib/i18n";
 
-const title = "My Places — Discover Bulgaria";
+const title = "My Places | Discover Bulgaria";
 const description = "Manage the places you have shared with the Discover Bulgaria community.";
 
 export const Route = createFileRoute("/_authenticated/my-places")({

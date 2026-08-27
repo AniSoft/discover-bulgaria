@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { useT } from "@/lib/i18n";
 
-const title = "Profile — Discover Bulgaria";
+const title = "Profile | Discover Bulgaria";
 const description = "Your Discover Bulgaria profile, submissions and saved places.";
 
 export const Route = createFileRoute("/_authenticated/profile")({

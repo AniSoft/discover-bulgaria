@@ -37,8 +37,8 @@ export const Route = createFileRoute("/places/$slug")({
   head: ({ loaderData }) => {
     const place = loaderData?.place;
     const title = place
-      ? `${place.title} — Discover Bulgaria`
-      : "Place not found — Discover Bulgaria";
+      ? `${place.title} | Discover Bulgaria`
+      : "Place not found | Discover Bulgaria";
     const description = place?.short_description ??
       "Details, practical information and local tips for places in Bulgaria.";
     return {

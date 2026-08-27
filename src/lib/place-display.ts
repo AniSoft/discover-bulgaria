@@ -54,7 +54,7 @@ export function placeCover(
 }
 
 export function placeImageAlt(place: Pick<PublicPlace, "title" | "category">) {
-  return `${place.title} — ${place.category} in Bulgaria`;
+  return `${place.title}, ${place.category} in Bulgaria`;
 }
 
 export function placePractical(place: Pick<PublicPlace, "approximate_cost" | "duration">) {

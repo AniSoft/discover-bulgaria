@@ -5,7 +5,7 @@ import { Button } from "@/components/AppButton";
 import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
 
-const title = "Create Account — Discover Bulgaria";
+const title = "Create Account | Discover Bulgaria";
 const description =
   "Create a Discover Bulgaria account to share hidden places and keep your own travel list.";
 

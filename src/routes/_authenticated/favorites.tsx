@@ -6,7 +6,7 @@ import { Button, ButtonLink } from "@/components/AppButton";
 import { favoritePlacesQueryOptions } from "@/lib/favorites.queries";
 import { useT } from "@/lib/i18n";
 
-const title = "Favorites — Discover Bulgaria";
+const title = "Favorites | Discover Bulgaria";
 const description = "Your saved Bulgarian places, kept in one place for the next trip.";
 
 export const Route = createFileRoute("/_authenticated/favorites")({
