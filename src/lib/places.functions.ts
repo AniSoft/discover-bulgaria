@@ -15,6 +15,16 @@ export type PublicPlace = {
   duration: string | null;
 };
 
+export type PublicPlaceDetail = PublicPlace & {
+  description: string;
+  why_visit: string | null;
+  location_text: string | null;
+  suitable_for: string[];
+  best_time: string | null;
+  difficulty: string | null;
+  local_secret: string | null;
+};
+
 const PUBLIC_COLUMNS =
   "id, slug, title, region, city, category, short_description, approximate_cost, duration";
 
