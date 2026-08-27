@@ -1,0 +1,17 @@
+## Netlify configuration for Discover Bulgaria (TanStack Start, SSR).
+##
+## The build runs Vite + Nitro. On Netlify, Nitro targets the `netlify` preset,
+## which emits:
+##   - static client assets  -> dist/            (published)
+##   - the SSR server         -> .netlify/functions-internal/server
+## Do NOT add an SPA catch-all redirect: SSR is handled by the generated
+## Netlify function, and Nitro writes its own dist/_redirects.
+
+[build]
+  command = "bun run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Pin the Nitro target explicitly (Netlify auto-detection also resolves to this).
+  NITRO_PRESET = "netlify"
