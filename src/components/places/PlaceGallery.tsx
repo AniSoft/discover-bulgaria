@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import type { PlacePhoto } from "@/lib/place-photos.shared";
+import { useT } from "@/lib/i18n";
 
 /** Editorial hero + gallery for the place details page. */
 export function PlaceGallery({
@@ -18,6 +19,7 @@ export function PlaceGallery({
   const cover = usable.find((photo) => photo.is_cover) ?? usable[0];
   const rest = usable.filter((photo) => photo.id !== cover?.id);
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const t = useT();
 
   useEffect(() => {
     if (!lightbox) return;
@@ -32,7 +34,7 @@ export function PlaceGallery({
         <div className="relative aspect-21/9 max-h-[520px] w-full">
           <img
             src={cover?.url ?? fallbackSrc}
-            alt={cover ? `${title} — cover photo` : fallbackAlt}
+            alt={cover ? t("place.galleryCoverAlt", { title }) : fallbackAlt}
             className="size-full object-cover"
             width={1600}
             height={686}
@@ -52,7 +54,7 @@ export function PlaceGallery({
                 <span className="relative block aspect-4/3">
                   <img
                     src={photo.url!}
-                    alt={`${title} — photo ${index + 2}`}
+                    alt={t("place.galleryPhotoAlt", { title, index: index + 2 })}
                     loading="lazy"
                     width={800}
                     height={600}
@@ -69,18 +71,18 @@ export function PlaceGallery({
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={`${title} photo`}
+          aria-label={t("place.galleryLightboxAria", { title })}
           onClick={() => setLightbox(null)}
           className="fixed inset-0 z-50 grid place-items-center bg-foreground/85 p-6"
         >
           <img
             src={lightbox}
-            alt={`${title} — enlarged photo`}
+            alt={t("place.galleryEnlargedAlt", { title })}
             className="max-h-[85vh] max-w-full rounded-[var(--radius-card)] object-contain"
           />
           <button
             type="button"
-            aria-label="Close photo"
+            aria-label={t("place.galleryClosePhoto")}
             onClick={() => setLightbox(null)}
             className="absolute right-6 top-6 grid size-10 place-items-center rounded-full bg-card text-foreground"
           >
