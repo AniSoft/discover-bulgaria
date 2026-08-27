@@ -8,7 +8,8 @@ export const en = {
   "footer.about": "About",
   "footer.contact": "Contact",
   "footer.language": "Language",
-  "footer.rights": "© 2026 Discover Bulgaria",
+  "footer.creditBeforeLink": "© 2026 Discover Bulgaria · Created by ",
+  "footer.creditSuffix": "",
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
@@ -21,5 +22,6 @@ export const bg: Record<keyof typeof en, string> = {
   "footer.about": "За нас",
   "footer.contact": "Контакти",
   "footer.language": "Език",
-  "footer.rights": "© 2026 Discover Bulgaria",
+  "footer.creditBeforeLink": "© 2026 Discover Bulgaria · Създадено от ",
+  "footer.creditSuffix": "",
 };
