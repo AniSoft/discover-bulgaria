@@ -99,3 +99,23 @@ export const getPublishedCategoryCounts = createServerFn({ method: "GET" }).hand
     return counts;
   },
 );
+
+const DETAIL_COLUMNS = `${PUBLIC_COLUMNS}, description, why_visit, location_text, suitable_for, best_time, difficulty, local_secret`;
+
+export const getPublishedPlaceBySlug = createServerFn({ method: "GET" })
+  .inputValidator((data: unknown) => z.object({ slug: z.string().min(1).max(120) }).parse(data))
+  .handler(async ({ data }): Promise<PublicPlaceDetail | null> => {
+    const supabase = publicClient();
+    const { data: row, error } = await supabase
+      .from("places")
+      .select(DETAIL_COLUMNS)
+      .eq("status", "published")
+      .eq("slug", data.slug)
+      .maybeSingle();
+
+    if (error) {
+      console.error("[places] getPublishedPlaceBySlug failed", error);
+      throw new Error("PLACE_LOAD_FAILED");
+    }
+    return (row as PublicPlaceDetail | null) ?? null;
+  });
