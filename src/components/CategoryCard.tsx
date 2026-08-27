@@ -4,7 +4,7 @@ import type { Category } from "@/data/categories";
 
 type Props = {
   category: Category;
-  count?: number;
+  count?: number | undefined;
 };
 
 export function CategoryCard({ category, count }: Props) {
