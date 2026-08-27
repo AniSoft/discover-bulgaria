@@ -47,7 +47,7 @@ function ProfilePage() {
 
           <hr className="my-7 border-border" />
 
-          <NameForm currentName={fullName} />
+          <NameForm currentName={fullName} email={user?.email ?? ""} />
 
           <hr className="my-7 border-border" />
 
@@ -118,7 +118,7 @@ function NameForm({ currentName }: { currentName: string }) {
       {error ? <FormAlert>{error}</FormAlert> : null}
       {saved ? <FormAlert tone="success">Your name has been updated.</FormAlert> : null}
 
-      <Field id="full-name" label="Full name" error={undefined}>
+      <Field id="full-name" label="Full name">
         <input
           id="full-name"
           type="text"
