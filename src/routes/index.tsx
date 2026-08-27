@@ -51,9 +51,9 @@ function Index() {
         }
       />
       <EditorialIntro />
-      <CinematicVideo />
       <CategorySection />
       <ExplorePlaces q={q} category={category} onReset={() => navigate({ search: {}, resetScroll: false })} />
+      <CinematicVideo />
       <LocalSecrets />
       <CommunityCta />
     </>
