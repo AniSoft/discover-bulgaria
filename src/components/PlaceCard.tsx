@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Clock, Heart, MapPin } from "lucide-react";
+import { ArrowRight, Clock, MapPin } from "lucide-react";
 import type { PublicPlace } from "@/lib/places.functions";
+import { FavoriteHeartButton } from "@/components/FavoriteButton";
 import { placeCover, placeImageAlt, placeLocation, placePractical } from "@/lib/place-display";
+
 
 export function PlaceCard({ place }: { place: PublicPlace }) {
   const practical = placePractical(place);
@@ -20,13 +22,12 @@ export function PlaceCard({ place }: { place: PublicPlace }) {
         <span className="absolute left-4 top-4 rounded-full bg-card/95 px-3 py-1 text-xs font-medium text-primary">
           {place.category}
         </span>
-        <button
-          type="button"
-          aria-label={`Save ${place.title} to favorites`}
-          className="absolute right-4 top-4 grid size-9 place-items-center rounded-full bg-card/95 text-foreground transition-colors duration-250 hover:text-accent"
-        >
-          <Heart className="size-4" aria-hidden="true" />
-        </button>
+        <FavoriteHeartButton
+          placeId={place.id}
+          title={place.title}
+          className="absolute right-4 top-4"
+        />
+
       </div>
 
       <div className="flex flex-1 flex-col p-5">
