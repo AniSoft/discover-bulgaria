@@ -240,6 +240,7 @@ function EditPlaceForm({ place }: { place: EditablePlace }) {
           errors={errors}
           onChange={onChange}
           photosSlot={<PhotoManager placeId={place.id} />}
+          showTranslations={isAdmin}
         />
 
         {mutation.isError ? (
