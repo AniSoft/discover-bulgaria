@@ -1,4 +1,8 @@
 export const en = {
+  "cinematic.eyebrow": "The journey continues",
+  "cinematic.title": "Follow the road.",
+  "cinematic.body": "Mountains. Ancient places. Wild coastlines. Stories waiting to be found.",
+  "cinematic.place": "Bulgaria",
   "communityCta.eyebrow": "Join the journey",
   "home.heroEyebrow": "Discover Bulgaria",
   "home.heroCtaPrimary": "Begin the journey",
@@ -45,6 +49,10 @@ export const en = {
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
+  "cinematic.eyebrow": "Пътешествието продължава",
+  "cinematic.title": "Поеми по пътя.",
+  "cinematic.body": "Планини. Древни места. Диво крайбрежие. Истории, които чакат да бъдат открити.",
+  "cinematic.place": "България",
   "communityCta.eyebrow": "Стани част от пътешествието",
   "home.heroEyebrow": "Открий България",
   "home.heroCtaPrimary": "Започни пътешествието",
