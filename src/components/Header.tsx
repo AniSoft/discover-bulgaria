@@ -22,7 +22,7 @@ export function Header() {
   const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { user, fullName, initials, signOut } = useAuth();
+  const { user, fullName, initials, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,6 +85,7 @@ export function Header() {
             <UserMenu
               transparent={transparent}
               initials={initials}
+              isAdmin={isAdmin}
               fullName={fullName || user.email || "Account"}
               onSignOut={handleSignOut}
             />
@@ -155,6 +156,16 @@ export function Header() {
                     Profile
                   </Link>
                 </li>
+                {isAdmin ? (
+                  <li>
+                    <Link
+                      to="/admin"
+                      className="block border-b border-border/60 py-4 text-base font-medium text-foreground"
+                    >
+                      Admin Dashboard
+                    </Link>
+                  </li>
+                ) : null}
                 <li>
                   <Link
                     to="/my-places"
@@ -194,11 +205,13 @@ export function Header() {
 function UserMenu({
   transparent,
   initials,
+  isAdmin,
   fullName,
   onSignOut,
 }: {
   transparent: boolean;
   initials: string;
+  isAdmin: boolean;
   fullName: string;
   onSignOut: () => void;
 }) {
@@ -247,7 +260,24 @@ function UserMenu({
           role="menu"
           className="absolute right-0 mt-3 w-56 overflow-hidden rounded-[var(--radius-card)] border border-border bg-card py-2 shadow-lift"
         >
-          <p className="truncate px-4 pb-2 text-xs text-muted-foreground">{fullName}</p>
+          <div className="flex items-center gap-2 px-4 pb-2">
+            <p className="truncate text-xs text-muted-foreground">{fullName}</p>
+            {isAdmin ? (
+              <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-accent uppercase">
+                Admin
+              </span>
+            ) : null}
+          </div>
+          {isAdmin ? (
+            <Link
+              to="/admin"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary"
+            >
+              Admin Dashboard
+            </Link>
+          ) : null}
           {userMenuLinks.map((link) => (
             <Link
               key={link.label}

@@ -4,6 +4,7 @@ import { AuthCard, Field, FormAlert, inputClasses } from "@/components/auth/Auth
 import { Button } from "@/components/AppButton";
 import { supabase } from "@/integrations/supabase/client";
 import { safeRedirect } from "@/lib/safe-redirect";
+import { InitialAdminSetup } from "@/components/auth/InitialAdminSetup";
 
 const title = "Sign In — Discover Bulgaria";
 const description = "Sign in to save favorite places and submit your own discoveries in Bulgaria.";
@@ -112,6 +113,8 @@ function LoginPage() {
           {submitting ? "Signing in…" : "Sign In"}
         </Button>
       </form>
+
+      <InitialAdminSetup />
     </AuthCard>
   );
 }

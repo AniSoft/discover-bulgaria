@@ -8,6 +8,7 @@ type AuthContextValue = {
   loading: boolean;
   fullName: string;
   initials: string;
+  isAdmin: boolean;
   signOut: () => Promise<void>;
 };
 
@@ -62,6 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       fullName,
       initials: initialsFrom(fullName, user?.email),
+      isAdmin: (user?.app_metadata as Record<string, unknown> | undefined)?.["is_admin"] === true,
       signOut: async () => {
         await supabase.auth.signOut();
         setSession(null);
