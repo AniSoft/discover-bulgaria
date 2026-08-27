@@ -168,7 +168,7 @@ function MyPlacesPage() {
                 Cancel
               </Button>
               <Button
-                className="bg-red-700 text-white hover:bg-red-800"
+                variant="destructive"
                 onClick={() => remove.mutate(pending.id)}
                 disabled={remove.isPending}
               >

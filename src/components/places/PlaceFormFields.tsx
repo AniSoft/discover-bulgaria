@@ -38,7 +38,7 @@ export const emptyPlaceFormValues: PlaceFormValues = {
 };
 
 export const inputClass =
-  "w-full rounded-[var(--radius-button)] border border-border bg-card px-4 py-3 text-sm text-foreground outline-none transition-colors duration-250 placeholder:text-muted-foreground focus:border-accent";
+  "w-full min-h-12 rounded-[var(--radius-button)] border border-border bg-background px-4 py-3 text-base text-foreground outline-none transition-colors duration-250 placeholder:text-muted-foreground/70 focus:border-primary focus:ring-2 focus:ring-primary/15";
 
 export function Field({
   label,
@@ -59,11 +59,19 @@ export function Field({
     <div>
       <label htmlFor={htmlFor} className="block text-sm font-medium text-foreground">
         {label}
-        {required ? <span className="ml-1 text-accent">*</span> : null}
+        {required ? (
+          <span className="ml-1 text-accent" title="Required">
+            *<span className="sr-only">(required)</span>
+          </span>
+        ) : null}
       </label>
       {help ? <p className="mt-1 text-xs text-muted-foreground">{help}</p> : null}
       <div className="mt-2">{children}</div>
-      {error ? <p className="mt-2 text-xs text-accent">{error}</p> : null}
+      {error ? (
+        <p role="alert" className="mt-2 text-xs text-destructive">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }

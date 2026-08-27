@@ -1,5 +1,4 @@
 import { Button } from "@/components/AppButton";
-import { cn } from "@/lib/utils";
 
 export function ConfirmDialog({
   open,
@@ -44,7 +43,7 @@ export function ConfirmDialog({
           <Button
             onClick={onConfirm}
             disabled={pending}
-            className={cn(destructive && "bg-red-700 text-white hover:bg-red-800")}
+            variant={destructive ? "destructive" : "primary"}
           >
             {pending ? (pendingLabel ?? "Working…") : confirmLabel}
           </Button>

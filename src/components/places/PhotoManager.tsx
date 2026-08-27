@@ -255,7 +255,7 @@ function PhotoTile({
           label="Delete photo"
           disabled={disabled}
           onClick={onDelete}
-          className="ml-auto text-red-700 hover:bg-red-500/10"
+          className="ml-auto text-destructive hover:bg-destructive/10"
         >
           <Trash2 className="size-4" aria-hidden="true" />
         </IconAction>

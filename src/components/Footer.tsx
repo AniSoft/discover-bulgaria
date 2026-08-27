@@ -49,7 +49,7 @@ export function Footer() {
                     <Link
                       to={link.to}
                       search={{}}
-                      className="text-sm text-muted-foreground transition-colors duration-250 hover:text-primary"
+                      className="text-sm text-muted-foreground underline-offset-4 transition-colors duration-250 hover:text-primary hover:underline"
                     >
                       {link.label}
                     </Link>

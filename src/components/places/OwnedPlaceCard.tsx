@@ -11,16 +11,16 @@ export const STATUS_META: Record<
 > = {
   for_review: {
     label: "FOR REVIEW",
-    badge: "border-amber-500/35 bg-amber-500/12 text-amber-700",
+    badge: "border-warning/40 bg-warning/12 text-warning",
     note: "Waiting for administrator review.",
   },
   published: {
     label: "PUBLISHED",
-    badge: "border-primary/30 bg-primary/10 text-primary",
+    badge: "border-success/30 bg-success/10 text-success",
   },
   rejected: {
     label: "REJECTED",
-    badge: "border-red-500/30 bg-red-500/10 text-red-700",
+    badge: "border-destructive/30 bg-destructive/10 text-destructive",
   },
 };
 
@@ -63,7 +63,7 @@ export function OwnedPlaceCard({
   const meta = STATUS_META[place.status];
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-card">
+    <article className="flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-card transition-shadow duration-250 hover:shadow-lift">
       <div className="aspect-21/9 w-full overflow-hidden bg-secondary">
         <img
           src={placeCover(place)}
@@ -79,7 +79,7 @@ export function OwnedPlaceCard({
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <span className="text-xs font-medium text-accent">{place.category}</span>
-          <h3 className="mt-1.5 text-2xl leading-snug text-foreground">{place.title}</h3>
+          <h3 className="mt-1.5 line-clamp-2 text-2xl leading-snug text-foreground">{place.title}</h3>
         </div>
         <StatusBadge status={place.status} />
       </div>
@@ -89,18 +89,18 @@ export function OwnedPlaceCard({
         {placeLocation(place)}
       </p>
 
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
         {place.short_description}
       </p>
 
-      <p className="mt-4 flex items-center gap-1.5 text-xs text-muted-foreground">
+      <p className="mt-4 mb-6 flex items-center gap-1.5 text-xs text-muted-foreground">
         <CalendarDays className="size-3.5" aria-hidden="true" />
         Added {formatDate(place.created_at)}
       </p>
 
-      {meta?.note ? <p className="mt-2 text-xs text-amber-700">{meta.note}</p> : null}
+      {meta?.note ? <p className="mt-2 text-xs text-warning">{meta.note}</p> : null}
 
-      <div className="mt-6 flex flex-wrap gap-2 border-t border-border pt-5">
+      <div className="mt-auto flex flex-wrap gap-2 border-t border-border pt-5">
         <Link
           to="/places/$slug"
           params={{ slug: place.slug }}
@@ -118,9 +118,8 @@ export function OwnedPlaceCard({
           Edit
         </Link>
         <Button
-          variant="ghost"
+          variant="destructive-ghost"
           size="sm"
-          className="text-red-700 hover:bg-red-500/10"
           onClick={() => onDelete(place)}
         >
           <Trash2 className="size-4" aria-hidden="true" />
