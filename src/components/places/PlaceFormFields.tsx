@@ -1,4 +1,5 @@
 import { Sparkles } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import { SUITABLE_FOR_OPTIONS } from "@/lib/place-submit.shared";
 import { PLACE_CATEGORIES, PLACE_COSTS, PLACE_DIFFICULTIES } from "@/lib/places.types";
 import { cn } from "@/lib/utils";
@@ -60,7 +61,7 @@ export function Field({
       <label htmlFor={htmlFor} className="block text-sm font-medium text-foreground">
         {label}
         {required ? (
-          <span className="ml-1 text-accent" title="Required">
+          <span className="ml-1 text-accent" title={reqLabel}>
             *<span className="sr-only">(required)</span>
           </span>
         ) : null}
@@ -106,6 +107,7 @@ export function PlaceFormFields({
   onChange: <K extends keyof PlaceFormValues>(key: K, value: PlaceFormValues[K]) => void;
   photosSlot?: React.ReactNode;
 }) {
+  const t = useT();
   const toggleSuitable = (option: string) =>
     onChange(
       "suitable_for",
@@ -116,8 +118,8 @@ export function PlaceFormFields({
 
   return (
     <>
-      <Section step="Section A" heading="Basic information">
-        <Field label="Place Name" htmlFor="title" required error={errors["title"]}>
+      <Section step={t("form.sectionA")} heading={t("form.basicInfo")}>
+        <Field label={t("form.placeName")} htmlFor="title" required error={errors["title"]}>
           <input
             id="title"
             value={values.title}
@@ -128,10 +130,10 @@ export function PlaceFormFields({
           />
         </Field>
         <Field
-          label="Short Description"
+          label={t("form.shortDescription")}
           htmlFor="short_description"
           required
-          help="A brief summary shown on the place card."
+          help={t("form.shortDescHelp")}
           error={errors["short_description"]}
         >
           <input
@@ -142,7 +144,7 @@ export function PlaceFormFields({
             className={inputClass}
           />
         </Field>
-        <Field label="Full Description" htmlFor="description" required error={errors["description"]}>
+        <Field label={t("form.fullDescription")} htmlFor="description" required error={errors["description"]}>
           <textarea
             id="description"
             value={values.description}
@@ -154,8 +156,8 @@ export function PlaceFormFields({
         </Field>
       </Section>
 
-      <Section step="Section B" heading="Location">
-        <Field label="Region" htmlFor="region" required error={errors["region"]}>
+      <Section step={t("form.sectionB")} heading={t("form.location")}>
+        <Field label={t("form.region")} htmlFor="region" required error={errors["region"]}>
           <input
             id="region"
             value={values.region}
@@ -164,7 +166,7 @@ export function PlaceFormFields({
             placeholder="Lovech"
           />
         </Field>
-        <Field label="City / Village" htmlFor="city" error={errors["city"]}>
+        <Field label={t("form.city")} htmlFor="city" error={errors["city"]}>
           <input
             id="city"
             value={values.city}
@@ -173,9 +175,9 @@ export function PlaceFormFields({
           />
         </Field>
         <Field
-          label="Location Details"
+          label={t("form.locationDetails")}
           htmlFor="location_text"
-          help="How to find it — nearby landmarks, access roads, parking."
+          help={t("form.locationDetailsHelp")}
           error={errors["location_text"]}
         >
           <textarea
@@ -188,15 +190,15 @@ export function PlaceFormFields({
         </Field>
       </Section>
 
-      <Section step="Section C" heading="Category">
-        <Field label="Category" htmlFor="category" required error={errors["category"]}>
+      <Section step={t("form.sectionC")} heading={t("form.category")}>
+        <Field label={t("form.category")} htmlFor="category" required error={errors["category"]}>
           <select
             id="category"
             value={values.category}
             onChange={(e) => onChange("category", e.target.value)}
             className={inputClass}
           >
-            <option value="">Select a category</option>
+            <option value="">{t("form.selectCategory")}</option>
             {PLACE_CATEGORIES.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -206,9 +208,9 @@ export function PlaceFormFields({
         </Field>
       </Section>
 
-      <Section step="Section D" heading="Experience">
+      <Section step={t("form.sectionD")} heading={t("form.experience")}>
         <fieldset>
-          <legend className="text-sm font-medium text-foreground">Suitable For</legend>
+          <legend className="text-sm font-medium text-foreground">{t("form.suitableFor")}</legend>
           <div className="mt-3 flex flex-wrap gap-2">
             {SUITABLE_FOR_OPTIONS.map((option) => {
               const active = values.suitable_for.includes(option);
@@ -233,7 +235,7 @@ export function PlaceFormFields({
         </fieldset>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <Field label="Best Time to Visit" htmlFor="best_time" error={errors["best_time"]}>
+          <Field label={t("form.bestTimeToVisit")} htmlFor="best_time" error={errors["best_time"]}>
             <input
               id="best_time"
               value={values.best_time}
@@ -242,7 +244,7 @@ export function PlaceFormFields({
               placeholder="May to September"
             />
           </Field>
-          <Field label="Recommended Duration" htmlFor="duration" error={errors["duration"]}>
+          <Field label={t("form.recommendedDuration")} htmlFor="duration" error={errors["duration"]}>
             <input
               id="duration"
               value={values.duration}
@@ -251,14 +253,14 @@ export function PlaceFormFields({
               placeholder="2–3 h"
             />
           </Field>
-          <Field label="Approximate Cost" htmlFor="approximate_cost">
+          <Field label={t("form.approximateCost")} htmlFor="approximate_cost">
             <select
               id="approximate_cost"
               value={values.approximate_cost}
               onChange={(e) => onChange("approximate_cost", e.target.value)}
               className={inputClass}
             >
-              <option value="">Not specified</option>
+              <option value="">{t("form.notSpecified")}</option>
               {PLACE_COSTS.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -266,14 +268,14 @@ export function PlaceFormFields({
               ))}
             </select>
           </Field>
-          <Field label="Difficulty" htmlFor="difficulty">
+          <Field label={t("form.difficulty")} htmlFor="difficulty">
             <select
               id="difficulty"
               value={values.difficulty}
               onChange={(e) => onChange("difficulty", e.target.value)}
               className={inputClass}
             >
-              <option value="">Not specified</option>
+              <option value="">{t("form.notSpecified")}</option>
               {PLACE_DIFFICULTIES.map((d) => (
                 <option key={d} value={d}>
                   {d}
@@ -284,11 +286,11 @@ export function PlaceFormFields({
         </div>
       </Section>
 
-      <Section step="Section E" heading="Share your knowledge">
+      <Section step={t("form.sectionE")} heading={t("form.shareKnowledge")}>
         <Field
-          label="Why Visit?"
+          label={t("form.whyVisit")}
           htmlFor="why_visit"
-          help="What makes this place worth discovering?"
+          help={t("form.whyVisitHelp")}
           error={errors["why_visit"]}
         >
           <textarea
@@ -302,12 +304,12 @@ export function PlaceFormFields({
         <div className="rounded-[var(--radius-card)] border border-accent/25 bg-secondary p-6">
           <div className="flex items-center gap-2 text-accent">
             <Sparkles className="size-5" aria-hidden="true" />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em]">Local secret</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.18em]">{t("form.localSecretBadge")}</span>
           </div>
           <Field
-            label="Local Secret"
+            label={t("form.localSecret")}
             htmlFor="local_secret"
-            help="Share a useful tip that visitors may not find in a typical guidebook."
+            help={t("form.localSecretHelp")}
             error={errors["local_secret"]}
           >
             <textarea

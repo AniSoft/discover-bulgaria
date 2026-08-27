@@ -14,6 +14,32 @@ export const en = {
   "photos.uploaded": "Photos uploaded.",
   "photos.deleted": "Photo deleted.",
   "photos.coverUpdated": "Cover photo updated.",
+
+  "photos.section": "Section F",
+  "photos.managerDescription":
+    "JPG, PNG or WebP up to 1 MB each. Up to {max} photos. The first photo becomes the cover unless you choose another one.",
+  "photos.pickerDescription":
+    "JPG, PNG or WebP up to 1 MB each. Up to {max} photos. Your first photo becomes the cover, and you can change it later from My Places.",
+  "photos.emptySelected": "No photos selected yet.",
+  "photos.selectPhotos": "Select photos",
+  "photos.countOf": "{count} of {max} photos",
+  "photos.countSelected": "{count} of {max} selected",
+  "photos.remove": "Remove {name}",
+  "photos.movePhotoEarlier": "Move photo earlier",
+  "photos.movePhotoLater": "Move photo later",
+  "photos.makeCover": "Make cover photo",
+  "photos.coverBadge": "COVER",
+  "photos.altPhoto": "Place photo {index}",
+  "photos.altSelected": "Selected photo {index}",
+  "photos.orderSaved": "Photo order saved.",
+  "photos.uploadedOne": "Photo uploaded.",
+  "photos.uploadedCount": "{count} photos uploaded.",
+  "photos.deleteError": "We couldn't delete this photo. Please try again.",
+  "photos.coverError": "We couldn't update the cover photo. Please try again.",
+  "photos.orderError": "We couldn't save the new order. Please try again.",
+  "photos.fileMessage": "Please upload a JPG, PNG or WebP image up to 1 MB.",
+  "photos.contentMessage": "This file isn't a valid JPG, PNG or WebP image. Please choose a real photo.",
+  "photos.limitMessage": "Maximum {max} photos per place.",
 } as const;
 
 export const bg: Record<keyof typeof en, string> = {
@@ -32,4 +58,31 @@ export const bg: Record<keyof typeof en, string> = {
   "photos.uploaded": "Снимките са качени.",
   "photos.deleted": "Снимката е изтрита.",
   "photos.coverUpdated": "Основната снимка е обновена.",
+
+  "photos.section": "Раздел Е",
+  "photos.managerDescription":
+    "JPG, PNG или WebP до 1 MB всяка. До {max} снимки. Първата снимка става основна, освен ако не изберете друга.",
+  "photos.pickerDescription":
+    "JPG, PNG или WebP до 1 MB всяка. До {max} снимки. Първата ви снимка става основна и можете да я промените по-късно от „Моите места“.",
+  "photos.emptySelected": "Все още няма избрани снимки.",
+  "photos.selectPhotos": "Избери снимки",
+  "photos.countOf": "{count} от {max} снимки",
+  "photos.countSelected": "{count} от {max} избрани",
+  "photos.remove": "Премахни {name}",
+  "photos.movePhotoEarlier": "Премести снимката по-напред",
+  "photos.movePhotoLater": "Премести снимката по-назад",
+  "photos.makeCover": "Направи основна снимка",
+  "photos.coverBadge": "ОСНОВНА",
+  "photos.altPhoto": "Снимка на мястото {index}",
+  "photos.altSelected": "Избрана снимка {index}",
+  "photos.orderSaved": "Редът на снимките е запазен.",
+  "photos.uploadedOne": "Снимката е качена.",
+  "photos.uploadedCount": "{count} снимки са качени.",
+  "photos.deleteError": "Не успяхме да изтрием тази снимка. Моля, опитайте отново.",
+  "photos.coverError": "Не успяхме да обновим основната снимка. Моля, опитайте отново.",
+  "photos.orderError": "Не успяхме да запазим новия ред. Моля, опитайте отново.",
+  "photos.fileMessage": "Моля, качете JPG, PNG или WebP изображение до 1 MB.",
+  "photos.contentMessage":
+    "Този файл не е валидно JPG, PNG или WebP изображение. Моля, изберете истинска снимка.",
+  "photos.limitMessage": "Максимум {max} снимки на място.",
 };
