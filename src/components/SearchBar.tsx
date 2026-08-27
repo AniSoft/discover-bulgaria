@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { Button } from "@/components/AppButton";
 import { cn } from "@/lib/utils";
@@ -5,13 +6,24 @@ import { cn } from "@/lib/utils";
 type Props = {
   className?: string;
   id?: string;
+  value?: string;
+  onSearch?: (query: string) => void;
 };
 
-export function SearchBar({ className, id = "site-search" }: Props) {
+export function SearchBar({ className, id = "site-search", value = "", onSearch }: Props) {
+  const [query, setQuery] = useState(value);
+
+  useEffect(() => {
+    setQuery(value);
+  }, [value]);
+
   return (
     <form
       role="search"
-      onSubmit={(event) => event.preventDefault()}
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSearch?.(query.trim());
+      }}
       className={cn(
         "flex w-full flex-col gap-2 rounded-2xl border border-border/60 bg-card p-2 sm:flex-row sm:items-center sm:rounded-full sm:p-2",
         className,
@@ -25,6 +37,8 @@ export function SearchBar({ className, id = "site-search" }: Props) {
         <input
           id={id}
           type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
           placeholder="Search places, regions or experiences..."
           className="h-12 w-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
         />
