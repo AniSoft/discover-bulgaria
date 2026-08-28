@@ -1,5 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { useT, type MessageKey } from "@/lib/i18n";
+import { openCookieSettings } from "@/components/Analytics";
+
+const legalLinks = [
+  { labelKey: "legal.privacy" as MessageKey, to: "/privacy-policy" as const },
+  { labelKey: "legal.cookies" as MessageKey, to: "/cookie-policy" as const },
+  { labelKey: "legal.terms" as MessageKey, to: "/terms" as const },
+];
 
 const columns = [
   {

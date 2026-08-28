@@ -17,6 +17,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedFavoritesRouteImport } from './routes/_authenticated/favorites'
 import { Route as AuthenticatedMyPlacesRouteImport } from './routes/_authenticated/my-places'
@@ -65,6 +66,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/favorites': typeof AuthenticatedFavoritesRoute
   '/my-places': typeof AuthenticatedMyPlacesRoute
@@ -148,6 +155,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/favorites': typeof AuthenticatedFavoritesRoute
   '/my-places': typeof AuthenticatedMyPlacesRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/favorites': typeof AuthenticatedFavoritesRoute
   '/_authenticated/my-places': typeof AuthenticatedMyPlacesRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/sitemap.xml'
+    | '/terms'
     | '/admin'
     | '/favorites'
     | '/my-places'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/sitemap.xml'
+    | '/terms'
     | '/favorites'
     | '/my-places'
     | '/profile'
@@ -227,6 +238,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/sitemap.xml'
+    | '/terms'
     | '/_authenticated/admin'
     | '/_authenticated/favorites'
     | '/_authenticated/my-places'
@@ -248,6 +260,7 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   RegisterRoute: typeof RegisterRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsRoute: typeof TermsRoute
   PlacesSlugRoute: typeof PlacesSlugRoute
   ApiPublicInitialAdminSetupRoute: typeof ApiPublicInitialAdminSetupRoute
 }
@@ -308,6 +321,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -429,6 +449,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   RegisterRoute: RegisterRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsRoute: TermsRoute,
   PlacesSlugRoute: PlacesSlugRoute,
   ApiPublicInitialAdminSetupRoute: ApiPublicInitialAdminSetupRoute,
 }
