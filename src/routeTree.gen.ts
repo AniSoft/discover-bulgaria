@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as DataDeletionRouteImport } from './routes/data-deletion'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -47,6 +48,11 @@ const CategoriesRoute = CategoriesRouteImport.update({
 const CookiePolicyRoute = CookiePolicyRouteImport.update({
   id: '/cookie-policy',
   path: '/cookie-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DataDeletionRoute = DataDeletionRouteImport.update({
+  id: '/data-deletion',
+  path: '/data-deletion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/data-deletion': typeof DataDeletionRoute
   '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/data-deletion': typeof DataDeletionRoute
   '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/categories': typeof CategoriesRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/data-deletion': typeof DataDeletionRoute
   '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/'
     | '/categories'
     | '/cookie-policy'
+    | '/data-deletion'
     | '/login'
     | '/privacy-policy'
     | '/register'
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/'
     | '/categories'
     | '/cookie-policy'
+    | '/data-deletion'
     | '/login'
     | '/privacy-policy'
     | '/register'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/categories'
     | '/cookie-policy'
+    | '/data-deletion'
     | '/login'
     | '/privacy-policy'
     | '/register'
@@ -268,6 +280,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   CategoriesRoute: typeof CategoriesRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
+  DataDeletionRoute: typeof DataDeletionRoute
   LoginRoute: typeof LoginRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   RegisterRoute: typeof RegisterRoute
@@ -306,6 +319,13 @@ declare module '@tanstack/react-router' {
       path: '/cookie-policy'
       fullPath: '/cookie-policy'
       preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/data-deletion': {
+      id: '/data-deletion'
+      path: '/data-deletion'
+      fullPath: '/data-deletion'
+      preLoaderRoute: typeof DataDeletionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -465,6 +485,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   CategoriesRoute: CategoriesRoute,
   CookiePolicyRoute: CookiePolicyRoute,
+  DataDeletionRoute: DataDeletionRoute,
   LoginRoute: LoginRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   RegisterRoute: RegisterRoute,
