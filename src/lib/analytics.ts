@@ -1,8 +1,8 @@
 /**
- * Google Analytics 4 (Basic Consent Mode).
+ * Google Analytics 4 with BASIC consent behaviour.
  *
- * Discover Bulgaria does not use Google Ads, so the Google tag is NOT loaded
- * until the visitor explicitly accepts analytics cookies. Before consent:
+ * Discover Bulgaria does not use advertising products, so the Google tag is NOT
+ * loaded until the visitor explicitly accepts analytics. Before consent:
  *
  * - no gtag.js script is loaded
  * - no dataLayer / gtag stub is created
@@ -10,20 +10,27 @@
  *
  * On Accept: the tag loads, G-NP4Y2XRK9Q initializes with analytics_storage
  * granted, and manual SPA page-view tracking starts. On Decline: nothing is
- * ever loaded and no events are sent. Advertising storage stays denied always.
+ * ever loaded. Advertising storage stays denied at all times.
  *
- * Page views are sent MANUALLY on router navigation: the GA config sets
- * `send_page_view: false`, so enhanced-measurement history events never
- * duplicate our SPA page views.
+ * Withdrawal: turning Analytics off in Cookie Settings stops all future events
+ * immediately (the in-page tag stays inert until the next page load, where it
+ * is not loaded at all).
  *
  * No personal data (email, name, user id, tokens, free-form text such as raw
  * search terms) is ever sent.
  */
 
 export const GA_MEASUREMENT_ID = "G-NP4Y2XRK9Q";
-export const CONSENT_STORAGE_KEY = "db_analytics_consent";
+export const CONSENT_STORAGE_KEY = "db_cookie_consent";
+/** Legacy key from the first consent implementation ("accepted" | "declined"). */
+const LEGACY_CONSENT_KEY = "db_analytics_consent";
+export const CONSENT_VERSION = "1";
 
-export type ConsentChoice = "accepted" | "declined";
+export type ConsentRecord = {
+  necessary: true;
+  analytics: boolean;
+  version: string;
+};
 
 declare global {
   interface Window {
@@ -39,21 +46,40 @@ export function analyticsEnabled(): boolean {
   return host === "discoverbulgaria.net" || host === "www.discoverbulgaria.net";
 }
 
-export function readConsent(): ConsentChoice | null {
+/** The stored decision, or null when the visitor has not decided (yet). */
+export function readConsent(): ConsentRecord | null {
   if (typeof window === "undefined") return null;
   try {
-    const value = window.localStorage.getItem(CONSENT_STORAGE_KEY);
-    return value === "accepted" || value === "declined" ? value : null;
+    const raw = window.localStorage.getItem(CONSENT_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<ConsentRecord>;
+      if (typeof parsed?.analytics === "boolean" && parsed.version === CONSENT_VERSION) {
+        return { necessary: true, analytics: parsed.analytics, version: CONSENT_VERSION };
+      }
+      return null;
+    }
+    const legacy = window.localStorage.getItem(LEGACY_CONSENT_KEY);
+    if (legacy === "accepted" || legacy === "declined") {
+      const migrated: ConsentRecord = {
+        necessary: true,
+        analytics: legacy === "accepted",
+        version: CONSENT_VERSION,
+      };
+      writeConsent(migrated);
+      window.localStorage.removeItem(LEGACY_CONSENT_KEY);
+      return migrated;
+    }
+    return null;
   } catch {
     return null;
   }
 }
 
-export function writeConsent(choice: ConsentChoice) {
+function writeConsent(record: ConsentRecord) {
   try {
-    window.localStorage.setItem(CONSENT_STORAGE_KEY, choice);
+    window.localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(record));
   } catch {
-    /* storage unavailable: choice simply isn't remembered */
+    /* storage unavailable: the choice simply isn't remembered */
   }
 }
 
@@ -63,10 +89,12 @@ function gtag(...args: unknown[]) {
 }
 
 let loaded = false;
+/** Runtime switch: false stops every event even if the tag was loaded earlier. */
+let analyticsAllowed = false;
 
-/** True only after the Google tag has actually been loaded (post-consent). */
+/** True only when the Google tag is loaded AND analytics consent is active. */
 export function analyticsLoaded(): boolean {
-  return loaded && typeof window.gtag === "function";
+  return loaded && analyticsAllowed && typeof window.gtag === "function";
 }
 
 /**
@@ -98,20 +126,32 @@ function loadAnalytics() {
 }
 
 /**
- * Boots analytics on page load ONLY when consent was previously accepted.
- * Otherwise nothing loads: basic consent mode, zero pre-consent pings.
+ * Boots analytics on page load ONLY when analytics consent was given before.
+ * Otherwise nothing loads: basic consent behaviour, zero pre-consent pings.
  */
 export function initAnalytics() {
   if (!analyticsEnabled()) return;
-  if (readConsent() === "accepted") loadAnalytics();
+  const consent = readConsent();
+  if (consent?.analytics) {
+    analyticsAllowed = true;
+    loadAnalytics();
+  }
 }
 
-/** Records the visitor's choice; Accept loads the tag, Decline stays silent. */
-export function applyConsent(choice: ConsentChoice) {
-  writeConsent(choice);
+/** Records the choice; analytics on loads the tag, off stops all tracking. */
+export function applyConsent(analytics: boolean) {
+  const record: ConsentRecord = { necessary: true, analytics, version: CONSENT_VERSION };
+  writeConsent(record);
   if (!analyticsEnabled()) return;
-  if (choice === "accepted") loadAnalytics();
-  // "declined": intentionally do nothing. The tag was never loaded.
+  analyticsAllowed = analytics;
+  if (analytics) {
+    loadAnalytics();
+    if (typeof window.gtag === "function") {
+      window.gtag("consent", "update", { analytics_storage: "granted" });
+    }
+  } else if (typeof window.gtag === "function") {
+    window.gtag("consent", "update", { analytics_storage: "denied" });
+  }
 }
 
 export function trackPageView(location: string, title: string) {
