@@ -58,7 +58,7 @@ const enPrivacy: LegalDoc = {
       heading: "Account data",
       paragraphs: [
         "If you register, we process the data you provide to Supabase Auth: your email address, a display name, and a securely hashed password. We never see or store your password in readable form.",
-        "You may also sign in with a third-party identity provider such as Google. In that case Supabase Auth receives from the provider the identifying data needed to create your account, typically your email address and the display name and profile picture you have made available to it. We never receive your password with the provider.",
+        "You may also sign in with a third-party identity provider such as Google or Facebook. In that case Supabase Auth receives from the provider the identifying data needed to create your account, typically your email address and the display name and profile picture you have made available to it. We never receive your password with the provider.",
         "Your session is kept in your browser's local storage so that you stay signed in. It is not stored in a cookie.",
       ],
     },
@@ -176,7 +176,7 @@ const bgPrivacy: LegalDoc = {
       heading: "Данни за профила",
       paragraphs: [
         "Ако се регистрирате, обработваме данните, които предоставяте на Supabase Auth: имейл адрес, име за показване и парола, съхранена като защитен хеш. Никога не виждаме и не съхраняваме паролата ви в четим вид.",
-        "Можете също да влезете чрез външен доставчик на самоличност като Google. В този случай Supabase Auth получава от доставчика данните, необходими за създаване на профила ви, обикновено имейл адрес, име за показване и профилна снимка, които сте предоставили на доставчика. Никога не получаваме паролата ви към доставчика.",
+        "Можете също да влезете чрез външен доставчик на самоличност като Google или Facebook. В този случай Supabase Auth получава от доставчика данните, необходими за създаване на профила ви, обикновено имейл адрес, име за показване и профилна снимка, които сте предоставили на доставчика. Никога не получаваме паролата ви към доставчика.",
         "Сесията ви се пази в локалното хранилище на браузъра, за да останете вписани. Тя не се съхранява в бисквитка.",
       ],
     },

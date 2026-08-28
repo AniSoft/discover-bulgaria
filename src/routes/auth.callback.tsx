@@ -41,7 +41,10 @@ function AuthCallbackPage() {
         const { data } = await supabase.auth.getSession();
         if (!active) return;
         if (data.session) {
-          trackEvent("login", { method: data.session.user.app_metadata?.["provider"] === "google" ? "google" : "social" });
+          const provider = data.session.user.app_metadata?.["provider"];
+          trackEvent("login", {
+            method: provider === "google" || provider === "facebook" ? provider : "social",
+          });
           navigate({ to: target, replace: true });
           return;
         }
