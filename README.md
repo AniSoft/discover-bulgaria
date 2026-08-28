@@ -1,5 +1,10 @@
 # Discover Bulgaria
 
+![Status](https://img.shields.io/badge/status-production-183326)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-00C7B7?logo=netlify&logoColor=white)
+
 > Where the road becomes a story.
 
 Discover Bulgaria is a bilingual travel discovery platform for exploring remarkable, authentic and lesser-known places across Bulgaria.
@@ -9,6 +14,25 @@ Visitors can discover destinations, search and browse categories. Registered use
 ## Live Demo
 
 Production: [https://discoverbulgaria.net](https://discoverbulgaria.net)
+
+## Screenshots
+
+### Home page
+
+![Discover Bulgaria home page](public/readme/home.jpg)
+
+### Explore and categories
+
+![Explore and categories](public/readme/explore.jpg)
+
+### Place details
+
+![Place details page](public/readme/place-details.jpg)
+
+### Map and directions
+
+![Map and directions section](public/readme/map.jpg)
+
 
 ## About the Project
 
