@@ -16,6 +16,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/privacy-policy", changefreq: "yearly", priority: "0.2" },
           { path: "/cookie-policy", changefreq: "yearly", priority: "0.2" },
           { path: "/terms", changefreq: "yearly", priority: "0.2" },
+          { path: "/data-deletion", changefreq: "yearly", priority: "0.2" },
         ];
 
         // Published places only: mirrors the public detail route's filter.
