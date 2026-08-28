@@ -75,7 +75,29 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-primary-foreground/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <nav
+          aria-label={t("legal.navLabel")}
+          className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-primary-foreground/15 pt-6"
+        >
+          {legalLinks.map((link) => (
+            <Link
+              key={link.labelKey}
+              to={link.to}
+              className="text-sm text-primary-foreground/80 underline-offset-4 transition-colors duration-300 hover:text-primary-foreground hover:underline"
+            >
+              {t(link.labelKey)}
+            </Link>
+          ))}
+          <button
+            type="button"
+            onClick={openCookieSettings}
+            className="text-sm text-primary-foreground/80 underline-offset-4 transition-colors duration-300 hover:text-primary-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            {t("consent.cookieSettings")}
+          </button>
+        </nav>
+
+        <div className="mt-8 flex flex-col gap-4 border-t border-primary-foreground/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs tracking-wide text-primary-foreground/55">
             {t("footer.creditBeforeLink")}
             <a
