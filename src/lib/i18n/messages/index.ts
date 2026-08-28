@@ -9,6 +9,7 @@ import * as dashboard from "./dashboard";
 import * as photos from "./photos";
 import * as footer from "./footer";
 import * as map from "./map";
+import * as consent from "./consent";
 
 export const enMessages = {
   ...common.en,
@@ -22,6 +23,7 @@ export const enMessages = {
   ...photos.en,
   ...footer.en,
   ...map.en,
+  ...consent.en,
 };
 
 export const bgMessages: Record<MessageKey, string> = {
@@ -36,6 +38,7 @@ export const bgMessages: Record<MessageKey, string> = {
   ...photos.bg,
   ...footer.bg,
   ...map.bg,
+  ...consent.bg,
 };
 
 export type MessageKey = keyof typeof enMessages;
