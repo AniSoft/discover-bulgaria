@@ -14,6 +14,7 @@ export const en = {
   "place.errorTitle": "We couldn't load this place",
   "place.saveAria": "Save {title}",
   "place.removeAria": "Remove {title} from favorites",
+  "place.exploreAria": "Explore {title}",
   "place.breadcrumbAria": "Breadcrumb",
   "place.breadcrumbExplore": "Explore",
   "place.privatePreview": "Private preview: this place is not public until it is published.",
