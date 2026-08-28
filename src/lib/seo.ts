@@ -44,10 +44,12 @@ export type SeoInput = {
   image?: string | null;
   type?: "website" | "article";
   noindex?: boolean;
+  /** Robots directive when the page should not be indexed. */
+  robots?: string;
 };
 
 /** Meta + canonical link pair for a leaf route. */
-export function seo({ title, description, path, image, type = "website", noindex }: SeoInput): {
+export function seo({ title, description, path, image, type = "website", noindex, robots }: SeoInput): {
   meta: MetaEntry[];
   links: { rel: string; href: string }[];
 } {
@@ -67,8 +69,8 @@ export function seo({ title, description, path, image, type = "website", noindex
     { name: "twitter:description", content: description },
     { name: "twitter:image", content: socialImage },
   ];
-  if (noindex) meta.push({ name: "robots", content: "noindex, nofollow" });
-  return { meta, links: noindex ? [] : [{ rel: "canonical", href: url }] };
+  if (noindex) meta.push({ name: "robots", content: robots ?? "noindex, nofollow" });
+  return { meta, links: [{ rel: "canonical", href: url }] };
 }
 
 /** Metadata for private / authenticated screens: never indexed, no canonical. */
