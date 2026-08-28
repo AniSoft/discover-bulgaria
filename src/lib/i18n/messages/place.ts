@@ -48,6 +48,7 @@ export const bg: Record<keyof typeof en, string> = {
   "place.errorTitle": "Не успяхме да заредим това място",
   "place.saveAria": "Запази {title}",
   "place.removeAria": "Премахни {title} от любими",
+  "place.exploreAria": "Разгледай {title}",
   "place.breadcrumbAria": "Навигация",
   "place.breadcrumbExplore": "Разгледай",
   "place.privatePreview": "Частен преглед: това място не е публично, докато не бъде публикувано.",
