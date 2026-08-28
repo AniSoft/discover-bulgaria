@@ -6,6 +6,7 @@ const legalLinks = [
   { labelKey: "legal.privacy" as MessageKey, to: "/privacy-policy" as const },
   { labelKey: "legal.cookies" as MessageKey, to: "/cookie-policy" as const },
   { labelKey: "legal.terms" as MessageKey, to: "/terms" as const },
+  { labelKey: "legal.dataDeletion" as MessageKey, to: "/data-deletion" as const },
 ];
 
 const columns = [
