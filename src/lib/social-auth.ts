@@ -2,11 +2,22 @@ import { supabase } from "@/integrations/supabase/client";
 import { safeRedirect } from "@/lib/safe-redirect";
 
 /**
+ * Feature flag for Facebook Login. Set to `true` once Meta Business
+ * Verification is complete and the provider is ready for general users.
+ *
+ * Hiding Facebook only removes the UI button; the OAuth code, Supabase
+ * provider configuration, and callback flow remain intact.
+ */
+export const FACEBOOK_LOGIN_ENABLED = false;
+
+/**
  * Social identity providers that are actually wired up. Adding "facebook" here
  * (once it is configured in the Supabase dashboard) is all that is needed to
  * surface a Facebook button, because every consumer renders from this list.
  */
-export const SOCIAL_PROVIDERS = ["google", "facebook"] as const;
+export const SOCIAL_PROVIDERS = FACEBOOK_LOGIN_ENABLED
+  ? (["google", "facebook"] as const)
+  : (["google"] as const);
 
 export type SocialProvider = (typeof SOCIAL_PROVIDERS)[number];
 
