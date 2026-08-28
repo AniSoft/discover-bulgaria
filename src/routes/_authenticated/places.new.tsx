@@ -32,6 +32,7 @@ function NewPlacePage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [photos, setPhotos] = useState<PickedPhoto[]>([]);
+  const [rightsConfirmed, setRightsConfirmed] = useState(false);
   const [failedPhotos, setFailedPhotos] = useState(0);
   const submit = useServerFn(createPlace);
   const t = useT();
