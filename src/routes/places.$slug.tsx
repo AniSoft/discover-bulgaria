@@ -239,7 +239,12 @@ function PlaceDetail({
         <div className="mt-8 flex max-w-3xl flex-wrap items-center gap-4">
           <Practical place={place} />
           {ownerStatus ? null : (
-            <FavoriteActionButton placeId={place.id} title={place.title} />
+            <FavoriteActionButton
+              placeId={place.id}
+              title={place.title}
+              slug={place.slug}
+              category={place.category}
+            />
           )}
         </div>
 

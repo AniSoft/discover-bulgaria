@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/AppButton";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   className?: string;
@@ -24,7 +25,9 @@ export function SearchBar({ className, id = "site-search", value = "", onSearch 
       role="search"
       onSubmit={(event) => {
         event.preventDefault();
-        onSearch?.(query.trim());
+        const term = query.trim();
+        if (term) trackEvent("search", { search_term: term.slice(0, 60) });
+        onSearch?.(term);
       }}
       className={cn(
         "flex w-full flex-col gap-2 rounded-2xl border border-border/60 bg-card p-2 sm:flex-row sm:items-center sm:rounded-full sm:p-2",

@@ -5,6 +5,7 @@ import { FavoriteHeartButton } from "@/components/FavoriteButton";
 import { placeCover, placeImageAlt, placeLocation, placePractical } from "@/lib/place-display";
 import { useCategoryLabel, useT } from "@/lib/i18n";
 import { useLocalizedPlace } from "@/lib/place-i18n";
+import { trackEvent } from "@/lib/analytics";
 
 export function PlaceCard({ place: source }: { place: PublicPlace }) {
   const place = useLocalizedPlace(source);
@@ -32,7 +33,13 @@ export function PlaceCard({ place: source }: { place: PublicPlace }) {
         <span className="eyebrow absolute top-4 left-4 text-primary-foreground drop-shadow-[0_1px_4px_oklch(0_0_0/45%)]">
           {categoryLabel(place.category)}
         </span>
-        <FavoriteHeartButton placeId={place.id} title={place.title} className="absolute top-3 right-3" />
+        <FavoriteHeartButton
+          placeId={place.id}
+          title={place.title}
+          slug={place.slug}
+          category={place.category}
+          className="absolute top-3 right-3"
+        />
         <p className="eyebrow absolute right-4 bottom-4 left-4 truncate text-primary-foreground/85">
           {placeLocation(place)}
         </p>
@@ -43,6 +50,7 @@ export function PlaceCard({ place: source }: { place: PublicPlace }) {
           <Link
             to="/places/$slug"
             params={{ slug: place.slug }}
+            onClick={() => trackEvent("select_content", { content_type: "place", place_slug: place.slug, place_category: place.category })}
             className="transition-colors duration-300 hover:text-accent"
           >
             {place.title}
@@ -58,6 +66,7 @@ export function PlaceCard({ place: source }: { place: PublicPlace }) {
           <Link
             to="/places/$slug"
             params={{ slug: place.slug }}
+            onClick={() => trackEvent("select_content", { content_type: "place", place_slug: place.slug, place_category: place.category })}
             className="eyebrow inline-flex items-center gap-1.5 text-primary transition-colors duration-300 hover:text-accent"
           >
             {t("common.explore")}

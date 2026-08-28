@@ -2,14 +2,18 @@ import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites.queries";
 import { useT } from "@/lib/i18n";
+import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   placeId: string;
   title: string;
+  /** Public slug / category only: never user data. */
+  slug?: string;
+  category?: string;
   className?: string;
 };
 
-export function FavoriteHeartButton({ placeId, title, className }: Props) {
+export function FavoriteHeartButton({ placeId, title, slug, category, className }: Props) {
   const { isFavorite, toggle, isPending } = useFavorites();
   const t = useT();
   const saved = isFavorite(placeId);
@@ -23,6 +27,7 @@ export function FavoriteHeartButton({ placeId, title, className }: Props) {
       onClick={(event) => {
         event.preventDefault();
         event.stopPropagation();
+        if (!saved) trackEvent("favorite_place", { place_slug: slug ?? "", place_category: category ?? "" });
         toggle(placeId);
       }}
       className={cn(
@@ -39,7 +44,7 @@ export function FavoriteHeartButton({ placeId, title, className }: Props) {
   );
 }
 
-export function FavoriteActionButton({ placeId, title, className }: Props) {
+export function FavoriteActionButton({ placeId, title, slug, category, className }: Props) {
   const { isFavorite, toggle, isPending } = useFavorites();
   const t = useT();
   const saved = isFavorite(placeId);
@@ -50,7 +55,10 @@ export function FavoriteActionButton({ placeId, title, className }: Props) {
       aria-pressed={saved}
       aria-label={saved ? t("place.removeAria", { title }) : t("place.saveAria", { title })}
       disabled={isPending}
-      onClick={() => toggle(placeId)}
+      onClick={() => {
+        if (!saved) trackEvent("favorite_place", { place_slug: slug ?? "", place_category: category ?? "" });
+        toggle(placeId);
+      }}
       className={cn(
         "inline-flex h-11 shrink-0 items-center gap-2 rounded-[var(--radius-button)] border px-5 text-sm font-medium transition-colors duration-250 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-60",
         saved
