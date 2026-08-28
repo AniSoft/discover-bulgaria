@@ -118,7 +118,7 @@ Administrators can additionally:
 - TypeScript
 - TanStack Start
 - Vite
-- CSS / existing project styling system
+- Tailwind CSS v4 with shadcn/ui (Radix UI primitives) and Lucide icons
 
 ### Backend and Database
 
