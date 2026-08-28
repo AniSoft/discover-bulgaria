@@ -22,6 +22,7 @@ import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authentic
 import { Route as AuthenticatedFavoritesRouteImport } from './routes/_authenticated/favorites'
 import { Route as AuthenticatedMyPlacesRouteImport } from './routes/_authenticated/my-places'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as PlacesSlugRouteImport } from './routes/places.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminPlacesRouteImport } from './routes/_authenticated/admin/places'
@@ -93,6 +94,11 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlacesSlugRoute = PlacesSlugRouteImport.update({
   id: '/places/$slug',
   path: '/places/$slug',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/favorites': typeof AuthenticatedFavoritesRoute
   '/my-places': typeof AuthenticatedMyPlacesRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/places/$slug': typeof PlacesSlugRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/places/new': typeof AuthenticatedPlacesNewRoute
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/favorites': typeof AuthenticatedFavoritesRoute
   '/my-places': typeof AuthenticatedMyPlacesRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/places/$slug': typeof PlacesSlugRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/places/new': typeof AuthenticatedPlacesNewRoute
@@ -181,6 +189,7 @@ export interface FileRoutesById {
   '/_authenticated/favorites': typeof AuthenticatedFavoritesRoute
   '/_authenticated/my-places': typeof AuthenticatedMyPlacesRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/places/$slug': typeof PlacesSlugRoute
   '/_authenticated/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/_authenticated/places/new': typeof AuthenticatedPlacesNewRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/my-places'
     | '/profile'
+    | '/auth/callback'
     | '/places/$slug'
     | '/admin/places'
     | '/places/new'
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/my-places'
     | '/profile'
+    | '/auth/callback'
     | '/places/$slug'
     | '/admin/places'
     | '/places/new'
@@ -243,6 +254,7 @@ export interface FileRouteTypes {
     | '/_authenticated/favorites'
     | '/_authenticated/my-places'
     | '/_authenticated/profile'
+    | '/auth/callback'
     | '/places/$slug'
     | '/_authenticated/admin/places'
     | '/_authenticated/places/new'
@@ -261,6 +273,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   PlacesSlugRoute: typeof PlacesSlugRoute
   ApiPublicInitialAdminSetupRoute: typeof ApiPublicInitialAdminSetupRoute
 }
@@ -358,6 +371,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/places/$slug': {
       id: '/places/$slug'
       path: '/places/$slug'
@@ -450,6 +470,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   PlacesSlugRoute: PlacesSlugRoute,
   ApiPublicInitialAdminSetupRoute: ApiPublicInitialAdminSetupRoute,
 }

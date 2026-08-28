@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { AuthCard, Field, FormAlert, inputClasses } from "@/components/auth/AuthCard";
+import { SocialAuth } from "@/components/auth/SocialAuth";
 import { Button } from "@/components/AppButton";
 import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
@@ -101,6 +102,8 @@ function RegisterPage() {
         </>
       }
     >
+      <SocialAuth className="mb-6" />
+
       <form onSubmit={onSubmit} noValidate className="space-y-5">
         {formError ? <FormAlert>{formError}</FormAlert> : null}
 
