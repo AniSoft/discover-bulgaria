@@ -15,20 +15,14 @@ import { createPlace } from "@/lib/place-submit.functions";
 import { placeSubmissionSchema } from "@/lib/place-submit.shared";
 import { useT } from "@/lib/i18n";
 import { useMessageTranslator } from "@/lib/i18n/validation";
+import { privateSeo } from "@/lib/seo";
 
 const title = "Add a Place | Discover Bulgaria";
 const description =
   "Share a place worth discovering in Bulgaria and help other travellers experience it too.";
 
 export const Route = createFileRoute("/_authenticated/places/new")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: NewPlacePage,
 });
 

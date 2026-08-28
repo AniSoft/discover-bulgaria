@@ -19,20 +19,13 @@ import { useMessageTranslator } from "@/lib/i18n/validation";
 import { myPlacesKey } from "@/lib/my-places.queries";
 import { adminPlacesKey, adminRecentKey, adminStatsKey } from "@/lib/admin-places.queries";
 import { useAuth } from "@/lib/auth";
+import { privateSeo } from "@/lib/seo";
 
 const title = "Edit Place | Discover Bulgaria";
 const description = "Update a place you have shared with the Discover Bulgaria community.";
 
 export const Route = createFileRoute("/_authenticated/places/$id/edit")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: EditPlacePage,
 });
 

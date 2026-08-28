@@ -11,20 +11,13 @@ import {
 } from "@/lib/admin-places.queries";
 import { placeLocation } from "@/lib/place-display";
 import { useT } from "@/lib/i18n";
+import { privateSeo } from "@/lib/seo";
 
 const title = "Admin Dashboard | Discover Bulgaria";
 const description = "Manage community content and platform activity on Discover Bulgaria.";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { name: "robots", content: "noindex" },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: AdminDashboardPage,
 });
 

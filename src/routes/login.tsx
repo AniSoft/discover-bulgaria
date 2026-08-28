@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { safeRedirect } from "@/lib/safe-redirect";
 import { InitialAdminSetup } from "@/components/auth/InitialAdminSetup";
 import { useT } from "@/lib/i18n";
+import { privateSeo } from "@/lib/seo";
 
 const title = "Sign In | Discover Bulgaria";
 const description = "Sign in to save favorite places and submit your own discoveries in Bulgaria.";
@@ -13,14 +14,7 @@ const description = "Sign in to save favorite places and submit your own discove
 export const Route = createFileRoute("/login")({
   validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
     typeof search['redirect'] === "string" ? { redirect: search['redirect'] } : {},
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: LoginPage,
 });
 

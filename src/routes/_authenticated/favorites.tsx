@@ -5,19 +5,13 @@ import { PlaceCard, PlaceCardSkeleton } from "@/components/PlaceCard";
 import { Button, ButtonLink } from "@/components/AppButton";
 import { favoritePlacesQueryOptions } from "@/lib/favorites.queries";
 import { useT } from "@/lib/i18n";
+import { privateSeo } from "@/lib/seo";
 
 const title = "Favorites | Discover Bulgaria";
 const description = "Your saved Bulgarian places, kept in one place for the next trip.";
 
 export const Route = createFileRoute("/_authenticated/favorites")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: FavoritesPage,
 });
 

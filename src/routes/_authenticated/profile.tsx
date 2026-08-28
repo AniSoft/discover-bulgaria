@@ -6,20 +6,13 @@ import { PageShell } from "@/components/PageShell";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { useT } from "@/lib/i18n";
+import { privateSeo } from "@/lib/seo";
 
 const title = "Profile | Discover Bulgaria";
 const description = "Your Discover Bulgaria profile, submissions and saved places.";
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { name: "robots", content: "noindex" },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: ProfilePage,
 });
 
