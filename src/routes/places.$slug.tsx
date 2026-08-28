@@ -22,6 +22,10 @@ import { StatusBadge } from "@/components/places/OwnedPlaceCard";
 import type { PublicPlaceDetail } from "@/lib/places.functions";
 import { useLocalizedPlace } from "@/lib/place-i18n";
 import { useT, useCategoryLabel, useSuitableLabel, useDifficultyLabel } from "@/lib/i18n";
+import { readLocale } from "@/lib/i18n/locale";
+import { placeCoordinates } from "@/lib/place-coordinates";
+import { SITE_NAME, SITE_URL, canonicalUrl, jsonLd, localized, seo, truncate } from "@/lib/seo";
+
 
 export const Route = createFileRoute("/places/$slug")({
   loader: async ({ params, context }) => {
