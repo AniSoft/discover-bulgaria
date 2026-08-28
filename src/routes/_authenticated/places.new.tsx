@@ -16,6 +16,7 @@ import { placeSubmissionSchema } from "@/lib/place-submit.shared";
 import { useT } from "@/lib/i18n";
 import { useMessageTranslator } from "@/lib/i18n/validation";
 import { privateSeo } from "@/lib/seo";
+import { trackEvent } from "@/lib/analytics";
 
 const title = "Add a Place | Discover Bulgaria";
 const description =
@@ -41,6 +42,10 @@ function NewPlacePage() {
     (photos.length > 0 || JSON.stringify(values) !== JSON.stringify(emptyPlaceFormValues));
 
   useEffect(() => {
+    trackEvent("add_place_start");
+  }, []);
+
+  useEffect(() => {
     if (!dirty) return;
     const handler = (event: BeforeUnloadEvent) => event.preventDefault();
     window.addEventListener("beforeunload", handler);
@@ -63,6 +68,7 @@ function NewPlacePage() {
       return { failed };
     },
     onSuccess: ({ failed }) => {
+      trackEvent("add_place_submit");
       setFailedPhotos(failed);
       setSubmitted(true);
     },

@@ -12,6 +12,7 @@ import {
   type PlaceCoordinates,
 } from "@/lib/place-coordinates";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 function openExternal(url: string) {
   const newWindow = window.open(url, "_blank", "noopener,noreferrer");
@@ -259,7 +260,10 @@ export function PlaceMapSection({
               <dd className="mt-3 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => openExternal(directionsUrl(coords, query))}
+                  onClick={() => {
+                    trackEvent("map_directions", { place_slug: slug, destination: "directions" });
+                    openExternal(directionsUrl(coords, query));
+                  }}
                   className={buttonClasses("primary", "md", "rounded-[8px]")}
                 >
                   <Navigation className="size-4" aria-hidden="true" />
@@ -267,7 +271,10 @@ export function PlaceMapSection({
                 </button>
                 <button
                   type="button"
-                  onClick={() => openExternal(googleMapsUrl(coords, query))}
+                  onClick={() => {
+                    trackEvent("map_directions", { place_slug: slug, destination: "google_maps" });
+                    openExternal(googleMapsUrl(coords, query));
+                  }}
                   className={buttonClasses("outline", "md", "rounded-[8px]")}
                 >
                   <ExternalLink className="size-4" aria-hidden="true" />
