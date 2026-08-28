@@ -19,20 +19,13 @@ import {
 import { myPlacesKey } from "@/lib/my-places.queries";
 import { cn } from "@/lib/utils";
 import { useStatusLabel, useT, type MessageKey } from "@/lib/i18n";
+import { privateSeo } from "@/lib/seo";
 
 const title = "Manage Places | Discover Bulgaria";
 const description = "Review, publish and organise places submitted by the community.";
 
 export const Route = createFileRoute("/_authenticated/admin/places")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { name: "robots", content: "noindex" },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: ManagePlacesPage,
 });
 

@@ -13,20 +13,13 @@ import type { OwnedPlace } from "@/lib/my-places.functions";
 import { myPlacesKey, myPlacesQueryOptions } from "@/lib/my-places.queries";
 import { cn } from "@/lib/utils";
 import { useStatusLabel, useT } from "@/lib/i18n";
+import { privateSeo } from "@/lib/seo";
 
 const title = "My Places | Discover Bulgaria";
 const description = "Manage the places you have shared with the Discover Bulgaria community.";
 
 export const Route = createFileRoute("/_authenticated/my-places")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: MyPlacesPage,
 });
 

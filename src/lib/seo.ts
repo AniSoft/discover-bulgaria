@@ -75,7 +75,7 @@ export function seo({ title, description, path, image, type = "website", noindex
 export function privateSeo(title: string, description = "Private area of Discover Bulgaria.") {
   return {
     meta: [
-      { title: `${title} | ${SITE_NAME}` },
+      { title },
       { name: "description", content: description },
       { name: "robots", content: "noindex, nofollow" },
     ],

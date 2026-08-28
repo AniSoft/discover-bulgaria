@@ -4,6 +4,7 @@ import { AuthCard, Field, FormAlert, inputClasses } from "@/components/auth/Auth
 import { Button } from "@/components/AppButton";
 import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
+import { privateSeo } from "@/lib/seo";
 
 const title = "Create Account | Discover Bulgaria";
 const description =
@@ -12,14 +13,7 @@ const description =
 type Errors = Partial<Record<"fullName" | "email" | "password" | "confirmPassword", string>>;
 
 export const Route = createFileRoute("/register")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  head: () => privateSeo(title, description),
   component: RegisterPage,
 });
 
