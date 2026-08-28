@@ -1,9 +1,11 @@
+import { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { PlaceCard, PlaceCardSkeleton } from "@/components/PlaceCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/AppButton";
 import { placesQueryOptions } from "@/lib/places.queries";
-import { useCategoryLabel, useT } from "@/lib/i18n";
+import { useCategoryLabel, useLocale, useT } from "@/lib/i18n";
+import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   q: string;
@@ -17,8 +19,25 @@ export function ExplorePlaces({ q, category, onReset }: Props) {
   );
   const t = useT();
   const categoryLabel = useCategoryLabel();
+  const { locale } = useLocale();
 
   const hasFilters = Boolean(q || category);
+
+  // Privacy-safe search analytics: report language and result counts only,
+  // never the visitor's raw free-form search text. Sent once per resolved
+  // search (keyed on the query + result set), after consent only.
+  const reportedKey = useRef<string | null>(null);
+  useEffect(() => {
+    if (!q || !data) return;
+    const key = `${locale}:${q}:${data.length}:${data[0]?.id ?? ""}`;
+    if (reportedKey.current === key) return;
+    reportedKey.current = key;
+    trackEvent("search", {
+      language: locale,
+      has_results: data.length > 0,
+      results_count: data.length,
+    });
+  }, [q, data, locale]);
   const description = hasFilters
     ? [
         category ? t("explorePlaces.categoryLabel", { category: categoryLabel(category) }) : null,
