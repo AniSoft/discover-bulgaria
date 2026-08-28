@@ -137,6 +137,12 @@ const enPrivacy: LegalDoc = {
       ],
     },
     {
+      heading: "Requesting account deletion",
+      paragraphs: [
+        "You can request deletion of your Discover Bulgaria account and associated personal data at any time. See https://discoverbulgaria.net/data-deletion for instructions.",
+      ],
+    },
+    {
       heading: "Children",
       paragraphs: [
         "The website is not directed at children and accounts are intended for adults or for minors with the consent of a parent or guardian.",
@@ -252,6 +258,12 @@ const bgPrivacy: LegalDoc = {
       paragraphs: [
         "Ако се намирате в Европейското икономическо пространство, имате право на достъп до данните си, коригиране, изтриване, ограничаване или възражение срещу определено обработване, преносимост на данните и оттегляне на съгласието по всяко време, без това да засяга вече извършеното обработване.",
         "Съгласието за аналитични бисквитки може да се оттегли веднага от „Настройки за бисквитки“ във футъра. За останалите права се свържете с нас чрез посочените по-горе данни. Имате право и да подадете жалба до компетентния надзорен орган за защита на личните данни във вашата държава.",
+      ],
+    },
+    {
+      heading: "Заявка за изтриване на профил",
+      paragraphs: [
+        "Можете да поискате изтриване на профила си в Discover Bulgaria и свързаните с него лични данни по всяко време. Инструкции има на https://discoverbulgaria.net/data-deletion.",
       ],
     },
     {
@@ -519,6 +531,123 @@ const bgTerms: LegalDoc = {
   ],
 };
 
+const enDataDeletion: LegalDoc = {
+  title: "User Data Deletion",
+  metaTitle: "User Data Deletion | Discover Bulgaria",
+  metaDescription:
+    "Request deletion of your Discover Bulgaria account, favorites, submitted places and uploaded photos.",
+  intro:
+    "This page explains how to request deletion of your Discover Bulgaria account and the personal data connected to it.",
+  sections: [
+    {
+      heading: "Who can request deletion",
+      paragraphs: [
+        "If you have a Discover Bulgaria account, you can request deletion of the account and the data associated with it. You do not need to be signed in to make the request, but providing the email address you used to register helps us verify it.",
+      ],
+    },
+    {
+      heading: "How to request deletion",
+      paragraphs: [
+        "Discover Bulgaria does not currently offer a self-service account deletion feature in the profile or account area.",
+        "To request deletion, contact us through AniDigit at https://www.anidigit.com/. Please include the email address linked to your account and a clear statement that you want your Discover Bulgaria account and data deleted.",
+      ],
+    },
+    {
+      heading: "What a deletion request covers",
+      bullets: [
+        "Account information, including your email address and display name.",
+        "Authentication-related profile information held by Supabase Auth.",
+        "Favorites you have saved.",
+        "Places you have submitted.",
+        "Photos you have uploaded.",
+      ],
+    },
+    {
+      heading: "Public content and moderation",
+      paragraphs: [
+        "Published places and photos are public community content. When your account is deleted, your submissions may be removed or anonymised where possible. If specific published content needs separate moderation or removal, please mention it in your request and we will review it.",
+      ],
+    },
+    {
+      heading: "Facebook Login users",
+      paragraphs: [
+        "If you signed up with Facebook Login, you can also remove Discover Bulgaria from your Facebook Apps and Websites settings. Removing Facebook authorization does not automatically delete your Discover Bulgaria account. To delete your Discover Bulgaria data, follow the deletion instructions on this page.",
+      ],
+    },
+    {
+      heading: "Retention",
+      paragraphs: [
+        "We do not apply a fixed automatic deletion timeline. Once we receive and verify a valid request, we will delete or anonymise your data as promptly as our technical systems and legitimate security or legal requirements allow.",
+      ],
+    },
+    {
+      heading: "After deletion",
+      paragraphs: [
+        "After deletion you will no longer be able to sign in, your favorites will be removed and any submitted places will no longer be associated with your account.",
+      ],
+    },
+  ],
+};
+
+const bgDataDeletion: LegalDoc = {
+  title: "Изтриване на потребителски данни",
+  metaTitle: "Изтриване на потребителски данни | Discover Bulgaria",
+  metaDescription:
+    "Заявете изтриване на профила си в Discover Bulgaria, любимите места, предложените места и качените снимки.",
+  intro:
+    "Тази страница обяснява как да заявите изтриване на профила си в Discover Bulgaria и свързаните с него лични данни.",
+  sections: [
+    {
+      heading: "Кой може да поиска изтриване",
+      paragraphs: [
+        "Ако имате профил в Discover Bulgaria, можете да поискате изтриване на профила и свързаните с него данни. Не е нужно да сте вписани, за да направите заявката, но посочването на имейла, с който сте се регистрирали, ни помага да я потвърдим.",
+      ],
+    },
+    {
+      heading: "Как да поискате изтриване",
+      paragraphs: [
+        "В момента Discover Bulgaria не предлага възможност за самостоятелно изтриване на профил от профилната или акаунтната област.",
+        "За да заявите изтриване, свържете се с нас чрез AniDigit на https://www.anidigit.com/. Моля, посочете имейла, свързан с профила ви, и ясно заявете, че искате профилът и данните ви в Discover Bulgaria да бъдат изтрити.",
+      ],
+    },
+    {
+      heading: "Какво обхваща заявката за изтриване",
+      bullets: [
+        "Информация за профила, включително имейл адрес и име за показване.",
+        "Информация, свързана с удостоверяването, която се пази в Supabase Auth.",
+        "Любимите места, които сте запазили.",
+        "Местата, които сте предложили.",
+        "Снимките, които сте качили.",
+      ],
+    },
+    {
+      heading: "Публично съдържание и модерация",
+      paragraphs: [
+        "Публикуваните места и снимки са публично съдържание от общността. При изтриване на профила ви предложенията ви могат да бъдат премахнати или анонимизирани, когато това е възможно. Ако конкретно публикувано съдържание изисква отделна модерация или премахване, моля, посочете го в заявката и ние ще го разгледаме.",
+      ],
+    },
+    {
+      heading: "Потребители, влезли чрез Facebook",
+      paragraphs: [
+        "Ако сте се регистрирали чрез Facebook Login, можете също да премахнете Discover Bulgaria от настройките за приложения и уебсайтове във Facebook. Премахването на Facebook упълномощяването не изтрива автоматично профила ви в Discover Bulgaria. За да изтриете данните си от Discover Bulgaria, следвайте инструкциите за изтриване на тази страница.",
+      ],
+    },
+    {
+      heading: "Съхранение",
+      paragraphs: [
+        "Не прилагаме фиксиран автоматичен срок за изтриване. След като получим и потвърдим валидна заявка, ще изтрием или анонимизираме данните ви възможно най-бързо, съобразено с техническите системи и легитимните изисквания за сигурност и закон.",
+      ],
+    },
+    {
+      heading: "След изтриването",
+      paragraphs: [
+        "След изтриването няма да можете да се впишете, любимите ви места ще бъдат премахнати и всички предложени от вас места вече няма да бъдат свързани с профила ви.",
+      ],
+    },
+  ],
+};
+
 export const PRIVACY_DOC: Record<Locale, LegalDoc> = { en: enPrivacy, bg: bgPrivacy };
 export const COOKIE_DOC: Record<Locale, LegalDoc> = { en: enCookies, bg: bgCookies };
 export const TERMS_DOC: Record<Locale, LegalDoc> = { en: enTerms, bg: bgTerms };
+export const DATA_DELETION_DOC: Record<Locale, LegalDoc> = { en: enDataDeletion, bg: bgDataDeletion };
