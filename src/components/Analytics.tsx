@@ -2,20 +2,22 @@ import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import {
   analyticsEnabled,
+  analyticsLoaded,
+  applyConsent,
   initAnalytics,
   readConsent,
   trackPageView,
-  updateConsent,
-  writeConsent,
   type ConsentChoice,
 } from "@/lib/analytics";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /**
- * Boots the Google tag once and sends one manual page_view per route change.
- * Enhanced-measurement history page views are disabled in the GA config, so
- * there is exactly one page_view per navigation.
+ * Basic Consent Mode: the Google tag is only loaded after an explicit Accept
+ * (now or remembered from a prior visit). Until then nothing is loaded and no
+ * requests leave the browser. After Accept, one manual page_view is sent per
+ * route change; enhanced-measurement history page views are disabled in the
+ * GA config, so there is exactly one page_view per navigation.
  */
 export function Analytics() {
   const href = useRouterState({ select: (state) => state.location.href });
@@ -25,7 +27,7 @@ export function Analytics() {
   }, []);
 
   useEffect(() => {
-    if (!analyticsEnabled()) return;
+    if (!analyticsEnabled() || !analyticsLoaded()) return;
     // Let the route's head() title land before reporting it.
     const id = window.setTimeout(() => {
       trackPageView(window.location.href, document.title);
@@ -47,8 +49,7 @@ function ConsentBanner() {
   if (!visible) return null;
 
   const choose = (choice: ConsentChoice) => {
-    writeConsent(choice);
-    updateConsent(choice);
+    applyConsent(choice);
     setVisible(false);
     if (choice === "accepted") trackPageView(window.location.href, document.title);
   };
