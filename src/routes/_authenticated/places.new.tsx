@@ -84,12 +84,16 @@ function NewPlacePage() {
     if (mutation.isPending) return;
 
     const parsed = placeSubmissionSchema.safeParse(values);
+    const next: Record<string, string> = {};
     if (!parsed.success) {
-      const next: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
         const key = String(issue.path[0]);
         if (!next[key]) next[key] = translateMessage(issue.message);
       }
+    }
+    // Rights confirmation is required and never pre-checked.
+    if (!rightsConfirmed) next["rights"] = t("form.rightsRequired");
+    if (Object.keys(next).length) {
       setErrors(next);
       return;
     }
