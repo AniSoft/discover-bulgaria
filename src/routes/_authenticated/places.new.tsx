@@ -149,6 +149,30 @@ function NewPlacePage() {
           }
         />
 
+        <div className="rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-card sm:p-8">
+          <label htmlFor="rights-confirm" className="flex items-start gap-3">
+            <input
+              id="rights-confirm"
+              type="checkbox"
+              checked={rightsConfirmed}
+              onChange={(event) => setRightsConfirmed(event.target.checked)}
+              aria-describedby={errors["rights"] ? "rights-error" : undefined}
+              className="mt-1 size-4 shrink-0 accent-[var(--color-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            />
+            <span className="text-sm leading-relaxed text-foreground">
+              {t("form.rightsConfirm")}{" "}
+              <Link to="/terms" className="underline underline-offset-4 hover:text-accent">
+                {t("form.rightsTerms")}
+              </Link>
+            </span>
+          </label>
+          {errors["rights"] ? (
+            <p id="rights-error" role="alert" className="mt-3 text-xs text-destructive">
+              {errors["rights"]}
+            </p>
+          ) : null}
+        </div>
+
         {mutation.isError ? (
           <p role="alert" className="rounded-[var(--radius-card)] border border-accent/30 bg-secondary px-5 py-4 text-sm text-foreground">
             {t("form.submitErrorGeneric")}
