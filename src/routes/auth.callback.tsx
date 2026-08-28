@@ -60,8 +60,9 @@ function AuthCallbackPage() {
     <AuthCard
       eyebrow={t("auth.welcomeBack")}
       title={failed ? t("auth.socialFailedTitle") : t("auth.signingIn")}
-      description={failed ? undefined : t("auth.completingSignIn")}
+      description={failed ? "" : t("auth.completingSignIn")}
     >
+
       <div aria-live="polite">
         {failed ? (
           <div className="space-y-5">

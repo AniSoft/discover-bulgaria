@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormAlert } from "@/components/auth/AuthCard";
-import { useT } from "@/lib/i18n";
+import { useT, type MessageKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { SOCIAL_PROVIDERS, signInWithSocialProvider, type SocialProvider } from "@/lib/social-auth";
 
@@ -27,7 +27,10 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-const PROVIDER_META: Record<SocialProvider, { icon: typeof GoogleIcon; labelKey: string; loadingKey: string }> = {
+const PROVIDER_META: Record<
+  SocialProvider,
+  { icon: typeof GoogleIcon; labelKey: MessageKey; loadingKey: MessageKey }
+> = {
   google: {
     icon: GoogleIcon,
     labelKey: "auth.continueWithGoogle",
@@ -44,7 +47,7 @@ export function SocialAuth({ redirectPath, className }: { redirectPath?: string 
   const [pending, setPending] = useState<SocialProvider | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  if (SOCIAL_PROVIDERS.length === 0) return null;
+
 
   async function start(provider: SocialProvider) {
     if (pending) return;
