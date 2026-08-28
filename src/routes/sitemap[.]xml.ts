@@ -13,6 +13,9 @@ export const Route = createFileRoute("/sitemap.xml")({
         const entries: Entry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/categories", changefreq: "monthly", priority: "0.8" },
+          { path: "/privacy-policy", changefreq: "yearly", priority: "0.2" },
+          { path: "/cookie-policy", changefreq: "yearly", priority: "0.2" },
+          { path: "/terms", changefreq: "yearly", priority: "0.2" },
         ];
 
         // Published places only: mirrors the public detail route's filter.
