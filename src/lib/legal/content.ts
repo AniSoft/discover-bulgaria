@@ -290,7 +290,7 @@ const enCookies: LegalDoc = {
       heading: "Analytics",
       paragraphs: [
         "Analytics is provided by Google Analytics 4 and is loaded only after you accept it. Until then, no Google script is loaded, no analytics cookies are created and no data, cookieless or otherwise, is sent.",
-        "If you accept, the Google tag sets its standard first-party analytics cookies in your browser, named _ga and _ga_NP4Y2XRK9Q. They contain a randomly generated identifier used to distinguish visits and sessions, and their lifetime is set by Google rather than by us.",
+        "If you accept, the Google tag is loaded from googletagmanager.com and usage events are sent to Google. Where Google's tag stores an identifier in your browser it uses its own first-party cookies, typically named _ga and _ga_NP4Y2XRK9Q, whose content and lifetime are controlled by Google and not by us. We set no analytics cookies of our own.",
         "If you decline, or later turn analytics off in Cookie Settings, the tag is not loaded on subsequent page loads and no further analytics events are sent. Cookies already placed by Google can also be deleted in your browser settings at any time.",
         "Advertising storage, advertising user data and advertising personalization are always denied. Discover Bulgaria does not run advertising or cross-site tracking.",
       ],
