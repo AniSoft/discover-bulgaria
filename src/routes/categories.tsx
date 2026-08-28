@@ -5,22 +5,30 @@ import { PageShell } from "@/components/PageShell";
 import { categories } from "@/data/categories";
 import { categoryCountsQueryOptions } from "@/lib/places.queries";
 import { useT } from "@/lib/i18n";
-
-const title = "Categories | Discover Bulgaria";
-const description =
-  "Browse Bulgarian places by category: hidden gems, nature, mountains, sea, history, views, photo spots and food & wine.";
+import { readLocale } from "@/lib/i18n/locale";
+import { CATEGORIES_SEO, SITE_URL, jsonLd, seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/categories")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-    ],
-  }),
+  loader: () => ({ locale: readLocale() }),
+  head: ({ loaderData }) => {
+    const copy = CATEGORIES_SEO[loaderData?.locale ?? "en"];
+    return {
+      ...seo({ title: copy.title, description: copy.description, path: "/categories" }),
+      scripts: [
+        jsonLd({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Discover Bulgaria", item: `${SITE_URL}/` },
+            { "@type": "ListItem", position: 2, name: copy.title.split(" | ")[0], item: `${SITE_URL}/categories` },
+          ],
+        }),
+      ],
+    };
+  },
   component: CategoriesPage,
 });
+
 
 function CategoriesPage() {
   const { data: counts, isError } = useQuery(categoryCountsQueryOptions());
