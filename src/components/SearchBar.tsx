@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/AppButton";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
-import { trackEvent } from "@/lib/analytics";
+
 
 type Props = {
   className?: string;
@@ -26,7 +26,8 @@ export function SearchBar({ className, id = "site-search", value = "", onSearch 
       onSubmit={(event) => {
         event.preventDefault();
         const term = query.trim();
-        if (term) trackEvent("search", { search_term: term.slice(0, 60) });
+        // Raw search text is never sent to analytics; the results module
+        // reports a privacy-safe `search` event (language, counts only).
         onSearch?.(term);
       }}
       className={cn(
