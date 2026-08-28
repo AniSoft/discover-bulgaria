@@ -6,7 +6,7 @@ import { safeRedirect } from "@/lib/safe-redirect";
  * (once it is configured in the Supabase dashboard) is all that is needed to
  * surface a Facebook button, because every consumer renders from this list.
  */
-export const SOCIAL_PROVIDERS = ["google"] as const;
+export const SOCIAL_PROVIDERS = ["google", "facebook"] as const;
 
 export type SocialProvider = (typeof SOCIAL_PROVIDERS)[number];
 
