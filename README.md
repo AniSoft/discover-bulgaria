@@ -155,6 +155,67 @@ discoverbulgaria.net
 
 A modern React application with server-side rendering is deployed continuously from GitHub to Netlify. Supabase provides authentication, the PostgreSQL database, storage for destination photos and row-level security policies.
 
+## Security
+
+- Supabase Row Level Security protects every table, so users can only read published content and manage their own records.
+- Privileged credentials, including the Supabase service role key, are used only in server-only code and never reach the browser bundle.
+- All secrets are stored as environment variables in the hosting environment, never in the source code.
+- The local `.env` file is excluded from Git.
+- `.env.example` contains variable names only, with no values.
+
+## Environment Variables
+
+Public, exposed to the browser:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_SUPABASE_PROJECT_ID`
+
+Server only:
+
+- `SUPABASE_URL`
+- `SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_PROJECT_ID`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+## Local Development
+
+Requires [Bun](https://bun.sh).
+
+```bash
+bun install
+cp .env.example .env   # then fill in your own values
+bun run dev            # start the development server
+```
+
+Available scripts:
+
+```bash
+bun run dev        # development server
+bun run build      # production build
+bun run build:dev  # development-mode build
+bun run preview    # preview the production build
+bun run lint       # ESLint
+bun run format     # Prettier
+```
+
+## Deployment
+
+```text
+Lovable → GitHub → Netlify → discoverbulgaria.net
+```
+
+Changes are made in Lovable, pushed to GitHub and deployed automatically by Netlify. The `main` branch is the production branch. Server-side rendering is preserved on Netlify, so the application is not deployed as a static SPA.
+
+## Project Status
+
+Discover Bulgaria is an active production project and continues to receive content, feature and maintenance updates.
+
+## License
+
+All rights reserved unless otherwise specified.
+
 ---
 
 Created by [AniDigit](https://www.anidigit.com/) · © 2026 Discover Bulgaria
+
