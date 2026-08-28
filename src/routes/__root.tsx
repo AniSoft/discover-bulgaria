@@ -93,6 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Discover beautiful, lesser-known places across Bulgaria: hidden gems, nature, mountains, coastline and culture.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Discover Bulgaria" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [

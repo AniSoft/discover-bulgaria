@@ -53,8 +53,15 @@ export function placeCover(
   return place.cover_url ?? placeImage(place);
 }
 
-export function placeImageAlt(place: Pick<PublicPlace, "title" | "category">) {
-  return `${place.title}, ${place.category} in Bulgaria`;
+/**
+ * Meaningful, non keyword-stuffed alt text: the (already localised) place
+ * title plus where it is. Example: "Prohodna Cave, Karlukovo, Bulgaria".
+ */
+export function placeImageAlt(
+  place: Pick<PublicPlace, "title" | "category"> & Partial<Pick<PublicPlace, "region" | "city">>,
+) {
+  const where = [place.city, place.region].filter(Boolean).join(", ");
+  return where ? `${place.title}, ${where}, Bulgaria` : `${place.title}, Bulgaria`;
 }
 
 export function placePractical(place: Pick<PublicPlace, "approximate_cost" | "duration">) {
