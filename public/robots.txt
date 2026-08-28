@@ -5,7 +5,7 @@ Disallow: /register
 Disallow: /profile
 Disallow: /favorites
 Disallow: /my-places
-Disallow: /places/new
+Disallow: /places/new$
 Disallow: /admin
 Disallow: /api/
 
