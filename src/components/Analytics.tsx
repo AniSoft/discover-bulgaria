@@ -62,7 +62,8 @@ function ConsentLayer() {
   useEffect(() => {
     const stored = readConsent();
     setAnalyticsOn(Boolean(stored?.analytics));
-    if (stored === null) setBannerVisible(true);
+    // The banner only asks about analytics, which never runs outside production.
+    if (stored === null && analyticsEnabled()) setBannerVisible(true);
   }, []);
 
   useEffect(() => {
