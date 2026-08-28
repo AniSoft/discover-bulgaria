@@ -65,12 +65,27 @@ export const Route = createFileRoute("/places/$slug")({
       165,
     );
     const path = `/places/${params.slug}`;
-    const image = place.cover_url ?? null;
     const coords = placeCoordinates(params.slug);
     const city = localized(locale, place.city, place.city_bg);
 
+    // Build an absolute image list for structured data: cover first, then the
+    // remaining place photos in their display order. Skip any photo without a URL.
+    const absoluteImage = (url: string | null | undefined): string | null => {
+      if (!url) return null;
+      return url.startsWith("http") ? url : `${SITE_URL}${url}`;
+    };
+    const coverUrl = absoluteImage(place.cover_url);
+    const photoUrls = (place.photos ?? [])
+      .slice()
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map((p) => absoluteImage(p.url))
+      .filter(Boolean);
+    const imageList = coverUrl
+      ? [coverUrl, ...photoUrls.filter((u) => u !== coverUrl)]
+      : photoUrls;
+
     return {
-      ...seo({ title, description, path, image, type: "article" }),
+      ...seo({ title, description, path, image: coverUrl, type: "article" }),
       scripts: [
         jsonLd({
           "@context": "https://schema.org",
@@ -79,7 +94,7 @@ export const Route = createFileRoute("/places/$slug")({
           description,
           url: canonicalUrl(path),
           inLanguage: locale,
-          ...(image ? { image } : {}),
+          ...(imageList.length ? { image: imageList } : {}),
           address: {
             "@type": "PostalAddress",
             addressCountry: "BG",
