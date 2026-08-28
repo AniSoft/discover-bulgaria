@@ -29,25 +29,77 @@ export const Route = createFileRoute("/places/$slug")({
       const place = await context.queryClient.ensureQueryData(
         placeDetailQueryOptions(params.slug),
       );
-      return { place };
+      return { place, locale: readLocale() };
     } catch {
-      return { place: null };
+      return { place: null, locale: readLocale() };
     }
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const place = loaderData?.place;
-    const title = place
-      ? `${place.title} | Discover Bulgaria`
-      : "Place not found | Discover Bulgaria";
-    const description = place?.short_description ??
-      "Details, practical information and local tips for places in Bulgaria.";
+    const locale = loaderData?.locale ?? "en";
+
+    // Anything that is not a published place (missing, for_review, rejected,
+    // owner-only preview) must never advertise itself to search engines.
+    if (!place) {
+      return {
+        meta: [
+          { title: `Place not found | ${SITE_NAME}` },
+          {
+            name: "description",
+            content: "This destination is not available on Discover Bulgaria.",
+          },
+          { name: "robots", content: "noindex, follow" },
+        ],
+      };
+    }
+
+    const name = localized(locale, place.title, place.title_bg);
+    const summary = localized(locale, place.short_description, place.short_description_bg);
+    const title = `${name} | ${SITE_NAME}`;
+    const description = truncate(
+      summary || localized(locale, place.description, place.description_bg) || name,
+      165,
+    );
+    const path = `/places/${params.slug}`;
+    const image = place.cover_url ?? null;
+    const coords = placeCoordinates(params.slug);
+    const city = localized(locale, place.city, place.city_bg);
+
     return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        ...(place ? [] : [{ name: "robots", content: "noindex" }]),
+      ...seo({ title, description, path, image, type: "article" }),
+      scripts: [
+        jsonLd({
+          "@context": "https://schema.org",
+          "@type": "TouristAttraction",
+          name,
+          description,
+          url: canonicalUrl(path),
+          inLanguage: locale,
+          ...(image ? { image } : {}),
+          address: {
+            "@type": "PostalAddress",
+            addressCountry: "BG",
+            addressRegion: place.region,
+            ...(city ? { addressLocality: city } : {}),
+          },
+          ...(coords
+            ? { geo: { "@type": "GeoCoordinates", latitude: coords.lat, longitude: coords.lng } }
+            : {}),
+        }),
+        jsonLd({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: SITE_NAME, item: `${SITE_URL}/` },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: place.category,
+              item: `${SITE_URL}/?category=${encodeURIComponent(place.category)}`,
+            },
+            { "@type": "ListItem", position: 3, name, item: canonicalUrl(path) },
+          ],
+        }),
       ],
     };
   },
@@ -55,6 +107,7 @@ export const Route = createFileRoute("/places/$slug")({
   notFoundComponent: () => <NotFoundState />,
   component: PlaceDetailsPage,
 });
+
 
 function PlaceDetailsPage() {
   const { slug } = Route.useParams();
