@@ -83,9 +83,12 @@ function writeConsent(record: ConsentRecord) {
   }
 }
 
-function gtag(...args: unknown[]) {
+// Must push the real `arguments` object: gtag.js ignores plain arrays, which
+// silently drops every command (no config, no page_view, no network hit).
+function gtag(..._args: unknown[]) {
   window.dataLayer = window.dataLayer ?? [];
-  window.dataLayer.push(args);
+  // eslint-disable-next-line prefer-rest-params
+  window.dataLayer.push(arguments);
 }
 
 let loaded = false;
