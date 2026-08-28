@@ -17,21 +17,45 @@ Production: [https://discoverbulgaria.net](https://discoverbulgaria.net)
 
 ## Screenshots
 
-### Home page
+### Home
 
-![Discover Bulgaria home page](public/readme/home.jpg)
+| Bulgarian | English |
+| --- | --- |
+| ![Discover Bulgaria Bulgarian home page](public/readme/home-bg.webp) | ![Discover Bulgaria English home page](public/readme/home-en.webp) |
 
-### Explore and categories
+### Discover
 
-![Explore and categories](public/readme/explore.jpg)
+| Categories | Destinations |
+| --- | --- |
+| ![Discover Bulgaria category exploration](public/readme/categories.webp) | ![Discover Bulgaria destination cards](public/readme/places.webp) |
 
-### Place details
+### Destination Experience
 
-![Place details page](public/readme/place-details.jpg)
+| Place Details | Map and Directions |
+| --- | --- |
+| ![Prohodna Cave destination detail page](public/readme/place-details.webp) | ![Discover Bulgaria map and directions section](public/readme/map-directions.webp) |
 
-### Map and directions
+### User Experience
 
-![Map and directions section](public/readme/map.jpg)
+| Sign In | Favorites |
+| --- | --- |
+| ![Discover Bulgaria sign in page](public/readme/login.webp) | ![Discover Bulgaria saved favorite destinations](public/readme/favorites.webp) |
+
+### Contribution Workflow
+
+| Add a Place | My Places |
+| --- | --- |
+| ![Discover Bulgaria add a place form](public/readme/add-place.webp) | ![Discover Bulgaria my places with submission statuses](public/readme/my-places.webp) |
+
+### Cinematic Experience
+
+![Discover Bulgaria cinematic video section](public/readme/cinematic-video.webp)
+
+### Mobile
+
+<img src="public/readme/mobile-home.webp" alt="Discover Bulgaria mobile home page" width="320" />
+
+
 
 
 ## About the Project
