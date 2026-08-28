@@ -54,7 +54,7 @@ The application supports both English and Bulgarian.
 - destination search
 - category filtering
 - dynamic destination pages
-- real destination photography / photo support
+- destination photo galleries and uploads
 - interactive maps using Leaflet and OpenStreetMap
 - Google Maps directions links
 - user authentication
