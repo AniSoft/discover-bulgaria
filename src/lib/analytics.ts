@@ -1,12 +1,23 @@
 /**
- * Google Analytics 4 (Consent Mode v2).
+ * Google Analytics 4 (Basic Consent Mode).
+ *
+ * Discover Bulgaria does not use Google Ads, so the Google tag is NOT loaded
+ * until the visitor explicitly accepts analytics cookies. Before consent:
+ *
+ * - no gtag.js script is loaded
+ * - no dataLayer / gtag stub is created
+ * - no GA4 events or cookieless pings are sent
+ *
+ * On Accept: the tag loads, G-NP4Y2XRK9Q initializes with analytics_storage
+ * granted, and manual SPA page-view tracking starts. On Decline: nothing is
+ * ever loaded and no events are sent. Advertising storage stays denied always.
  *
  * Page views are sent MANUALLY on router navigation: the GA config sets
  * `send_page_view: false`, so enhanced-measurement history events never
- * duplicate our SPA page views. Analytics storage stays denied until the
- * visitor accepts; advertising storage is always denied (no ads on this site).
+ * duplicate our SPA page views.
  *
- * No personal data (email, name, user id, tokens, free-form text) is ever sent.
+ * No personal data (email, name, user id, tokens, free-form text such as raw
+ * search terms) is ever sent.
  */
 
 export const GA_MEASUREMENT_ID = "G-NP4Y2XRK9Q";
@@ -51,27 +62,31 @@ function gtag(...args: unknown[]) {
   window.dataLayer.push(args);
 }
 
-let initialized = false;
+let loaded = false;
 
-/** Loads the Google tag exactly once and applies the stored consent choice. */
-export function initAnalytics() {
-  if (initialized || !analyticsEnabled()) return;
-  initialized = true;
+/** True only after the Google tag has actually been loaded (post-consent). */
+export function analyticsLoaded(): boolean {
+  return loaded && typeof window.gtag === "function";
+}
+
+/**
+ * Loads the Google tag exactly once with analytics_storage granted.
+ * Called only after an explicit Accept (now or remembered from a prior visit).
+ */
+function loadAnalytics() {
+  if (loaded || !analyticsEnabled()) return;
+  loaded = true;
 
   window.dataLayer = window.dataLayer ?? [];
   window.gtag = gtag;
 
-  // Consent defaults must be set before the config command.
+  // Consent state is applied before the config command. Ads stay denied.
   gtag("consent", "default", {
-    analytics_storage: "denied",
+    analytics_storage: "granted",
     ad_storage: "denied",
     ad_user_data: "denied",
     ad_personalization: "denied",
   });
-
-  if (readConsent() === "accepted") {
-    gtag("consent", "update", { analytics_storage: "granted" });
-  }
 
   const script = document.createElement("script");
   script.async = true;
@@ -82,23 +97,30 @@ export function initAnalytics() {
   gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
 }
 
-export function updateConsent(choice: ConsentChoice) {
-  if (!analyticsEnabled() || typeof window.gtag !== "function") return;
-  gtag("consent", "update", {
-    analytics_storage: choice === "accepted" ? "granted" : "denied",
-    ad_storage: "denied",
-    ad_user_data: "denied",
-    ad_personalization: "denied",
-  });
+/**
+ * Boots analytics on page load ONLY when consent was previously accepted.
+ * Otherwise nothing loads: basic consent mode, zero pre-consent pings.
+ */
+export function initAnalytics() {
+  if (!analyticsEnabled()) return;
+  if (readConsent() === "accepted") loadAnalytics();
+}
+
+/** Records the visitor's choice; Accept loads the tag, Decline stays silent. */
+export function applyConsent(choice: ConsentChoice) {
+  writeConsent(choice);
+  if (!analyticsEnabled()) return;
+  if (choice === "accepted") loadAnalytics();
+  // "declined": intentionally do nothing. The tag was never loaded.
 }
 
 export function trackPageView(location: string, title: string) {
-  if (!analyticsEnabled() || typeof window.gtag !== "function") return;
-  gtag("event", "page_view", { page_location: location, page_title: title });
+  if (!analyticsLoaded()) return;
+  window.gtag!("event", "page_view", { page_location: location, page_title: title });
 }
 
-/** Safe identifiers only: slugs, categories, language codes. */
-export function trackEvent(name: string, params: Record<string, string | number> = {}) {
-  if (!analyticsEnabled() || typeof window.gtag !== "function") return;
-  gtag("event", name, params);
+/** Safe identifiers only: slugs, categories, language codes, counts. */
+export function trackEvent(name: string, params: Record<string, string | number | boolean> = {}) {
+  if (!analyticsLoaded()) return;
+  window.gtag!("event", name, params);
 }
