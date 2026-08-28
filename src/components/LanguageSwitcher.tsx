@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { useLocale, type Locale } from "@/lib/i18n";
+import { trackEvent } from "@/lib/analytics";
 
 const languages: { value: Locale; label: string; ariaLabel: string }[] = [
   { value: "en", label: "EN", ariaLabel: "Switch language to English" },
@@ -21,7 +22,10 @@ export function LanguageSwitcher({ transparent = false }: { transparent?: boolea
           <button
             type="button"
             lang={language.value}
-            onClick={() => setLocale(language.value)}
+            onClick={() => {
+              trackEvent("language_change", { language: language.value });
+              setLocale(language.value);
+            }}
             aria-label={language.ariaLabel}
             aria-current={locale === language.value ? "true" : undefined}
             className={cn(

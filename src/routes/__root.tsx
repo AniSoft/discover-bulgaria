@@ -16,6 +16,7 @@ import { Footer } from "@/components/Footer";
 import { AuthProvider } from "@/lib/auth";
 import { LocaleProvider, readLocale, useT, type Locale } from "@/lib/i18n";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@/components/Analytics";
 
 
 function NotFoundComponent() {
@@ -147,6 +148,7 @@ function RootComponent() {
           </main>
           <Footer />
           <Toaster position="top-center" />
+          <Analytics />
         </div>
       </AuthProvider>
       </LocaleProvider>
