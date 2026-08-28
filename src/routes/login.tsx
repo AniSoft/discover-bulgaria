@@ -5,6 +5,7 @@ import { Button } from "@/components/AppButton";
 import { supabase } from "@/integrations/supabase/client";
 import { safeRedirect } from "@/lib/safe-redirect";
 import { InitialAdminSetup } from "@/components/auth/InitialAdminSetup";
+import { SocialAuth } from "@/components/auth/SocialAuth";
 import { useT } from "@/lib/i18n";
 import { privateSeo } from "@/lib/seo";
 
@@ -74,6 +75,8 @@ function LoginPage() {
         </>
       }
     >
+      <SocialAuth redirectPath={search.redirect} className="mb-6" />
+
       <form onSubmit={onSubmit} noValidate className="space-y-5">
         {formError ? <FormAlert>{formError}</FormAlert> : null}
 
