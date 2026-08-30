@@ -45,14 +45,9 @@ export function Hero({ query, activeCategory, onSearch, onCategory }: Props) {
         ))}
       </ul>
 
-      <div className="container-page relative w-full pt-32 pb-14 md:pb-20">
+      <div className="container-page relative w-full pt-[clamp(7.5rem,18vh,13rem)] pb-12 md:pb-16">
         <div className="max-w-4xl">
-          <p className="flex items-center gap-3 text-primary-foreground/80">
-            <span className="h-px w-10 bg-current" aria-hidden="true" />
-            <span className="eyebrow">{t("home.heroEyebrow")}</span>
-          </p>
-
-          <h1 className="mt-6 max-w-3xl text-[2.5rem] leading-[1.02] text-primary-foreground sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
+          <h1 className="max-w-3xl text-[2.5rem] leading-[1.02] text-primary-foreground sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
             {t("home.heroTitle")}
           </h1>
 
