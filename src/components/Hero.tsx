@@ -47,6 +47,9 @@ export function Hero({ query, activeCategory, onSearch, onCategory }: Props) {
 
       <div className="container-page relative w-full pt-[clamp(7.5rem,18vh,13rem)] pb-12 md:pb-16">
         <div className="max-w-4xl">
+          <p className="eyebrow mb-4 text-primary-foreground/80">
+            {t("home.heroEyebrow")}
+          </p>
           <h1 className="max-w-3xl text-[2.5rem] leading-[1.02] text-primary-foreground sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
             {t("home.heroTitle")}
           </h1>
