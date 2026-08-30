@@ -76,16 +76,8 @@ export function Header() {
             <circle cx="12" cy="12" r="9.2" />
             <path d="M15.6 8.4 10.9 10.9 8.4 15.6 13.1 13.1Z" />
           </svg>
-          <span className="flex min-w-0 flex-col justify-center">
-            <span className="mb-1.5 hidden items-center gap-2.5 sm:flex" aria-hidden="true">
-              <span className="h-px w-6 shrink-0 bg-current opacity-70" />
-              <span className="eyebrow text-[0.625rem] whitespace-nowrap opacity-90">
-                {t("home.heroEyebrow")}
-              </span>
-            </span>
-            <span className="font-display text-[1.45rem] leading-none tracking-[-0.02em] whitespace-nowrap sm:text-[1.6rem]">
-              Discover <span className="italic">Bulgaria</span>
-            </span>
+          <span className="font-display text-[1.45rem] leading-none tracking-[-0.02em] whitespace-nowrap sm:text-[1.6rem]">
+            Discover <span className="italic">Bulgaria</span>
           </span>
         </Link>
 
