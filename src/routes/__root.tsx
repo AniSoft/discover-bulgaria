@@ -87,12 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Discover Bulgaria: Hidden places and local stories" },
-      {
-        name: "description",
-        content:
-          "Discover beautiful, lesser-known places across Bulgaria: hidden gems, nature, mountains, coastline and culture.",
-      },
+
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Discover Bulgaria" },
       { name: "twitter:card", content: "summary_large_image" },
